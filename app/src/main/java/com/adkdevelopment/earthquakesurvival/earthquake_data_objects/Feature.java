@@ -24,13 +24,16 @@
 
 package com.adkdevelopment.earthquakesurvival.earthquake_data_objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by karataev on 3/24/16.
  */
-public class Feature {
+public class Feature implements Parcelable {
 
     @SerializedName("type")
     @Expose
@@ -44,6 +47,8 @@ public class Feature {
     @SerializedName("id")
     @Expose
     private String id;
+
+    public static final String EARTHQUAKE = "earthquake";
 
     /**
      *
@@ -117,4 +122,38 @@ public class Feature {
         this.id = id;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.type);
+        dest.writeParcelable(this.properties, flags);
+        dest.writeParcelable(this.geometry, flags);
+        dest.writeString(this.id);
+    }
+
+    public Feature() {
+    }
+
+    protected Feature(Parcel in) {
+        this.type = in.readString();
+        this.properties = in.readParcelable(Properties.class.getClassLoader());
+        this.geometry = in.readParcelable(Geometry.class.getClassLoader());
+        this.id = in.readString();
+    }
+
+    public static final Parcelable.Creator<Feature> CREATOR = new Parcelable.Creator<Feature>() {
+        @Override
+        public Feature createFromParcel(Parcel source) {
+            return new Feature(source);
+        }
+
+        @Override
+        public Feature[] newArray(int size) {
+            return new Feature[size];
+        }
+    };
 }

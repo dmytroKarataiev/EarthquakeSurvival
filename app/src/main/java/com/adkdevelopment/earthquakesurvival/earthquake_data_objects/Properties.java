@@ -24,13 +24,16 @@
 
 package com.adkdevelopment.earthquakesurvival.earthquake_data_objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by karataev on 3/24/16.
  */
-public class Properties {
+public class Properties implements Parcelable {
 
     @SerializedName("mag")
     @Expose
@@ -55,16 +58,16 @@ public class Properties {
     private String detail;
     @SerializedName("felt")
     @Expose
-    private Object felt;
+    private String felt;
     @SerializedName("cdi")
     @Expose
-    private Object cdi;
+    private String cdi;
     @SerializedName("mmi")
     @Expose
-    private Object mmi;
+    private String mmi;
     @SerializedName("alert")
     @Expose
-    private Object alert;
+    private String alert;
     @SerializedName("status")
     @Expose
     private String status;
@@ -100,7 +103,7 @@ public class Properties {
     private Double rms;
     @SerializedName("gap")
     @Expose
-    private Integer gap;
+    private Double gap;
     @SerializedName("magType")
     @Expose
     private String magType;
@@ -251,7 +254,7 @@ public class Properties {
      * @param felt
      * The felt
      */
-    public void setFelt(Object felt) {
+    public void setFelt(String felt) {
         this.felt = felt;
     }
 
@@ -269,7 +272,7 @@ public class Properties {
      * @param cdi
      * The cdi
      */
-    public void setCdi(Object cdi) {
+    public void setCdi(String cdi) {
         this.cdi = cdi;
     }
 
@@ -287,7 +290,7 @@ public class Properties {
      * @param mmi
      * The mmi
      */
-    public void setMmi(Object mmi) {
+    public void setMmi(String mmi) {
         this.mmi = mmi;
     }
 
@@ -305,7 +308,7 @@ public class Properties {
      * @param alert
      * The alert
      */
-    public void setAlert(Object alert) {
+    public void setAlert(String alert) {
         this.alert = alert;
     }
 
@@ -512,7 +515,7 @@ public class Properties {
      * @return
      * The gap
      */
-    public Integer getGap() {
+    public Double getGap() {
         return gap;
     }
 
@@ -521,7 +524,7 @@ public class Properties {
      * @param gap
      * The gap
      */
-    public void setGap(Integer gap) {
+    public void setGap(Double gap) {
         this.gap = gap;
     }
 
@@ -579,4 +582,82 @@ public class Properties {
         this.title = title;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.mag);
+        dest.writeString(this.place);
+        dest.writeString(this.time);
+        dest.writeString(this.updated);
+        dest.writeValue(this.tz);
+        dest.writeString(this.url);
+        dest.writeString(this.detail);
+        dest.writeString(this.felt);
+        dest.writeString(this.cdi);
+        dest.writeString(this.mmi);
+        dest.writeString(this.alert);
+        dest.writeString(this.status);
+        dest.writeValue(this.tsunami);
+        dest.writeValue(this.sig);
+        dest.writeString(this.net);
+        dest.writeString(this.code);
+        dest.writeString(this.ids);
+        dest.writeString(this.sources);
+        dest.writeString(this.types);
+        dest.writeValue(this.nst);
+        dest.writeValue(this.dmin);
+        dest.writeValue(this.rms);
+        dest.writeValue(this.gap);
+        dest.writeString(this.magType);
+        dest.writeString(this.type);
+        dest.writeString(this.title);
+    }
+
+    public Properties() {
+    }
+
+    protected Properties(Parcel in) {
+        this.mag = (Double) in.readValue(Double.class.getClassLoader());
+        this.place = in.readString();
+        this.time = in.readString();
+        this.updated = in.readString();
+        this.tz = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.url = in.readString();
+        this.detail = in.readString();
+        this.felt = in.readParcelable(Object.class.getClassLoader());
+        this.cdi = in.readParcelable(Object.class.getClassLoader());
+        this.mmi = in.readParcelable(Object.class.getClassLoader());
+        this.alert = in.readParcelable(Object.class.getClassLoader());
+        this.status = in.readString();
+        this.tsunami = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.sig = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.net = in.readString();
+        this.code = in.readString();
+        this.ids = in.readString();
+        this.sources = in.readString();
+        this.types = in.readString();
+        this.nst = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.dmin = (Double) in.readValue(Double.class.getClassLoader());
+        this.rms = (Double) in.readValue(Double.class.getClassLoader());
+        this.gap = (Double) in.readValue(Double.class.getClassLoader());
+        this.magType = in.readString();
+        this.type = in.readString();
+        this.title = in.readString();
+    }
+
+    public static final Parcelable.Creator<Properties> CREATOR = new Parcelable.Creator<Properties>() {
+        @Override
+        public Properties createFromParcel(Parcel source) {
+            return new Properties(source);
+        }
+
+        @Override
+        public Properties[] newArray(int size) {
+            return new Properties[size];
+        }
+    };
 }

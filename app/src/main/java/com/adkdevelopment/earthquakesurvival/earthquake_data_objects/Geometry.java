@@ -24,6 +24,9 @@
 
 package com.adkdevelopment.earthquakesurvival.earthquake_data_objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -33,7 +36,7 @@ import java.util.List;
 /**
  * Created by karataev on 3/24/16.
  */
-public class Geometry {
+public class Geometry implements Parcelable {
 
     @SerializedName("type")
     @Expose
@@ -78,4 +81,35 @@ public class Geometry {
         this.coordinates = coordinates;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.type);
+        dest.writeList(this.coordinates);
+    }
+
+    public Geometry() {
+    }
+
+    protected Geometry(Parcel in) {
+        this.type = in.readString();
+        this.coordinates = new ArrayList<Double>();
+        in.readList(this.coordinates, Double.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Geometry> CREATOR = new Parcelable.Creator<Geometry>() {
+        @Override
+        public Geometry createFromParcel(Parcel source) {
+            return new Geometry(source);
+        }
+
+        @Override
+        public Geometry[] newArray(int size) {
+            return new Geometry[size];
+        }
+    };
 }

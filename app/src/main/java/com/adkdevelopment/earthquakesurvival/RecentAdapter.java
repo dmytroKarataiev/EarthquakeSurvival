@@ -31,6 +31,7 @@ package com.adkdevelopment.earthquakesurvival;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,16 +71,16 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
 
             if (BuildConfig.DEBUG) Log.d("ViewHolder", v.getClass().getSimpleName());
 
-            /*Intent intent = new Intent(mContext.getApplicationContext(), DetailActivity.class);
-            intent.putExtra(RSSNewsItem.TASKITEM, mDataset.get(getAdapterPosition()));
+            Intent intent = new Intent(mContext.getApplicationContext(), DetailActivity.class);
+            intent.putExtra(Feature.EARTHQUAKE, mEarthquakeData.getFeatures().get(getAdapterPosition()));
 
             // Shared Transitions for SDK >= 21
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                @SuppressWarnings("unchecked") Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity) mContext).toBundle();
-                mContext.startActivity(intent, bundle);
-            } else {
+            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //    @SuppressWarnings("unchecked") Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity) mContext).toBundle();
+           //     mContext.startActivity(intent, bundle);
+           // } else {
                 mContext.startActivity(intent);
-            }*/
+           // }
         }
     }
 
@@ -94,7 +95,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
     public RecentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_recent_news_item, parent, false);
+                .inflate(R.layout.recent_news_item, parent, false);
 
         return new ViewHolder(v);
     }
