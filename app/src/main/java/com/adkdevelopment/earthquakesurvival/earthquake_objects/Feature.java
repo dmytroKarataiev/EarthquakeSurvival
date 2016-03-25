@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.earthquake_data_objects;
+package com.adkdevelopment.earthquakesurvival.earthquake_objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,20 +30,25 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by karataev on 3/24/16.
  */
-public class Geometry implements Parcelable {
+public class Feature implements Parcelable {
 
     @SerializedName("type")
     @Expose
     private String type;
-    @SerializedName("coordinates")
+    @SerializedName("properties")
     @Expose
-    private List<Double> coordinates = new ArrayList<Double>();
+    private Properties properties;
+    @SerializedName("geometry")
+    @Expose
+    private Geometry geometry;
+    @SerializedName("id")
+    @Expose
+    private String id;
+
+    public static final String EARTHQUAKE = "earthquake";
 
     /**
      *
@@ -66,19 +71,55 @@ public class Geometry implements Parcelable {
     /**
      *
      * @return
-     * The coordinates
+     * The properties
      */
-    public List<Double> getCoordinates() {
-        return coordinates;
+    public Properties getProperties() {
+        return properties;
     }
 
     /**
      *
-     * @param coordinates
-     * The coordinates
+     * @param properties
+     * The properties
      */
-    public void setCoordinates(List<Double> coordinates) {
-        this.coordinates = coordinates;
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
+
+    /**
+     *
+     * @return
+     * The geometry
+     */
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    /**
+     *
+     * @param geometry
+     * The geometry
+     */
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+
+    /**
+     *
+     * @return
+     * The id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @param id
+     * The id
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -89,27 +130,30 @@ public class Geometry implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.type);
-        dest.writeList(this.coordinates);
+        dest.writeParcelable(this.properties, flags);
+        dest.writeParcelable(this.geometry, flags);
+        dest.writeString(this.id);
     }
 
-    public Geometry() {
+    public Feature() {
     }
 
-    protected Geometry(Parcel in) {
+    protected Feature(Parcel in) {
         this.type = in.readString();
-        this.coordinates = new ArrayList<Double>();
-        in.readList(this.coordinates, Double.class.getClassLoader());
+        this.properties = in.readParcelable(Properties.class.getClassLoader());
+        this.geometry = in.readParcelable(Geometry.class.getClassLoader());
+        this.id = in.readString();
     }
 
-    public static final Parcelable.Creator<Geometry> CREATOR = new Parcelable.Creator<Geometry>() {
+    public static final Parcelable.Creator<Feature> CREATOR = new Parcelable.Creator<Feature>() {
         @Override
-        public Geometry createFromParcel(Parcel source) {
-            return new Geometry(source);
+        public Feature createFromParcel(Parcel source) {
+            return new Feature(source);
         }
 
         @Override
-        public Geometry[] newArray(int size) {
-            return new Geometry[size];
+        public Feature[] newArray(int size) {
+            return new Feature[size];
         }
     };
 }

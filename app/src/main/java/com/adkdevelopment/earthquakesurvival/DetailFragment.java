@@ -33,7 +33,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_data_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

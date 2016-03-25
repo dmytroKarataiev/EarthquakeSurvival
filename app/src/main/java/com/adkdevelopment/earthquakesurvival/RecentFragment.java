@@ -33,7 +33,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_data_objects.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,7 +95,24 @@ public class RecentFragment extends Fragment {
 
     private void getData() {
         Log.d(TAG, "getData: start");
-        App.getApiManager().getService().getData().enqueue(mCallback);
+        //App.getApiManager().getService().getData().enqueue(mCallback);
+        App.getApiManager().getService().getNews().enqueue(new Callback<Rss>() {
+            @Override
+            public void onResponse(Call<Rss> call, Response<Rss> response) {
+                if (BuildConfig.DEBUG) {
+                    // TODO: 3/25/16 use news data 
+                    Log.d(TAG, "response.body().getRss().getChannel().getItem().length:" + response.body().getChannel().getItem().size());
+                    Log.d(TAG, response.body().getChannel().getItem().get(2).getTitle());
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Rss> call, Throwable t) {
+                    if (BuildConfig.DEBUG) Log.d(TAG, t.toString());
+            }
+        });
     }
 
     private Callback<EarthquakeObject> mCallback = new Callback<EarthquakeObject>() {

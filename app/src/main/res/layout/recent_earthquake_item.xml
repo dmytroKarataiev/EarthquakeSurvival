@@ -23,16 +23,32 @@
   ~ SOFTWARE.
   -->
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_vertical_margin">
 
     <TextView
-        android:id="@+id/news_item_title"
-        android:layout_width="match_parent"
+        android:id="@+id/earthquake_item_magnitude"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/earthquake_item_place"
+        android:layout_below="@id/earthquake_item_magnitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/earthquake_item_date"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"/>
+
+
+</RelativeLayout>

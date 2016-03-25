@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.earthquake_data_objects;
+package com.adkdevelopment.earthquakesurvival.earthquake_objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -43,7 +43,7 @@ public class Properties implements Parcelable {
     private String place;
     @SerializedName("time")
     @Expose
-    private String time;
+    private Long time;
     @SerializedName("updated")
     @Expose
     private String updated;
@@ -155,7 +155,7 @@ public class Properties implements Parcelable {
      * @return
      * The time
      */
-    public String getTime() {
+    public Long getTime() {
         return time;
     }
 
@@ -164,7 +164,7 @@ public class Properties implements Parcelable {
      * @param time
      * The time
      */
-    public void setTime(String time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
@@ -591,7 +591,7 @@ public class Properties implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(this.mag);
         dest.writeString(this.place);
-        dest.writeString(this.time);
+        dest.writeLong(this.time);
         dest.writeString(this.updated);
         dest.writeValue(this.tz);
         dest.writeString(this.url);
@@ -623,15 +623,15 @@ public class Properties implements Parcelable {
     protected Properties(Parcel in) {
         this.mag = (Double) in.readValue(Double.class.getClassLoader());
         this.place = in.readString();
-        this.time = in.readString();
+        this.time = in.readLong();
         this.updated = in.readString();
         this.tz = (Integer) in.readValue(Integer.class.getClassLoader());
         this.url = in.readString();
         this.detail = in.readString();
-        this.felt = in.readParcelable(Object.class.getClassLoader());
-        this.cdi = in.readParcelable(Object.class.getClassLoader());
-        this.mmi = in.readParcelable(Object.class.getClassLoader());
-        this.alert = in.readParcelable(Object.class.getClassLoader());
+        this.felt = in.readString();
+        this.cdi = in.readString();
+        this.mmi = in.readString();
+        this.alert = in.readString();
         this.status = in.readString();
         this.tsunami = (Integer) in.readValue(Integer.class.getClassLoader());
         this.sig = (Integer) in.readValue(Integer.class.getClassLoader());

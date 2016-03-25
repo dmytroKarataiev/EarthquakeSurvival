@@ -22,28 +22,52 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.remote;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+package com.adkdevelopment.earthquakesurvival.news_objects;
 
 /**
- * REST Manager using Singleton Pattern
+ * Created by karataev on 3/25/16.
  */
-public class ApiManager {
+public class Image
+{
+    private String title;
 
-    private final String BASE_URL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
+    private String link;
 
-    private final Retrofit REST_ADAPTER = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            //.addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build();
+    private String url;
 
-    private final EarthquakeService EARTHQUAKE_SERVICE = REST_ADAPTER.create(EarthquakeService.class);
-
-    public EarthquakeService getService() {
-        return EARTHQUAKE_SERVICE;
+    public String getTitle ()
+    {
+        return title;
     }
 
+    public void setTitle (String title)
+    {
+        this.title = title;
+    }
+
+    public String getLink ()
+    {
+        return link;
+    }
+
+    public void setLink (String link)
+    {
+        this.link = link;
+    }
+
+    public String getUrl ()
+    {
+        return url;
+    }
+
+    public void setUrl (String url)
+    {
+        this.url = url;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ClassPojo [title = "+title+", link = "+link+", url = "+url+"]";
+    }
 }

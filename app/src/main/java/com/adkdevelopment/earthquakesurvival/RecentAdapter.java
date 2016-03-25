@@ -33,14 +33,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_data_objects.EarthquakeObject;
-import com.adkdevelopment.earthquakesurvival.earthquake_data_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +60,10 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
-        @Bind(R.id.news_item_title) TextView mTextView;
+        @Bind(R.id.earthquake_item_place) TextView mEarthquakePlace;
+        @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
+        @Bind(R.id.earthquake_item_date) TextView mEarthquakeDate;
+
 
         public ViewHolder(View v) {
             super(v);
@@ -73,7 +79,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
 
             Intent intent = new Intent(mContext.getApplicationContext(), DetailActivity.class);
             intent.putExtra(Feature.EARTHQUAKE, mEarthquakeData.getFeatures().get(getAdapterPosition()));
-
+            // TODO: 3/25/16 add shared transitions 
             // Shared Transitions for SDK >= 21
             //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //    @SuppressWarnings("unchecked") Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity) mContext).toBundle();
@@ -95,7 +101,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
     public RecentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recent_news_item, parent, false);
+                .inflate(R.layout.recent_earthquake_item, parent, false);
 
         return new ViewHolder(v);
     }
@@ -107,7 +113,19 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder
         // - replace the contents of the view with that element
         Feature earthquakeObject = mEarthquakeData.getFeatures().get(position);
         String listItemTitle = earthquakeObject.getProperties().getTitle();
-        holder.mTextView.setText(listItemTitle);
+        holder.mEarthquakePlace.setText(listItemTitle);
+
+        Date date = new Date(earthquakeObject.getProperties().getTime());
+        holder.mEarthquakeDate.setText(DateUtils.getRelativeTimeSpanString(date.getTime()).toString());
+
+        Double magnitude = earthquakeObject.getProperties().getMag();
+        String magText = "M?";
+        if (magnitude != null) {
+            magText = Double.toString(magnitude);
+        }
+        holder.mEarthquakeMagnitude.setText(magText);
+
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

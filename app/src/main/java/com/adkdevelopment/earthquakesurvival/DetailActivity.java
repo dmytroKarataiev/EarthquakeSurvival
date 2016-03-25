@@ -41,9 +41,10 @@ public class DetailActivity extends AppCompatActivity {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+                .setAction("Action", null).show());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // TODO: 3/25/16 FIX back image click 
     }
 
 }

@@ -24,7 +24,8 @@
 
 package com.adkdevelopment.earthquakesurvival.remote;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_data_objects.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -33,7 +34,13 @@ import retrofit2.http.GET;
  * Public interface with a link to the Endpoint
  */
 public interface EarthquakeService {
-    @GET("all_hour.geojson")
+
+    String sEarthquakeLink = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
+
+    @GET(sEarthquakeLink + "all_day.geojson")
     Call<EarthquakeObject> getData();
+
+    @GET("https://news.google.com/news?q=earthquake&output=rss")
+    Call<Rss> getNews();
 
 }

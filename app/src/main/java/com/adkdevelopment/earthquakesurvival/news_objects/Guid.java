@@ -22,28 +22,43 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.remote;
+package com.adkdevelopment.earthquakesurvival.news_objects;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import org.simpleframework.xml.Attribute;
 
 /**
- * REST Manager using Singleton Pattern
+ * Created by karataev on 3/25/16.
  */
-public class ApiManager {
+public class Guid
+{
+    private String content;
 
-    private final String BASE_URL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
+    @Attribute
+    private String isPermaLink;
 
-    private final Retrofit REST_ADAPTER = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            //.addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build();
-
-    private final EarthquakeService EARTHQUAKE_SERVICE = REST_ADAPTER.create(EarthquakeService.class);
-
-    public EarthquakeService getService() {
-        return EARTHQUAKE_SERVICE;
+    public String getContent ()
+    {
+        return content;
     }
 
+    public void setContent (String content)
+    {
+        this.content = content;
+    }
+
+    public String getIsPermaLink ()
+    {
+        return isPermaLink;
+    }
+
+    public void setIsPermaLink (String isPermaLink)
+    {
+        this.isPermaLink = isPermaLink;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ClassPojo [content = "+content+", isPermaLink = "+isPermaLink+"]";
+    }
 }
