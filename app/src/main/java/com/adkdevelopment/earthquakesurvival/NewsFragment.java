@@ -33,7 +33,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.news_objects.Channel;
+import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,27 +45,27 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecentFragment extends Fragment {
+public class NewsFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private EarthquakeObject mEarthquake;
-    private RecentAdapter mRecentAdapter;
-    private static final String TAG = RecentFragment.class.getSimpleName();
+    private Channel mNews;
+    private NewsAdapter mRecentAdapter;
+    private static final String TAG = NewsFragment.class.getSimpleName();
 
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
 
-    public RecentFragment() {
+    public NewsFragment() {
     }
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static RecentFragment newInstance(int sectionNumber) {
-        RecentFragment fragment = new RecentFragment();
+    public static NewsFragment newInstance(int sectionNumber) {
+        NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -74,37 +75,40 @@ public class RecentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recent_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.news_fragment, container, false);
 
         ButterKnife.bind(this, rootView);
 
         getData();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        mRecentAdapter = new RecentAdapter(mEarthquake, getActivity());
+        mRecentAdapter = new NewsAdapter(mNews, getActivity());
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecentAdapter);
 
+        if (BuildConfig.DEBUG) Log.d("RecentFragment", ARG_SECTION_NUMBER);
+
         return rootView;
     }
 
     private void getData() {
-        App.getApiManager().getEarthquakeService().getData().enqueue(mCallback);
+        Log.d(TAG, "getData: start");
+        App.getNewsManager().getNewsService().getNews().enqueue(mCallback);
     }
 
-    private Callback<EarthquakeObject> mCallback = new Callback<EarthquakeObject>() {
+    private Callback<Rss> mCallback = new Callback<Rss>() {
         @Override
-        public void onResponse(Call<EarthquakeObject> call, Response<EarthquakeObject> response) {
-            mEarthquake = response.body();
-            mRecentAdapter = new RecentAdapter(mEarthquake, getActivity());
+        public void onResponse(Call<Rss> call, Response<Rss> response) {
+            mNews = response.body().getChannel();
+            mRecentAdapter = new NewsAdapter(mNews, getActivity());
             mRecyclerView.swapAdapter(mRecentAdapter, false);
-            Log.d(TAG, "onResponse: success " + mEarthquake.getFeatures().size());
+            Log.d(TAG, "onResponse: success " + mNews.getItem().size());
         }
 
         @Override
-        public void onFailure(Call<EarthquakeObject> call, Throwable t) {
+        public void onFailure(Call<Rss> call, Throwable t) {
             Log.d(TAG, "onFailure: " + t.toString());
         }
     };

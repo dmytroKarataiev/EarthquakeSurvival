@@ -32,9 +32,9 @@ import android.support.v4.app.FragmentPagerAdapter;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class PagerAdapter extends FragmentPagerAdapter {
 
-    public SectionsPagerAdapter(FragmentManager fm) {
+    public PagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -42,10 +42,17 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        if (position < 3) {
-            return PlaceholderFragment.newInstance(position + 1);
-        } else {
-            return RecentFragment.newInstance(position + 1);
+        switch (position) {
+            case 0:
+                return RecentFragment.newInstance(position + 1);
+            case 1:
+                return PlaceholderFragment.newInstance(position + 1);
+            case 2:
+                return NewsFragment.newInstance(position + 1);
+            case 3:
+                return PlaceholderFragment.newInstance(position + 1);
+            default:
+                return PlaceholderFragment.newInstance(position + 1);
         }
     }
 
@@ -57,16 +64,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return "SECTION 1";
-            case 1:
-                return "SECTION 2";
-            case 2:
-                return "SECTION 3";
-            case 3:
-                return "SECTION 3";
-        }
-        return null;
+        return "SECTION " + (position + 1);
     }
 }

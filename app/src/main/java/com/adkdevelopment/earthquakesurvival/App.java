@@ -33,13 +33,22 @@ import com.adkdevelopment.earthquakesurvival.remote.ApiManager;
  */
 public class App extends Application {
 
-    private static ApiManager sApiManager;
+    private static ApiManager sApiManager, sNewsManager;
 
+    // Singleton Retrofit for Earthquakes
     public static ApiManager getApiManager() {
         if (sApiManager == null) {
             sApiManager = new ApiManager();
         }
         return sApiManager;
+    }
+
+    // Singleton Retrofit for News
+    public static ApiManager getNewsManager() {
+        if (sNewsManager == null) {
+            sNewsManager = new ApiManager();
+        }
+        return sNewsManager;
     }
 
 }

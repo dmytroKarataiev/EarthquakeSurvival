@@ -25,6 +25,7 @@
 package com.adkdevelopment.earthquakesurvival.remote;
 
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
@@ -34,16 +35,30 @@ public class ApiManager {
 
     private final String BASE_URL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
 
-    private final Retrofit REST_ADAPTER = new Retrofit.Builder()
+    private final Retrofit EARTHQUAKE_ADAPTER = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            //.addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+    private final EarthquakeService EARTHQUAKE_SERVICE = EARTHQUAKE_ADAPTER.create(EarthquakeService.class);
+
+    public EarthquakeService getEarthquakeService() {
+        return EARTHQUAKE_SERVICE;
+    }
+
+    // TODO: 3/27/16 FIX LINK BASE URL
+    private final String NEWS_BASE_URL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
+
+    private final Retrofit NEWS_ADAPTER = new Retrofit.Builder()
+            .baseUrl(NEWS_BASE_URL)
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
 
-    private final EarthquakeService EARTHQUAKE_SERVICE = REST_ADAPTER.create(EarthquakeService.class);
+    // TODO: 3/27/16 POSSIBLY ADD NEW SERVICE
+    private final EarthquakeService NEWS_SERVICE = NEWS_ADAPTER.create(EarthquakeService.class);
 
-    public EarthquakeService getService() {
-        return EARTHQUAKE_SERVICE;
+    public EarthquakeService getNewsService() {
+        return NEWS_SERVICE;
     }
 
 }
