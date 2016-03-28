@@ -24,6 +24,9 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +37,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.adkdevelopment.earthquakesurvival.news_objects.Channel;
+import com.adkdevelopment.earthquakesurvival.news_objects.Item;
 import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
+import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,14 +89,14 @@ public class NewsFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        getData();
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecentAdapter = new NewsAdapter(mNews, getActivity());
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecentAdapter);
+
+        getData();
 
         if (BuildConfig.DEBUG) Log.d("RecentFragment", ARG_SECTION_NUMBER);
 
@@ -101,10 +111,56 @@ public class NewsFragment extends Fragment {
     private Callback<Rss> mCallback = new Callback<Rss>() {
         @Override
         public void onResponse(Call<Rss> call, Response<Rss> response) {
-            mNews = response.body().getChannel();
-            mRecentAdapter = new NewsAdapter(mNews, getActivity());
-            mRecyclerView.swapAdapter(mRecentAdapter, false);
-            Log.d(TAG, "onResponse: success " + mNews.getItem().size());
+            if (mRecyclerView != null) {
+                mNews = response.body().getChannel();
+                mRecentAdapter = new NewsAdapter(mNews, getActivity());
+                mRecyclerView.swapAdapter(mRecentAdapter, false);
+                Log.d(TAG, "onResponse: success " + mNews.getItem().size());
+
+                Vector<ContentValues> cVVector = new Vector<>(mNews.getItem().size());
+
+                for (Item each : mNews.getItem()) {
+
+                    ContentValues weatherValues = new ContentValues();
+
+                    weatherValues.put(NewsColumns.DATE, each.getPubDate());
+                    weatherValues.put(NewsColumns.TITLE, each.getTitle());
+                    weatherValues.put(NewsColumns.DESCRIPTION, each.getDescription());
+                    weatherValues.put(NewsColumns.URL, each.getLink());
+                    weatherValues.put(NewsColumns.GUID, each.getGuid().getContent());
+
+                    cVVector.add(weatherValues);
+
+                }
+
+                int inserted = 0;
+                // add to database
+                ContentResolver resolver = getContext().getContentResolver();
+
+                if ( cVVector.size() > 0 ) {
+
+                    // Student: call bulkInsert to add the weatherEntries to the database here
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+
+                    inserted = resolver.bulkInsert(NewsColumns.CONTENT_URI, cvArray);
+                }
+
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(new Date());
+                // delete old data
+                //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
+
+                Log.d(TAG, "Service Complete. " + inserted + " Inserted");
+                Cursor cursor = getContext().getContentResolver().query(NewsColumns.CONTENT_URI, new String[] {NewsColumns.GUID}, null, null, null);
+                if (BuildConfig.DEBUG && cursor != null) {
+                    Log.d(TAG, "cursor.getCount():" + cursor.getCount());
+                    cursor.close();
+
+                }
+
+
+            }
         }
 
         @Override

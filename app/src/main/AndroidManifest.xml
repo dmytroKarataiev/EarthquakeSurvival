@@ -32,6 +32,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="com.adkdevelopment.earthquakesurvival.provider.EarthquakeProvider"
+            android:authorities="com.adkdevelopment.earthquakesurvival.provider"
+            android:exported="false" />
+
         <activity
             android:name=".PagerActivity"
             android:label="@string/app_name"

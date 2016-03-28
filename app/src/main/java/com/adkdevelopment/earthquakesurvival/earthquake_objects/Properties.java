@@ -299,7 +299,7 @@ public class Properties implements Parcelable {
      * @return
      * The alert
      */
-    public Object getAlert() {
+    public String getAlert() {
         return alert;
     }
 

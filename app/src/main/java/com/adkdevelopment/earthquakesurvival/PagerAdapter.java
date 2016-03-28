@@ -64,6 +64,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "SECTION " + (position + 1);
+        return "" + (position + 1);
     }
 }
