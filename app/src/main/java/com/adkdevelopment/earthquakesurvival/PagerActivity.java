@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class PagerActivity extends AppCompatActivity {
 
@@ -49,6 +53,9 @@ public class PagerActivity extends AppCompatActivity {
      */
     private PagerAdapter mPagerAdapter;
 
+    @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.sliding_tabs) TabLayout mTab;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -58,6 +65,8 @@ public class PagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_activity);
+
+        ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,9 +78,11 @@ public class PagerActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show());
+        mTab.setupWithViewPager(mViewPager);
+        setTabImages();
+
+        mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
     }
 
@@ -97,6 +108,15 @@ public class PagerActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setTabImages() {
+        if (mTab != null) {
+            mTab.getTabAt(0).setIcon(R.drawable.error);
+            mTab.getTabAt(1).setIcon(R.drawable.map);
+            mTab.getTabAt(2).setIcon(R.drawable.newspaper);
+            mTab.getTabAt(3).setIcon(R.drawable.lightbulb);
+        }
     }
 
 }
