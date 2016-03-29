@@ -94,7 +94,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolde
 
         holder.mDate.setText(date);
 
-        if  (description != null) {
+        if (description != null) {
             holder.mDescription.setText(Html.fromHtml(description));
         }
         holder.mTitle.setText(title);

@@ -32,16 +32,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -72,6 +75,8 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String TAG = RecentFragment.class.getSimpleName();
 
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
+    @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.list_empty_text) TextView mListEmpty;
 
     public RecentFragment() {
     }
@@ -101,12 +106,32 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
 
         ButterKnife.bind(this, rootView);
 
+        mListEmpty.setVisibility(View.INVISIBLE);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecentAdapter);
+
+        // Prevent Swipe to refresh if recyclerview isn't in top position // TODO: 3/28/16 find lambda solution 
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int visible = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
+
+                if (visible != 0) { mSwipeRefreshLayout.setEnabled(false); }
+                else { mSwipeRefreshLayout.setEnabled(true); }
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            if (Utilities.isOnline(getContext())) { getData(); }
+            else { mSwipeRefreshLayout.setRefreshing(false); }
+        });
 
         getData();
 
@@ -124,6 +149,8 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
             mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
 
             mRecyclerView.swapAdapter(mRecentAdapter, false);
+            mSwipeRefreshLayout.setRefreshing(false);
+
             Log.d(TAG, "onResponse: success " + mEarthquake.getFeatures().size());
 
             Vector<ContentValues> cVVector = new Vector<>(mEarthquake.getFeatures().size());
@@ -201,6 +228,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     // Set the cursor in our CursorAdapter once the Cursor is loaded
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mListEmpty.setVisibility(View.INVISIBLE);
         mCursor = data;
         mRecentAdapter.swapCursor(mCursor);
     }
@@ -208,6 +236,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     // reset CursorAdapter on Loader Reset
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
+        mListEmpty.setVisibility(View.VISIBLE);
         mCursor = null;
         mRecentAdapter.swapCursor(null);
     }

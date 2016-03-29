@@ -32,17 +32,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.news_objects.Channel;
 import com.adkdevelopment.earthquakesurvival.news_objects.Item;
 import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -73,6 +76,8 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     private static final String TAG = NewsFragment.class.getSimpleName();
 
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
+    @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.list_empty_text) TextView mListEmpty;
 
     public NewsFragment() {
     }
@@ -102,12 +107,35 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
         ButterKnife.bind(this, rootView);
 
+        mListEmpty.setVisibility(View.INVISIBLE);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mNewsAdapter = new NewsAdapter(getActivity(), mCursor);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mNewsAdapter);
+
+        // Prevent Swipe to refresh if recyclerview isn't in top position
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int visible = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
+
+                if (visible != 0) {
+                    mSwipeRefreshLayout.setEnabled(false);
+                } else {
+                    mSwipeRefreshLayout.setEnabled(true);
+                }
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            if (Utilities.isOnline(getContext())) { getData(); }
+            else { mSwipeRefreshLayout.setRefreshing(false); }
+        });
 
         getData();
 
@@ -125,6 +153,9 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 mNews = response.body().getChannel();
                 mNewsAdapter = new NewsAdapter(getActivity(), mCursor);
                 mRecyclerView.swapAdapter(mNewsAdapter, false);
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
                 Log.d(TAG, "onResponse: success " + mNews.getItem().size());
 
                 Vector<ContentValues> cVVector = new Vector<>(mNews.getItem().size());
@@ -201,6 +232,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     // Set the cursor in our CursorAdapter once the Cursor is loaded
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mListEmpty.setVisibility(View.INVISIBLE);
         mCursor = data;
         mNewsAdapter.swapCursor(mCursor);
     }
@@ -208,6 +240,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     // reset CursorAdapter on Loader Reset
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
+        mListEmpty.setVisibility(View.VISIBLE);
         mCursor = null;
         mNewsAdapter.swapCursor(null);
     }
