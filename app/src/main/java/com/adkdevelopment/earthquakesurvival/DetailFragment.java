@@ -61,9 +61,9 @@ public class DetailFragment extends Fragment {
 
         if (getActivity().getIntent() != null) {
             Intent input = getActivity().getIntent();
-            Feature earthquake = input.getParcelableExtra(Feature.EARTHQUAKE);
+            //Feature earthquake = input.getParcelableExtra(Feature.EARTHQUAKE);
 
-            mEarthquakeTitle.setText(earthquake.getProperties().getTitle());
+            mEarthquakeTitle.setText(input.getStringExtra(Feature.EARTHQUAKE));
         }
 
         return rootView;

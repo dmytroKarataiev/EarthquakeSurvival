@@ -29,19 +29,20 @@ package com.adkdevelopment.earthquakesurvival;
  * Created by karataev on 3/15/16.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
+import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
 
 import java.util.Date;
 
@@ -52,88 +53,74 @@ import butterknife.ButterKnife;
  * Creates RecyclerView adapter which populates task items in MainFragment
  * Each element has an onClickListener
  */
-public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.ViewHolder> {
+public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewHolder> {
 
-    private final EarthquakeObject mEarthquakeData;
     private final Context mContext;
 
     // Provide a reference to the views for each data item
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.earthquake_item_place) TextView mEarthquakePlace;
         @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
         @Bind(R.id.earthquake_item_date) TextView mEarthquakeDate;
+        @Bind(R.id.earthquake_item_click) ImageView mEarthquakeClick;
 
 
         public ViewHolder(View v) {
             super(v);
-            v.setOnClickListener(this);
-
             ButterKnife.bind(this, v);
         }
+    }
 
-        @Override
-        public void onClick(View v) {
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
 
-            if (BuildConfig.DEBUG) Log.d("ViewHolder", v.getClass().getSimpleName());
+        String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
+        Long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
+        Date date = new Date(dateMillis);
 
-            Intent intent = new Intent(mContext.getApplicationContext(), DetailActivity.class);
-            intent.putExtra(Feature.EARTHQUAKE, mEarthquakeData.getFeatures().get(getAdapterPosition()));
-            // TODO: 3/25/16 add shared transitions 
+        Double magnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
+
+        viewHolder.mEarthquakePlace.setText(place);
+        viewHolder.mEarthquakeDate.setText(DateUtils.getRelativeTimeSpanString(date.getTime()).toString());
+        viewHolder.mEarthquakeMagnitude.setText(Double.toString(magnitude));
+
+        viewHolder.mEarthquakeClick.setOnClickListener(click -> {
+            Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra(Feature.EARTHQUAKE, place);
+            mContext.startActivity(intent);
+
+            // TODO: 3/25/16 add shared transitions
             // Shared Transitions for SDK >= 21
             //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //    @SuppressWarnings("unchecked") Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity) mContext).toBundle();
-           //     mContext.startActivity(intent, bundle);
-           // } else {
-                mContext.startActivity(intent);
-           // }
-        }
+            //     mContext.startActivity(intent, bundle);
+            // } else {
+            //mContext.startActivity(intent);
+            // }
+        });
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public RecentAdapter(EarthquakeObject item, Activity activity) {
-        mContext = activity;
-        mEarthquakeData = item;
-    }
-
-    // Create new views (invoked by the layout manager)
     @Override
-    public RecentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recent_earthquake_item, parent, false);
 
         return new ViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        Feature earthquakeObject = mEarthquakeData.getFeatures().get(position);
-        String listItemTitle = earthquakeObject.getProperties().getTitle();
-        holder.mEarthquakePlace.setText(listItemTitle);
-
-        Date date = new Date(earthquakeObject.getProperties().getTime());
-        holder.mEarthquakeDate.setText(DateUtils.getRelativeTimeSpanString(date.getTime()).toString());
-
-        Double magnitude = earthquakeObject.getProperties().getMag();
-        String magText = "M?";
-        if (magnitude != null) {
-            magText = Double.toString(magnitude);
-        }
-        holder.mEarthquakeMagnitude.setText(magText);
-
-
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public RecentAdapter(Context context, Cursor c) {
+        super(context, c);
+        mContext = context;
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
 
-        if (mEarthquakeData != null) {
-            return mEarthquakeData.getFeatures().size();
+        if (getCursor() != null) {
+            return getCursor().getCount();
         } else {
             return 0;
         }

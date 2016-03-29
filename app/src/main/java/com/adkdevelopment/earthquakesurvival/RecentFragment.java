@@ -29,6 +29,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -54,12 +57,16 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecentFragment extends Fragment {
+public class RecentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+
+    private static final int CURSOR_LOADER_ID = 0;
+    private Cursor mCursor;
+
     private EarthquakeObject mEarthquake;
     private RecentAdapter mRecentAdapter;
     private static final String TAG = RecentFragment.class.getSimpleName();
@@ -82,20 +89,26 @@ public class RecentFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recent_fragment, container, false);
 
         ButterKnife.bind(this, rootView);
 
-        getData();
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        mRecentAdapter = new RecentAdapter(mEarthquake, getActivity());
+        mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecentAdapter);
+
+        getData();
 
         return rootView;
     }
@@ -108,7 +121,8 @@ public class RecentFragment extends Fragment {
         @Override
         public void onResponse(Call<EarthquakeObject> call, Response<EarthquakeObject> response) {
             mEarthquake = response.body();
-            mRecentAdapter = new RecentAdapter(mEarthquake, getActivity());
+            mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
+
             mRecyclerView.swapAdapter(mRecentAdapter, false);
             Log.d(TAG, "onResponse: success " + mEarthquake.getFeatures().size());
 
@@ -157,9 +171,7 @@ public class RecentFragment extends Fragment {
             if (BuildConfig.DEBUG && cursor != null) {
                 Log.d(TAG, "cursor.getCount():" + cursor.getCount());
                 cursor.close();
-
             }
-
         }
 
         @Override
@@ -172,5 +184,31 @@ public class RecentFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    // Attach loader to our flavors database query
+    // run when loader is initialized
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args){
+        return new CursorLoader(getActivity(),
+                EarthquakeColumns.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    // Set the cursor in our CursorAdapter once the Cursor is loaded
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursor = data;
+        mRecentAdapter.swapCursor(mCursor);
+    }
+
+    // reset CursorAdapter on Loader Reset
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader){
+        mCursor = null;
+        mRecentAdapter.swapCursor(null);
     }
 }

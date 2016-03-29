@@ -29,6 +29,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -55,14 +58,18 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+
+    private static final int CURSOR_LOADER_ID = 10;
+    private Cursor mCursor;
+
     private Channel mNews;
-    private NewsAdapter mRecentAdapter;
+    private NewsAdapter mNewsAdapter;
     private static final String TAG = NewsFragment.class.getSimpleName();
 
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
@@ -83,6 +90,12 @@ public class NewsFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.news_fragment, container, false);
@@ -90,21 +103,18 @@ public class NewsFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        mRecentAdapter = new NewsAdapter(mNews, getActivity());
+        mNewsAdapter = new NewsAdapter(getActivity(), mCursor);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mRecentAdapter);
+        mRecyclerView.setAdapter(mNewsAdapter);
 
         getData();
-
-        if (BuildConfig.DEBUG) Log.d("RecentFragment", ARG_SECTION_NUMBER);
 
         return rootView;
     }
 
     private void getData() {
-        Log.d(TAG, "getData: start");
         App.getNewsManager().getNewsService().getNews().enqueue(mCallback);
     }
 
@@ -113,8 +123,8 @@ public class NewsFragment extends Fragment {
         public void onResponse(Call<Rss> call, Response<Rss> response) {
             if (mRecyclerView != null) {
                 mNews = response.body().getChannel();
-                mRecentAdapter = new NewsAdapter(mNews, getActivity());
-                mRecyclerView.swapAdapter(mRecentAdapter, false);
+                mNewsAdapter = new NewsAdapter(getActivity(), mCursor);
+                mRecyclerView.swapAdapter(mNewsAdapter, false);
                 Log.d(TAG, "onResponse: success " + mNews.getItem().size());
 
                 Vector<ContentValues> cVVector = new Vector<>(mNews.getItem().size());
@@ -173,5 +183,32 @@ public class NewsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+
+    // Attach loader to our flavors database query
+    // run when loader is initialized
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args){
+        return new CursorLoader(getActivity(),
+                NewsColumns.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    // Set the cursor in our CursorAdapter once the Cursor is loaded
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursor = data;
+        mNewsAdapter.swapCursor(mCursor);
+    }
+
+    // reset CursorAdapter on Loader Reset
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader){
+        mCursor = null;
+        mNewsAdapter.swapCursor(null);
     }
 }

@@ -29,8 +29,8 @@ package com.adkdevelopment.earthquakesurvival;
  * Created by karataev on 3/15/16.
  */
 
-import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -40,8 +40,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adkdevelopment.earthquakesurvival.news_objects.Channel;
-import com.adkdevelopment.earthquakesurvival.news_objects.Item;
+import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
+import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,13 +50,12 @@ import butterknife.ButterKnife;
  * Creates RecyclerView adapter which populates task items in MainFragment
  * Each element has an onClickListener
  */
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
+public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolder> {
 
-    private final Channel mNewsData;
     private final Context mContext;
 
     // Provide a reference to the views for each data item
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.news_item_title) TextView mTitle;
         @Bind(R.id.news_item_date) TextView mDate;
@@ -65,39 +64,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         public ViewHolder(View v) {
             super(v);
-            v.setOnClickListener(this);
-
             ButterKnife.bind(this, v);
-        }
-
-        @Override
-        public void onClick(View v) {
-
-            if (BuildConfig.DEBUG) Log.d("ViewHolder", v.getClass().getSimpleName());
-
-            Toast.makeText(mContext, v.getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
-            //Intent intent = new Intent(mContext.getApplicationContext(), DetailActivity.class);
-            //intent.putExtra(Feature.EARTHQUAKE, mEarthquakeData.getFeatures().get(getAdapterPosition()));
-            // TODO: 3/25/16 add shared transitions
-            // Shared Transitions for SDK >= 21
-            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //    @SuppressWarnings("unchecked") Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity) mContext).toBundle();
-           //     mContext.startActivity(intent, bundle);
-           // } else {
-           //     mContext.startActivity(intent);
-           // }
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NewsAdapter(Channel item, Activity activity) {
-        mContext = activity;
-        mNewsData = item;
+    public NewsAdapter(Context context, Cursor cursor) {
+        super(context, cursor);
+        mContext = context;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public NewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.news_item, parent, false);
@@ -107,13 +86,23 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        Item news = mNewsData.getItem().get(position);
+    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
 
-        holder.mDate.setText(news.getPubDate());
-        holder.mDescription.setText(Html.fromHtml(news.getDescription()));
-        holder.mTitle.setText(news.getTitle());
+        String date = cursor.getString(cursor.getColumnIndex(NewsColumns.DATE));
+        String description = cursor.getString(cursor.getColumnIndex(NewsColumns.DESCRIPTION));
+        String title = cursor.getString(cursor.getColumnIndex(NewsColumns.TITLE));
 
+        holder.mDate.setText(date);
+
+        if  (description != null) {
+            holder.mDescription.setText(Html.fromHtml(description));
+        }
+        holder.mTitle.setText(title);
+
+        holder.mTitle.setOnClickListener(click -> {
+            if (BuildConfig.DEBUG) Log.d("ViewHolder", title);
+            Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show();
+        });
 
     }
 
@@ -121,8 +110,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
 
-        if (mNewsData != null) {
-            return mNewsData.getItem().size();
+        if (getCursor() != null) {
+            return getCursor().getCount();
         } else {
             return 0;
         }

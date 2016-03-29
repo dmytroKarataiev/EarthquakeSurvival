@@ -32,4 +32,9 @@
     <!-- Pager Strip -->
     <dimen name="pager_strip_padding">4dp</dimen>
 
+    <!-- Earthquake Item Dimens -->
+    <dimen name="earthquake_item_padding">16dp</dimen>
+    <dimen name="earthquake_item_height">60dp</dimen>
+
+
 </resources>
