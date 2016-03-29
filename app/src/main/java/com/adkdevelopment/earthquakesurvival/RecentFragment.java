@@ -228,16 +228,22 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     // Set the cursor in our CursorAdapter once the Cursor is loaded
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mListEmpty.setVisibility(View.INVISIBLE);
+        if (mCursor == null || mCursor.getCount() < 1) {
+            mListEmpty.setVisibility(View.VISIBLE);
+        } else {
+            mListEmpty.setVisibility(View.INVISIBLE);
+        }
+
         mCursor = data;
         mRecentAdapter.swapCursor(mCursor);
     }
 
     // reset CursorAdapter on Loader Reset
     @Override
-    public void onLoaderReset(Loader<Cursor> loader){
-        mListEmpty.setVisibility(View.VISIBLE);
+    public void onLoaderReset(Loader<Cursor> loader) {
         mCursor = null;
         mRecentAdapter.swapCursor(null);
     }
+
+
 }
