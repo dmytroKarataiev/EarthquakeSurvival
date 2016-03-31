@@ -89,4 +89,11 @@
 
     <string name="list_empty">Oops! Something is wrong. Please check your internet connection and try again.</string>
 
+
+    <!-- Fragments titles -->
+    <string name="title.news">News</string>
+    <string name="title.maps">Maps</string>
+    <string name="title.recent">Recent</string>
+    <string name="title.info">Info</string>
+
 </resources>

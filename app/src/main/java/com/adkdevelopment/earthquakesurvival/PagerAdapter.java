@@ -24,6 +24,7 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -34,8 +35,11 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    public PagerAdapter(FragmentManager fm) {
+    private Context mContext;
+
+    public PagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        mContext = context;
     }
 
     @Override
@@ -64,6 +68,19 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "" + (position + 1);
+
+        switch (position) {
+            case 0:
+                return mContext.getString(R.string.title_recent);
+            case 1:
+                return mContext.getString(R.string.title_maps);
+            case 2:
+                return mContext.getString(R.string.title_news);
+            case 3:
+                return mContext.getString(R.string.title_info);
+            default:
+                return "";
+        }
     }
+
 }

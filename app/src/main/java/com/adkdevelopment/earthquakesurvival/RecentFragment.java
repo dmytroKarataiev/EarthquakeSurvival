@@ -28,6 +28,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -77,6 +79,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.list_empty_text) TextView mListEmpty;
+    @Bind(R.id.fab) FloatingActionButton mFab;
 
     public RecentFragment() {
     }
@@ -134,6 +137,9 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         });
 
         getData();
+
+        mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                   .setAction("Action", null).show());
 
         return rootView;
     }
@@ -222,7 +228,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                 null,
                 null,
                 null,
-                null);
+                EarthquakeColumns.TIME + " DESC LIMIT 15");
     }
 
     // Set the cursor in our CursorAdapter once the Cursor is loaded

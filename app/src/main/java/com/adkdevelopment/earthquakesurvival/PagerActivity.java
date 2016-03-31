@@ -24,10 +24,9 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -35,6 +34,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 
@@ -53,7 +54,6 @@ public class PagerActivity extends AppCompatActivity {
      */
     private PagerAdapter mPagerAdapter;
 
-    @Bind(R.id.fab) FloatingActionButton mFab;
     @Bind(R.id.sliding_tabs) TabLayout mTab;
 
     /**
@@ -72,7 +72,7 @@ public class PagerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), getApplicationContext());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -80,9 +80,6 @@ public class PagerActivity extends AppCompatActivity {
 
         mTab.setupWithViewPager(mViewPager);
         setTabImages();
-
-        mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
 
     }
 
@@ -112,10 +109,62 @@ public class PagerActivity extends AppCompatActivity {
 
     private void setTabImages() {
         if (mTab != null) {
-            mTab.getTabAt(0).setIcon(R.drawable.error);
-            mTab.getTabAt(1).setIcon(R.drawable.map);
-            mTab.getTabAt(2).setIcon(R.drawable.newspaper);
-            mTab.getTabAt(3).setIcon(R.drawable.lightbulb);
+
+            Context context = getApplicationContext();
+
+            int[] iconSet = {
+                    R.drawable.error_grey,
+                    R.drawable.map_grey,
+                    R.drawable.newspaper_grey,
+                    R.drawable.lightbulb_grey,
+                    R.drawable.error_blue,
+                    R.drawable.map_blue,
+                    R.drawable.newspaper_blue,
+                    R.drawable.lightbulb_blue
+            };
+
+            for (int i = 0, n = mTab.getTabCount(); i < n; i++) {
+                TabLayout.Tab tabLayout = mTab.getTabAt(i);
+                tabLayout.setCustomView(R.layout.pager_tab_layout);
+
+                ImageView imageView = (ImageView) tabLayout.getCustomView().findViewById(R.id.tab_item_image);
+
+                TextView textView = (TextView) tabLayout.getCustomView().findViewById(R.id.tab_item_text);
+                textView.setText(mTab.getTabAt(i).getText());
+
+                if (i == 0) {
+                    textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    imageView.setImageResource(iconSet[i + iconSet.length / 2]);
+                } else {
+                    textView.setTextColor(getResources().getColor(R.color.grey));
+                    imageView.setImageResource(iconSet[i]);
+                }
+            }
+
+            mTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    ((ImageView) tab.getCustomView().findViewById(R.id.tab_item_image))
+                            .setImageResource(iconSet[tab.getPosition() + iconSet.length / 2]);
+                    ((TextView) tab.getCustomView().findViewById(R.id.tab_item_text))
+                            .setTextColor(getResources().getColor(R.color.colorPrimary));
+                    mViewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    ((ImageView) tab.getCustomView().findViewById(R.id.tab_item_image))
+                            .setImageResource(iconSet[tab.getPosition()]);
+                    ((TextView) tab.getCustomView().findViewById(R.id.tab_item_text))
+                            .setTextColor(getResources().getColor(R.color.grey));
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
     }
 

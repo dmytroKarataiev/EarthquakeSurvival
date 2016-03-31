@@ -226,21 +226,25 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 null,
                 null,
                 null,
-                null);
+                NewsColumns._ID + " DESC LIMIT 10");
     }
 
     // Set the cursor in our CursorAdapter once the Cursor is loaded
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mListEmpty.setVisibility(View.INVISIBLE);
+        if (mListEmpty != null) {
+            mListEmpty.setVisibility(View.INVISIBLE);
+        }
         mCursor = data;
         mNewsAdapter.swapCursor(mCursor);
     }
 
     // reset CursorAdapter on Loader Reset
     @Override
-    public void onLoaderReset(Loader<Cursor> loader){
-        mListEmpty.setVisibility(View.VISIBLE);
+    public void onLoaderReset(Loader<Cursor> loader) {
+        if (mListEmpty != null) {
+            mListEmpty.setVisibility(View.VISIBLE);
+        }
         mCursor = null;
         mNewsAdapter.swapCursor(null);
     }

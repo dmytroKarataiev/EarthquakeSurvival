@@ -28,4 +28,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey">#a8a8a8</color>
+
+    <!-- Tab Layout -->
+    <color name="tab.light.grey">#fefefe</color>
+
 </resources>

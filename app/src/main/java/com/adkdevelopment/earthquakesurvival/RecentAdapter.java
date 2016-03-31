@@ -37,7 +37,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
@@ -63,8 +63,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
         @Bind(R.id.earthquake_item_place) TextView mEarthquakePlace;
         @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
         @Bind(R.id.earthquake_item_date) TextView mEarthquakeDate;
-        @Bind(R.id.earthquake_item_click) ImageView mEarthquakeClick;
-
+        @Bind(R.id.earthquake_item_click) RelativeLayout mEarthquakeClick;
 
         public ViewHolder(View v) {
             super(v);
