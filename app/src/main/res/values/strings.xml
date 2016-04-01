@@ -92,7 +92,7 @@
 
     <!-- Fragments titles -->
     <string name="title.news">News</string>
-    <string name="title.maps">Maps</string>
+    <string name="title.maps">Map</string>
     <string name="title.recent">Recent</string>
     <string name="title.info">Info</string>
 

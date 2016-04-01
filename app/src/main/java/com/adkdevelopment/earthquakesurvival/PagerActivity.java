@@ -54,13 +54,13 @@ public class PagerActivity extends AppCompatActivity {
     private PagerAdapter mPagerAdapter;
     private static final String TAG = PagerActivity.class.getSimpleName();
 
-    @Bind(R.id.sliding_tabs)
-    TabLayout mTab;
+    @Bind(R.id.sliding_tabs) TabLayout mTab;
+    @Bind(R.id.container) ViewPager mViewPager;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +69,19 @@ public class PagerActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), getApplicationContext());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setOffscreenPageLimit(mPagerAdapter.getCount());
 
         mTab.setupWithViewPager(mViewPager);
         setTabImages();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,6 +106,9 @@ public class PagerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method to set tab iamges and highlights on tab switching
+     */
     private void setTabImages() {
         if (mTab != null) {
 
@@ -122,10 +123,11 @@ public class PagerActivity extends AppCompatActivity {
                     R.drawable.lightbulb_blue
             };
 
+            // Set custom layouts for each Tab
             for (int i = 0, n = mTab.getTabCount(); i < n; i++) {
                 TabLayout.Tab tabLayout = mTab.getTabAt(i);
-                tabLayout.setCustomView(R.layout.pager_tab_layout);
 
+                tabLayout.setCustomView(R.layout.pager_tab_layout);
                 ImageView imageView = (ImageView) tabLayout.getCustomView().findViewById(R.id.tab_item_image);
 
                 TextView textView = (TextView) tabLayout.getCustomView().findViewById(R.id.tab_item_text);
@@ -140,6 +142,7 @@ public class PagerActivity extends AppCompatActivity {
                 }
             }
 
+            // Highlight image and text on selection
             mTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {

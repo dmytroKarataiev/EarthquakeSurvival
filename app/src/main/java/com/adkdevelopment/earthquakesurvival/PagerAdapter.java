@@ -31,6 +31,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import java.lang.ref.WeakReference;
+
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
@@ -38,7 +40,7 @@ import android.view.ViewGroup;
 public class PagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+    SparseArray<WeakReference<Fragment>> registeredFragments = new SparseArray<WeakReference<Fragment>>();
 
 
     public PagerAdapter(FragmentManager fm, Context context) {
@@ -60,13 +62,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return PlaceholderFragment.newInstance(position + 1);
             default:
-                return PlaceholderFragment.newInstance(position + 1);
+                return null;
         }
     }
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
         return 4;
     }
 
@@ -90,7 +91,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        registeredFragments.put(position, fragment);
+        registeredFragments.put(position, new WeakReference<Fragment>(fragment));
         return fragment;
     }
 
@@ -101,7 +102,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     }
 
     public Fragment getRegisteredFragment(int position) {
-        return registeredFragments.get(position);
+        return registeredFragments.valueAt(position).get();
     }
 
 }

@@ -124,17 +124,22 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 super.onScrollStateChanged(recyclerView, newState);
                 int visible = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
 
-                if (visible != 0) {
-                    mSwipeRefreshLayout.setEnabled(false);
-                } else {
-                    mSwipeRefreshLayout.setEnabled(true);
+                if (mSwipeRefreshLayout != null) {
+                    if (visible != 0) {
+                        mSwipeRefreshLayout.setEnabled(false);
+                    } else {
+                        mSwipeRefreshLayout.setEnabled(true);
+                    }
                 }
             }
         });
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            if (Utilities.isOnline(getContext())) { getData(); }
-            else { mSwipeRefreshLayout.setRefreshing(false); }
+            if (Utilities.isOnline(getContext())) {
+                getData();
+            } else {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
         });
 
         getData();
@@ -152,8 +157,8 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
             if (mRecyclerView != null) {
                 mNews = response.body().getChannel();
                 mNewsAdapter = new NewsAdapter(getActivity(), mCursor);
-                mRecyclerView.swapAdapter(mNewsAdapter, false);
 
+                mRecyclerView.swapAdapter(mNewsAdapter, false);
                 mSwipeRefreshLayout.setRefreshing(false);
 
                 Log.d(TAG, "onResponse: success " + mNews.getItem().size());
@@ -178,7 +183,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 // add to database
                 ContentResolver resolver = getContext().getContentResolver();
 
-                if ( cVVector.size() > 0 ) {
+                if (cVVector.size() > 0) {
 
                     // Student: call bulkInsert to add the weatherEntries to the database here
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
@@ -193,14 +198,11 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
 
                 Log.d(TAG, "Service Complete. " + inserted + " Inserted");
-                Cursor cursor = getContext().getContentResolver().query(NewsColumns.CONTENT_URI, new String[] {NewsColumns.GUID}, null, null, null);
+                Cursor cursor = getContext().getContentResolver().query(NewsColumns.CONTENT_URI, new String[]{NewsColumns.GUID}, null, null, null);
                 if (BuildConfig.DEBUG && cursor != null) {
                     Log.d(TAG, "cursor.getCount():" + cursor.getCount());
                     cursor.close();
-
                 }
-
-
             }
         }
 
@@ -220,7 +222,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     // Attach loader to our flavors database query
     // run when loader is initialized
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args){
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getActivity(),
                 NewsColumns.CONTENT_URI,
                 null,

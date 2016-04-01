@@ -72,7 +72,6 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int CURSOR_LOADER_ID = 0;
     private Cursor mCursor;
 
-    private EarthquakeObject mEarthquake;
     private RecentAdapter mRecentAdapter;
     private static final String TAG = RecentFragment.class.getSimpleName();
 
@@ -118,7 +117,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecentAdapter);
 
-        // Prevent Swipe to refresh if recyclerview isn't in top position // TODO: 3/28/16 find lambda solution 
+        // Prevent Swipe to refresh if recyclerview isn't in top position
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
@@ -126,10 +125,12 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                 super.onScrollStateChanged(recyclerView, newState);
                 int visible = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
 
-                if (visible != 0) {
-                    mSwipeRefreshLayout.setEnabled(false);
-                } else {
-                    mSwipeRefreshLayout.setEnabled(true);
+                if (mSwipeRefreshLayout != null) {
+                    if (visible != 0) {
+                        mSwipeRefreshLayout.setEnabled(false);
+                    } else {
+                        mSwipeRefreshLayout.setEnabled(true);
+                    }
                 }
             }
         });
@@ -147,8 +148,6 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                    .setAction("Action", null).show());
 
-
-
         return rootView;
     }
 
@@ -159,59 +158,59 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     private Callback<EarthquakeObject> mCallback = new Callback<EarthquakeObject>() {
         @Override
         public void onResponse(Call<EarthquakeObject> call, Response<EarthquakeObject> response) {
-            mEarthquake = response.body();
-            mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
+            if (mRecyclerView != null) {
+                EarthquakeObject earthquake = response.body();
+                mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
 
-            mRecyclerView.swapAdapter(mRecentAdapter, false);
-            mSwipeRefreshLayout.setRefreshing(false);
+                mRecyclerView.swapAdapter(mRecentAdapter, false);
+                mSwipeRefreshLayout.setRefreshing(false);
 
-            Log.d(TAG, "onResponse: success " + mEarthquake.getFeatures().size());
+                Log.d(TAG, "onResponse: success " + earthquake.getFeatures().size());
 
-            Vector<ContentValues> cVVector = new Vector<>(mEarthquake.getFeatures().size());
+                Vector<ContentValues> cVVector = new Vector<>(earthquake.getFeatures().size());
+                for (Feature each : earthquake.getFeatures()) {
 
-            for (Feature each : mEarthquake.getFeatures()) {
+                    ContentValues weatherValues = new ContentValues();
 
-                ContentValues weatherValues = new ContentValues();
+                    weatherValues.put(EarthquakeColumns.PLACE, each.getProperties().getPlace());
+                    weatherValues.put(EarthquakeColumns.ID_EARTH, each.getId());
+                    weatherValues.put(EarthquakeColumns.MAG, each.getProperties().getMag());
+                    weatherValues.put(EarthquakeColumns.TYPE, each.getProperties().getType());
+                    weatherValues.put(EarthquakeColumns.ALERT, each.getProperties().getAlert());
+                    weatherValues.put(EarthquakeColumns.TIME, each.getProperties().getTime());
+                    weatherValues.put(EarthquakeColumns.URL, each.getProperties().getUrl());
+                    weatherValues.put(EarthquakeColumns.DETAIL, each.getProperties().getDetail());
+                    weatherValues.put(EarthquakeColumns.DEPTH, each.getGeometry().getCoordinates().get(2));
+                    weatherValues.put(EarthquakeColumns.LONGITUDE, each.getGeometry().getCoordinates().get(0));
+                    weatherValues.put(EarthquakeColumns.LATITUDE, each.getGeometry().getCoordinates().get(1));
 
-                weatherValues.put(EarthquakeColumns.PLACE, each.getProperties().getPlace());
-                weatherValues.put(EarthquakeColumns.ID_EARTH, each.getId());
-                weatherValues.put(EarthquakeColumns.MAG, each.getProperties().getMag());
-                weatherValues.put(EarthquakeColumns.TYPE, each.getProperties().getType());
-                weatherValues.put(EarthquakeColumns.ALERT, each.getProperties().getAlert());
-                weatherValues.put(EarthquakeColumns.TIME, each.getProperties().getTime());
-                weatherValues.put(EarthquakeColumns.URL, each.getProperties().getUrl());
-                weatherValues.put(EarthquakeColumns.DETAIL, each.getProperties().getDetail());
-                weatherValues.put(EarthquakeColumns.DEPTH, each.getGeometry().getCoordinates().get(2));
-                weatherValues.put(EarthquakeColumns.LONGITUDE, each.getGeometry().getCoordinates().get(0));
-                weatherValues.put(EarthquakeColumns.LATITUDE, each.getGeometry().getCoordinates().get(1));
+                    cVVector.add(weatherValues);
+                }
 
-                cVVector.add(weatherValues);
+                int inserted = 0;
+                // add to database
+                ContentResolver resolver = getContext().getContentResolver();
 
-            }
+                if (cVVector.size() > 0) {
 
-            int inserted = 0;
-            // add to database
-            ContentResolver resolver = getContext().getContentResolver();
+                    // Student: call bulkInsert to add the weatherEntries to the database here
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
 
-            if ( cVVector.size() > 0 ) {
+                    inserted = resolver.bulkInsert(EarthquakeColumns.CONTENT_URI, cvArray);
+                }
 
-                // Student: call bulkInsert to add the weatherEntries to the database here
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(new Date());
+                // todo: delete old data
+                //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
 
-                inserted = resolver.bulkInsert(EarthquakeColumns.CONTENT_URI, cvArray);
-            }
-
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(new Date());
-            // delete old data
-            //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
-
-            Log.d(TAG, "Service Complete. " + inserted + " Inserted");
-            Cursor cursor = getContext().getContentResolver().query(EarthquakeColumns.CONTENT_URI, new String[] {EarthquakeColumns.ID_EARTH}, null, null, null);
-            if (BuildConfig.DEBUG && cursor != null) {
-                Log.d(TAG, "cursor.getCount():" + cursor.getCount());
-                cursor.close();
+                Log.d(TAG, "Service Complete. " + inserted + " Inserted");
+                Cursor cursor = getContext().getContentResolver().query(EarthquakeColumns.CONTENT_URI, new String[]{EarthquakeColumns.ID_EARTH}, null, null, null);
+                if (BuildConfig.DEBUG && cursor != null) {
+                    Log.d(TAG, "cursor.getCount():" + cursor.getCount());
+                    cursor.close();
+                }
             }
         }
 
@@ -265,4 +264,9 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
 }
