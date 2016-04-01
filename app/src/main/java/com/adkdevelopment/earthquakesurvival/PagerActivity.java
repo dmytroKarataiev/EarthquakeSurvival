@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
+import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,6 +82,9 @@ public class PagerActivity extends AppCompatActivity {
         mTab.setupWithViewPager(mViewPager);
         setTabImages();
 
+        // start SyncAdapter
+        SyncAdapter.initializeSyncAdapter(this);
+
     }
 
     @Override
@@ -98,10 +102,15 @@ public class PagerActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_refresh:
+                SyncAdapter.syncImmediately(getBaseContext());
+                return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

@@ -24,8 +24,6 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -37,27 +35,17 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
+import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Vector;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -137,88 +125,19 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             if (Utilities.isOnline(getContext())) {
-                getData();
+                // TODO: 4/1/16 update loader on sync 
+                SyncAdapter.syncImmediately(getContext());
+                mSwipeRefreshLayout.setRefreshing(false);
             } else {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-
-        getData();
-
+        
         mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                    .setAction("Action", null).show());
 
         return rootView;
     }
-
-    private void getData() {
-        App.getApiManager().getEarthquakeService().getData().enqueue(mCallback);
-    }
-
-    private Callback<EarthquakeObject> mCallback = new Callback<EarthquakeObject>() {
-        @Override
-        public void onResponse(Call<EarthquakeObject> call, Response<EarthquakeObject> response) {
-            if (mRecyclerView != null) {
-                EarthquakeObject earthquake = response.body();
-                mRecentAdapter = new RecentAdapter(getActivity(), mCursor);
-
-                mRecyclerView.swapAdapter(mRecentAdapter, false);
-                mSwipeRefreshLayout.setRefreshing(false);
-
-                Log.d(TAG, "onResponse: success " + earthquake.getFeatures().size());
-
-                Vector<ContentValues> cVVector = new Vector<>(earthquake.getFeatures().size());
-                for (Feature each : earthquake.getFeatures()) {
-
-                    ContentValues weatherValues = new ContentValues();
-
-                    weatherValues.put(EarthquakeColumns.PLACE, each.getProperties().getPlace());
-                    weatherValues.put(EarthquakeColumns.ID_EARTH, each.getId());
-                    weatherValues.put(EarthquakeColumns.MAG, each.getProperties().getMag());
-                    weatherValues.put(EarthquakeColumns.TYPE, each.getProperties().getType());
-                    weatherValues.put(EarthquakeColumns.ALERT, each.getProperties().getAlert());
-                    weatherValues.put(EarthquakeColumns.TIME, each.getProperties().getTime());
-                    weatherValues.put(EarthquakeColumns.URL, each.getProperties().getUrl());
-                    weatherValues.put(EarthquakeColumns.DETAIL, each.getProperties().getDetail());
-                    weatherValues.put(EarthquakeColumns.DEPTH, each.getGeometry().getCoordinates().get(2));
-                    weatherValues.put(EarthquakeColumns.LONGITUDE, each.getGeometry().getCoordinates().get(0));
-                    weatherValues.put(EarthquakeColumns.LATITUDE, each.getGeometry().getCoordinates().get(1));
-
-                    cVVector.add(weatherValues);
-                }
-
-                int inserted = 0;
-                // add to database
-                ContentResolver resolver = getContext().getContentResolver();
-
-                if (cVVector.size() > 0) {
-
-                    // Student: call bulkInsert to add the weatherEntries to the database here
-                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                    cVVector.toArray(cvArray);
-
-                    inserted = resolver.bulkInsert(EarthquakeColumns.CONTENT_URI, cvArray);
-                }
-
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(new Date());
-                // todo: delete old data
-                //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
-
-                Log.d(TAG, "Service Complete. " + inserted + " Inserted");
-                Cursor cursor = getContext().getContentResolver().query(EarthquakeColumns.CONTENT_URI, new String[]{EarthquakeColumns.ID_EARTH}, null, null, null);
-                if (BuildConfig.DEBUG && cursor != null) {
-                    Log.d(TAG, "cursor.getCount():" + cursor.getCount());
-                    cursor.close();
-                }
-            }
-        }
-
-        @Override
-        public void onFailure(Call<EarthquakeObject> call, Throwable t) {
-            Log.d(TAG, "onFailure: " + t.toString());
-        }
-    };
 
     @Override
     public void onDestroyView() {

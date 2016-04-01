@@ -27,6 +27,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- Sync Adapter Permissions -->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -36,8 +41,9 @@
 
         <provider
             android:name="com.adkdevelopment.earthquakesurvival.provider.EarthquakeProvider"
-            android:authorities="com.adkdevelopment.earthquakesurvival.provider"
-            android:exported="false" />
+            android:authorities="@string/sync.provider.authority"
+            android:exported="false"
+            android:syncable="true" />
 
         <activity
             android:name=".PagerActivity"
@@ -61,6 +67,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
         </activity>
+
+        <!-- Sync Adapter Declarations -->
+        <service android:name=".syncadapter.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <service android:name=".syncadapter.SyncService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
     </application>
 
 </manifest>
