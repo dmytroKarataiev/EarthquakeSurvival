@@ -24,7 +24,6 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -53,8 +52,10 @@ public class PagerActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private PagerAdapter mPagerAdapter;
+    private static final String TAG = PagerActivity.class.getSimpleName();
 
-    @Bind(R.id.sliding_tabs) TabLayout mTab;
+    @Bind(R.id.sliding_tabs)
+    TabLayout mTab;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -110,8 +111,6 @@ public class PagerActivity extends AppCompatActivity {
     private void setTabImages() {
         if (mTab != null) {
 
-            Context context = getApplicationContext();
-
             int[] iconSet = {
                     R.drawable.error_grey,
                     R.drawable.map_grey,
@@ -157,14 +156,20 @@ public class PagerActivity extends AppCompatActivity {
                             .setImageResource(iconSet[tab.getPosition()]);
                     ((TextView) tab.getCustomView().findViewById(R.id.tab_item_text))
                             .setTextColor(getResources().getColor(R.color.grey));
-
                 }
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
-
+                    if (mPagerAdapter.getRegisteredFragment(tab.getPosition()) instanceof RecentFragment) {
+                        RecentFragment recentFragment = (RecentFragment) mPagerAdapter.getRegisteredFragment(tab.getPosition());
+                        recentFragment.scrollToTop();
+                    } else if (mPagerAdapter.getRegisteredFragment(tab.getPosition()) instanceof NewsFragment) {
+                        NewsFragment newsFragment = (NewsFragment) mPagerAdapter.getRegisteredFragment(tab.getPosition());
+                        newsFragment.scrollToTop();
+                    }
                 }
             });
+
         }
     }
 

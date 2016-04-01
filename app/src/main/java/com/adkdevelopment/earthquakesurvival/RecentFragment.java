@@ -126,20 +126,28 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                 super.onScrollStateChanged(recyclerView, newState);
                 int visible = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
 
-                if (visible != 0) { mSwipeRefreshLayout.setEnabled(false); }
-                else { mSwipeRefreshLayout.setEnabled(true); }
+                if (visible != 0) {
+                    mSwipeRefreshLayout.setEnabled(false);
+                } else {
+                    mSwipeRefreshLayout.setEnabled(true);
+                }
             }
         });
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            if (Utilities.isOnline(getContext())) { getData(); }
-            else { mSwipeRefreshLayout.setRefreshing(false); }
+            if (Utilities.isOnline(getContext())) {
+                getData();
+            } else {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
         });
 
         getData();
 
         mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                    .setAction("Action", null).show());
+
+
 
         return rootView;
     }
@@ -251,5 +259,10 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         mRecentAdapter.swapCursor(null);
     }
 
+    public void scrollToTop() {
+        if (mRecyclerView != null) {
+            mRecyclerView.smoothScrollToPosition(0);
+        }
+    }
 
 }

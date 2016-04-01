@@ -248,4 +248,10 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
         mCursor = null;
         mNewsAdapter.swapCursor(null);
     }
+
+    public void scrollToTop() {
+        if (mRecyclerView != null) {
+            mRecyclerView.smoothScrollToPosition(0);
+        }
+    }
 }
