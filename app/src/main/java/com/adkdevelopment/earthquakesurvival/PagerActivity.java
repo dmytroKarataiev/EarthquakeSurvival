@@ -24,13 +24,20 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,12 +46,19 @@ import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
 
-public class PagerActivity extends AppCompatActivity {
+public class PagerActivity extends AppCompatActivity
+        implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -57,11 +71,21 @@ public class PagerActivity extends AppCompatActivity {
     private PagerAdapter mPagerAdapter;
     private static final String TAG = PagerActivity.class.getSimpleName();
 
-    @Bind(R.id.sliding_tabs) TabLayout mTab;
-    @Bind(R.id.container) ViewPager mViewPager;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @BindColor(R.color.tab_item_selected) int colorSelected;
-    @BindColor(R.color.tab_item_unselected) int colorUnselected;
+    // Locations, ApiClient
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private static final int REQUEST_FINE_LOCATION = 0;
+
+    @Bind(R.id.sliding_tabs)
+    TabLayout mTab;
+    @Bind(R.id.container)
+    ViewPager mViewPager;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindColor(R.color.tab_item_selected)
+    int mColorSelected;
+    @BindColor(R.color.tab_item_unselected)
+    int mColorUnselected;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -89,6 +113,26 @@ public class PagerActivity extends AppCompatActivity {
         // start SyncAdapter
         SyncAdapter.initializeSyncAdapter(this);
 
+        loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION);
+
+        // Set up GoogleApiClient
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
     @Override
@@ -151,10 +195,10 @@ public class PagerActivity extends AppCompatActivity {
                         textView.setText(tabLayout.getText());
 
                         if (i == 0) {
-                            textView.setTextColor(colorSelected);
+                            textView.setTextColor(mColorSelected);
                             imageView.setImageResource(iconSet[i + iconSet.length / 2]);
                         } else {
-                            textView.setTextColor(colorUnselected);
+                            textView.setTextColor(mColorUnselected);
                             imageView.setImageResource(iconSet[i]);
                         }
                     }
@@ -171,7 +215,7 @@ public class PagerActivity extends AppCompatActivity {
                         imageView.setImageResource(iconSet[tab.getPosition() + iconSet.length / 2]);
 
                         TextView textView = ButterKnife.findById(customView, R.id.tab_item_text);
-                        textView.setTextColor(colorSelected);
+                        textView.setTextColor(mColorSelected);
                     }
                     mViewPager.setCurrentItem(tab.getPosition());
                 }
@@ -184,7 +228,7 @@ public class PagerActivity extends AppCompatActivity {
                         imageView.setImageResource(iconSet[tab.getPosition()]);
 
                         TextView textView = ButterKnife.findById(customView, R.id.tab_item_text);
-                        textView.setTextColor(colorUnselected);
+                        textView.setTextColor(mColorUnselected);
                     }
                 }
 
@@ -203,4 +247,67 @@ public class PagerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setInterval(DateUtils.HOUR_IN_MILLIS);
+        mLocationRequest.setFastestInterval(DateUtils.MINUTE_IN_MILLIS);
+
+        String perm = Manifest.permission.ACCESS_FINE_LOCATION;
+
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            loadPermissions(perm, REQUEST_FINE_LOCATION);
+        } else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "GoogleApiClient connection has been suspend");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i(TAG, location.toString());
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "GoogleApiClient connection has failed");
+    }
+
+    /**
+     * Method to load permissions for Android 6+ at runtime.
+     * @param perm The requested permission.
+     * @param requestCode Application specific request code to match with a result
+     *                    reported to onRequestPermissionsResult(int, String[], int[])
+     */
+    private void loadPermissions(String perm, int requestCode) {
+        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
+                ActivityCompat.requestPermissions(this, new String[]{perm}, requestCode);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // granted
+
+                } else {
+                    // no granted
+                }
+                return;
+            }
+
+        }
+
+    }
 }
