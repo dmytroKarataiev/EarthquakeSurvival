@@ -32,5 +32,8 @@
 
     <!-- Tab Layout -->
     <color name="tab.light.grey">#fefefe</color>
+    <color name="tab.item.selected">#3F51B5</color>
+    <color name="tab.item.unselected">#a8a8a8</color>
+
 
 </resources>

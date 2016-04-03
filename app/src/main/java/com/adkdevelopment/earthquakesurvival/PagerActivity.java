@@ -33,6 +33,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 
 import butterknife.Bind;
+import butterknife.BindColor;
 import butterknife.ButterKnife;
 
 public class PagerActivity extends AppCompatActivity {
@@ -58,6 +60,8 @@ public class PagerActivity extends AppCompatActivity {
     @Bind(R.id.sliding_tabs) TabLayout mTab;
     @Bind(R.id.container) ViewPager mViewPager;
     @Bind(R.id.toolbar) Toolbar mToolbar;
+    @BindColor(R.color.tab_item_selected) int colorSelected;
+    @BindColor(R.color.tab_item_unselected) int colorUnselected;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -116,7 +120,8 @@ public class PagerActivity extends AppCompatActivity {
     }
 
     /**
-     * Method to set tab iamges and highlights on tab switching
+     * Method to set tab images and highlights on tab switching
+     * todo: add color tint on buttons
      */
     private void setTabImages() {
         if (mTab != null) {
@@ -136,18 +141,23 @@ public class PagerActivity extends AppCompatActivity {
             for (int i = 0, n = mTab.getTabCount(); i < n; i++) {
                 TabLayout.Tab tabLayout = mTab.getTabAt(i);
 
-                tabLayout.setCustomView(R.layout.pager_tab_layout);
-                ImageView imageView = (ImageView) tabLayout.getCustomView().findViewById(R.id.tab_item_image);
+                if (tabLayout != null) {
+                    tabLayout.setCustomView(R.layout.pager_tab_layout);
+                    View customView = tabLayout.getCustomView();
 
-                TextView textView = (TextView) tabLayout.getCustomView().findViewById(R.id.tab_item_text);
-                textView.setText(mTab.getTabAt(i).getText());
+                    if (customView != null) {
+                        ImageView imageView = ButterKnife.findById(customView, R.id.tab_item_image);
+                        TextView textView = ButterKnife.findById(customView, R.id.tab_item_text);
+                        textView.setText(tabLayout.getText());
 
-                if (i == 0) {
-                    textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    imageView.setImageResource(iconSet[i + iconSet.length / 2]);
-                } else {
-                    textView.setTextColor(getResources().getColor(R.color.grey));
-                    imageView.setImageResource(iconSet[i]);
+                        if (i == 0) {
+                            textView.setTextColor(colorSelected);
+                            imageView.setImageResource(iconSet[i + iconSet.length / 2]);
+                        } else {
+                            textView.setTextColor(colorUnselected);
+                            imageView.setImageResource(iconSet[i]);
+                        }
+                    }
                 }
             }
 
@@ -155,19 +165,27 @@ public class PagerActivity extends AppCompatActivity {
             mTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
-                    ((ImageView) tab.getCustomView().findViewById(R.id.tab_item_image))
-                            .setImageResource(iconSet[tab.getPosition() + iconSet.length / 2]);
-                    ((TextView) tab.getCustomView().findViewById(R.id.tab_item_text))
-                            .setTextColor(getResources().getColor(R.color.colorPrimary));
+                    View customView = tab.getCustomView();
+                    if (customView != null) {
+                        ImageView imageView = ButterKnife.findById(customView, R.id.tab_item_image);
+                        imageView.setImageResource(iconSet[tab.getPosition() + iconSet.length / 2]);
+
+                        TextView textView = ButterKnife.findById(customView, R.id.tab_item_text);
+                        textView.setTextColor(colorSelected);
+                    }
                     mViewPager.setCurrentItem(tab.getPosition());
                 }
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-                    ((ImageView) tab.getCustomView().findViewById(R.id.tab_item_image))
-                            .setImageResource(iconSet[tab.getPosition()]);
-                    ((TextView) tab.getCustomView().findViewById(R.id.tab_item_text))
-                            .setTextColor(getResources().getColor(R.color.grey));
+                    View customView = tab.getCustomView();
+                    if (customView != null) {
+                        ImageView imageView = ButterKnife.findById(customView, R.id.tab_item_image);
+                        imageView.setImageResource(iconSet[tab.getPosition()]);
+
+                        TextView textView = ButterKnife.findById(customView, R.id.tab_item_text);
+                        textView.setTextColor(colorUnselected);
+                    }
                 }
 
                 @Override
