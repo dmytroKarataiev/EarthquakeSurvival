@@ -24,12 +24,16 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,6 +44,10 @@ public class PlaceholderFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+
+    @Bind(R.id.section_label) TextView mSectionLabel;
+    @Bind(R.id.earthquake_latitude) TextView mEarthquakeLatitude;
+    @Bind(R.id.earthquake_longitude) TextView mEarthquakeLongitude;
 
     public PlaceholderFragment() {
     }
@@ -60,8 +68,23 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.placeholder_fragment, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+        ButterKnife.bind(this, rootView);
+
+        mSectionLabel.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
         return rootView;
     }
+
+    /**
+     * Method to set location lat and long from PagerActivity
+     * @param location current location of a phone
+     */
+    public void setLocationText(Location location) {
+        if (location != null) {
+            mEarthquakeLatitude.setText(getString(R.string.earthquake_latitude, location.getLatitude()));
+            mEarthquakeLongitude.setText(getString(R.string.earthquake_longitude, location.getLongitude()));
+        }
+    }
+
+
 }

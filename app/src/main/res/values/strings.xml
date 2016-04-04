@@ -22,7 +22,7 @@
   ~ SOFTWARE.
   -->
 
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Earthquake Survival</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
@@ -94,5 +94,10 @@
     <!-- Sync Adapter -->
     <string name="sync.account.type">com.adkdevelopment.earthquakesurvival</string>
     <string name="sync.provider.authority">com.adkdevelopment.earthquakesurvival.provider</string>
+
+    <!-- Placeholder Strings -->
+    <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
+    <string name="earthquake.longitude">Longitude: <xliff:g id="longitude">%1$.4f</xliff:g></string>
+
 
 </resources>

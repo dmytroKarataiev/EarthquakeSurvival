@@ -36,12 +36,25 @@
     <ImageView
         android:id="@+id/earthquake_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_info_black_24dp"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/earthquake_title"
         android:layout_below="@+id/earthquake_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+
+    <TextView
+        android:id="@+id/earthquake_latitude"
+        android:layout_below="@+id/earthquake_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+
+    <TextView
+        android:id="@+id/earthquake_longitude"
+        android:layout_below="@+id/earthquake_latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test"/>

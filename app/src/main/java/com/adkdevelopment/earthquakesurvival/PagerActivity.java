@@ -31,6 +31,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -75,17 +76,13 @@ public class PagerActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private static final int REQUEST_FINE_LOCATION = 0;
+    private Location mLocation;
 
-    @Bind(R.id.sliding_tabs)
-    TabLayout mTab;
-    @Bind(R.id.container)
-    ViewPager mViewPager;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindColor(R.color.tab_item_selected)
-    int mColorSelected;
-    @BindColor(R.color.tab_item_unselected)
-    int mColorUnselected;
+    @Bind(R.id.sliding_tabs) TabLayout mTab;
+    @Bind(R.id.container) ViewPager mViewPager;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @BindColor(R.color.tab_item_selected) int mColorSelected;
+    @BindColor(R.color.tab_item_unselected) int mColorUnselected;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -131,8 +128,10 @@ public class PagerActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-        mGoogleApiClient.disconnect();
         super.onStop();
+        if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -218,6 +217,12 @@ public class PagerActivity extends AppCompatActivity
                         textView.setTextColor(mColorSelected);
                     }
                     mViewPager.setCurrentItem(tab.getPosition());
+
+                    Fragment fragment = mPagerAdapter.getRegisteredFragment(tab.getPosition());
+                    if (fragment instanceof PlaceholderFragment) {
+                        PlaceholderFragment placeholderFragment = (PlaceholderFragment) fragment;
+                        placeholderFragment.setLocationText(mLocation);
+                    }
                 }
 
                 @Override
@@ -234,11 +239,14 @@ public class PagerActivity extends AppCompatActivity
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
-                    if (mPagerAdapter.getRegisteredFragment(tab.getPosition()) instanceof RecentFragment) {
-                        RecentFragment recentFragment = (RecentFragment) mPagerAdapter.getRegisteredFragment(tab.getPosition());
+
+                    Fragment fragment = mPagerAdapter.getRegisteredFragment(tab.getPosition());
+
+                    if (fragment instanceof RecentFragment) {
+                        RecentFragment recentFragment = (RecentFragment) fragment;
                         recentFragment.scrollToTop();
-                    } else if (mPagerAdapter.getRegisteredFragment(tab.getPosition()) instanceof NewsFragment) {
-                        NewsFragment newsFragment = (NewsFragment) mPagerAdapter.getRegisteredFragment(tab.getPosition());
+                    } else if (fragment instanceof NewsFragment) {
+                        NewsFragment newsFragment = (NewsFragment) fragment;
                         newsFragment.scrollToTop();
                     }
                 }
@@ -249,7 +257,7 @@ public class PagerActivity extends AppCompatActivity
 
     @Override
     public void onConnected(Bundle bundle) {
-        mLocationRequest = new LocationRequest();
+        mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         mLocationRequest.setInterval(DateUtils.HOUR_IN_MILLIS);
         mLocationRequest.setFastestInterval(DateUtils.MINUTE_IN_MILLIS);
@@ -261,7 +269,6 @@ public class PagerActivity extends AppCompatActivity
         } else {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-
     }
 
     @Override
@@ -272,6 +279,7 @@ public class PagerActivity extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         Log.i(TAG, location.toString());
+        mLocation = location;
     }
 
     @Override
@@ -300,7 +308,11 @@ public class PagerActivity extends AppCompatActivity
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // granted
-
+                    try {
+                        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                    } catch (SecurityException e) {
+                        Log.e(TAG, "e:" + e);
+                    }
                 } else {
                     // no granted
                 }

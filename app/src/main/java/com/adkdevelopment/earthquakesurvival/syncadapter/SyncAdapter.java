@@ -35,10 +35,10 @@ import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.App;
-import com.adkdevelopment.earthquakesurvival.BuildConfig;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
@@ -48,9 +48,9 @@ import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import retrofit2.Call;
@@ -64,6 +64,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = SyncAdapter.class.getSimpleName();
 
+    // // TODO: 4/4/16 add from settings
     // Interval at which to sync with the events, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
@@ -71,7 +72,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-
     }
 
     @Override
@@ -113,21 +113,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 ContentResolver resolver = getContext().getContentResolver();
 
                 if (cVVector.size() > 0) {
-
-                    // Student: call bulkInsert to add the weatherEntries to the database here
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
                     cVVector.toArray(cvArray);
-
                     inserted = resolver.bulkInsert(EarthquakeColumns.CONTENT_URI, cvArray);
                 }
 
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(new Date());
-                // todo: delete old data
-                //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
+                // Set the date to day minus one to delete old data from the database
+                Date date = new Date();
+                date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS);
 
-                Log.d(TAG, "Service Complete. " + inserted + " Inserted");
-
+                int deleted = resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{String.valueOf(date.getTime())});
+                Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
             }
 
             @Override
@@ -143,18 +139,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Vector<ContentValues> cVVector = new Vector<>(news.getItem().size());
 
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+                Date date = new Date();
+
                 for (Item each : news.getItem()) {
 
                     ContentValues weatherValues = new ContentValues();
 
-                    weatherValues.put(NewsColumns.DATE, each.getPubDate());
+                    try {
+                        date = simpleDateFormat.parse(each.getPubDate());
+                    } catch (ParseException e) {
+                        Log.e(TAG, "e:" + e);
+                    }
+
+                    weatherValues.put(NewsColumns.DATE, date.getTime());
                     weatherValues.put(NewsColumns.TITLE, each.getTitle());
                     weatherValues.put(NewsColumns.DESCRIPTION, each.getDescription());
                     weatherValues.put(NewsColumns.URL, each.getLink());
                     weatherValues.put(NewsColumns.GUID, each.getGuid().getContent());
 
                     cVVector.add(weatherValues);
-
                 }
 
                 int inserted = 0;
@@ -170,10 +174,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     inserted = resolver.bulkInsert(NewsColumns.CONTENT_URI, cvArray);
                 }
 
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(new Date());
-                // delete old data
-                //resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{Long.toString(calendar.set(julianStartDay - 1)) });
+                // Set the date to day minus one to delete old data from the database
+                date = new Date();
+                date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS * 2);
+
+                int deleted = resolver.delete(NewsColumns.CONTENT_URI, NewsColumns.DATE + " <= ?", new String[]{String.valueOf(date.getTime())});
+                Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
             }
 
             @Override
@@ -269,8 +275,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "sync");
-
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);

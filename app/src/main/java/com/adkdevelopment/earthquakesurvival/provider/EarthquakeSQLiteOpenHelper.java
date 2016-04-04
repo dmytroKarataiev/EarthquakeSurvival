@@ -17,7 +17,7 @@ public class EarthquakeSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = EarthquakeSQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "earthquake.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
     private static EarthquakeSQLiteOpenHelper sInstance;
     private final Context mContext;
     private final EarthquakeSQLiteCallbacks mOpenHelperCallbacks;
@@ -43,7 +43,7 @@ public class EarthquakeSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_TABLE_NEWS = "CREATE TABLE IF NOT EXISTS "
             + NewsColumns.TABLE_NAME + " ( "
             + NewsColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + NewsColumns.DATE + " TEXT, "
+            + NewsColumns.DATE + " INTEGER, "
             + NewsColumns.TITLE + " TEXT, "
             + NewsColumns.DESCRIPTION + " TEXT, "
             + NewsColumns.URL + " TEXT, "

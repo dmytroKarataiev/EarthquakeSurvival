@@ -43,11 +43,10 @@ import butterknife.ButterKnife;
  */
 public class DetailFragment extends Fragment {
 
-    @Bind(R.id.earthquake_image)
-    ImageView mEarhquakeImage;
-
-    @Bind(R.id.earthquake_title)
-    TextView mEarthquakeTitle;
+    @Bind(R.id.earthquake_image) ImageView mEarhquakeImage;
+    @Bind(R.id.earthquake_title) TextView mEarthquakeTitle;
+    @Bind(R.id.earthquake_latitude) TextView mEarthquakeLatitude;
+    @Bind(R.id.earthquake_longitude) TextView mEarthquakeLongitude;
 
     public DetailFragment() {
     }
