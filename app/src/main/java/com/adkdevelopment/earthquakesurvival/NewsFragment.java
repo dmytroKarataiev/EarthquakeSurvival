@@ -152,7 +152,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                 null,
                 null,
                 null,
-                NewsColumns._ID + " DESC LIMIT 10");
+                NewsColumns.DATE + " DESC LIMIT 10");
     }
 
     // Set the cursor in our CursorAdapter once the Cursor is loaded

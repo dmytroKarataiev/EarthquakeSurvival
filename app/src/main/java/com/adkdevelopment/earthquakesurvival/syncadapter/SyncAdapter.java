@@ -180,6 +180,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 int deleted = resolver.delete(NewsColumns.CONTENT_URI, NewsColumns.DATE + " <= ?", new String[]{String.valueOf(date.getTime())});
                 Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
+
             }
 
             @Override
@@ -188,6 +189,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
         });
 
+        // notify PagerActivity that data has been updated
+        getContext().getContentResolver().notifyChange(EarthquakeColumns.CONTENT_URI, null, false);
     }
 
     public static void initializeSyncAdapter(Context context) {

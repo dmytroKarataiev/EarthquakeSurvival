@@ -99,5 +99,21 @@
     <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
     <string name="earthquake.longitude">Longitude: <xliff:g id="longitude">%1$.4f</xliff:g></string>
 
+    <!-- Geofence Strings -->
+    <string name="geofence.error.unavailable">Geofence service is not available now</string>
+    <string name="geofence.error.many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence.error.many_intents">You have provided too many PendingIntents to the addGeofences() call</string>
+    <string name="geofence.error.unknown">Unknown error: the Geofence service is not available now</string>
+    <string name="geofence.error.invalid_type">Geofence transition error: invalid transition type %1$d</string>
+    <string name="geofence.transition.entered">Entered</string>
+    <string name="geofence.transition.exited">Exited</string>
+    <string name="geofence.transition.unknown">Unknown Transition</string>
+    <string name="geofence.notification.text">Click notification to return to app</string>
+    <string name="geofence.log.added">Geofences added</string>
+
+    <!-- Google Api Client -->
+    <string name="googleapiclient.notconnected">GoogleApiClient not yet connected. Try again.</string>
+
+
 
 </resources>

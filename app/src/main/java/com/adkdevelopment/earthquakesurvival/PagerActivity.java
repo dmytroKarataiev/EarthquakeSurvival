@@ -25,10 +25,15 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.ContentObserver;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -44,14 +49,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.adkdevelopment.earthquakesurvival.geofence.GeofenceService;
+import com.adkdevelopment.earthquakesurvival.geofence.GeofenceUtils;
+import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -59,7 +75,7 @@ import butterknife.ButterKnife;
 
 public class PagerActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<Status> {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -78,6 +94,10 @@ public class PagerActivity extends AppCompatActivity
     private static final int REQUEST_FINE_LOCATION = 0;
     private Location mLocation;
 
+    // Geofence variables
+    private List<Geofence> mGeofenceList;
+    private ContentObserver mObserver;
+
     @Bind(R.id.sliding_tabs) TabLayout mTab;
     @Bind(R.id.container) ViewPager mViewPager;
     @Bind(R.id.toolbar) Toolbar mToolbar;
@@ -92,6 +112,8 @@ public class PagerActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_activity);
+
+        mGeofenceList = new ArrayList<Geofence>();
 
         ButterKnife.bind(this);
 
@@ -118,12 +140,24 @@ public class PagerActivity extends AppCompatActivity
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+        // Observe SyncAdapter work and update Geofences
+        mObserver = new ContentObserver(new Handler(Looper.getMainLooper())) {
+            public void onChange(boolean selfChange) {
+                Log.d(TAG, "called");
+                populateGeofenceList();
+                observeGeofences();
+            }
+        };
+        getContentResolver().registerContentObserver(EarthquakeColumns.CONTENT_URI, false, mObserver);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.connect();
+        }
     }
 
     @Override
@@ -132,6 +166,12 @@ public class PagerActivity extends AppCompatActivity
         if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(mObserver);
     }
 
     @Override
@@ -274,6 +314,7 @@ public class PagerActivity extends AppCompatActivity
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "GoogleApiClient connection has been suspend");
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -289,7 +330,8 @@ public class PagerActivity extends AppCompatActivity
 
     /**
      * Method to load permissions for Android 6+ at runtime.
-     * @param perm The requested permission.
+     *
+     * @param perm        The requested permission.
      * @param requestCode Application specific request code to match with a result
      *                    reported to onRequestPermissionsResult(int, String[], int[])
      */
@@ -307,7 +349,7 @@ public class PagerActivity extends AppCompatActivity
             case REQUEST_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // granted
+                    // granted, trying to get location again
                     try {
                         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
                     } catch (SecurityException e) {
@@ -318,8 +360,92 @@ public class PagerActivity extends AppCompatActivity
                 }
                 return;
             }
+        }
+    }
 
+    /**
+     * Method to populate geofence list with data from the database
+     */
+    public void populateGeofenceList() {
+
+        Cursor cursor = getContentResolver().query(EarthquakeColumns.CONTENT_URI,
+                null,
+                null,
+                null,
+                EarthquakeColumns.TIME + " DESC LIMIT 15");
+
+        if (cursor != null && cursor.getCount() > 0) {
+            mGeofenceList.clear();
+            while (cursor.moveToNext()) {
+                String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
+                double lat = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+                double lng = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+
+                mGeofenceList.add(new Geofence.Builder()
+                        .setRequestId(place)
+                        .setCircularRegion(lat, lng, GeofenceUtils.GEOFENCE_RADIUS_IN_METERS)
+                        .setExpirationDuration(GeofenceUtils.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                        .build());
+
+            }
+            cursor.close();
+            Log.d(TAG, "mGeofenceList.size():" + mGeofenceList.size());
+        }
+    }
+
+    /**
+     * Create Geofencing request
+     * @return GeofencingRequest initialised with a list of Geofences
+     */
+    private GeofencingRequest getGeofencingRequest() {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        // if just added and if inside the geofence
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        Intent intent = new Intent(this, GeofenceService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling addgeoFences()
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override
+    public void onResult(Status status) {
+        if (status.isSuccess()) {
+            Toast.makeText(this, getString(R.string.geofence_log_added), Toast.LENGTH_SHORT).show();
+        } else {
+            // Get the status code for the error and log it using a user-friendly message.
+            String errorMessage = GeofenceUtils.getErrorString(this, status.getStatusCode());
+            Log.e(TAG, errorMessage);
+        }
+    }
+
+    /**
+     * Add Geofences to look for and send notifications on enter or exit
+     */
+    public void observeGeofences() {
+        if (!mGoogleApiClient.isConnected()) {
+            Toast.makeText(this, getString(R.string.googleapiclient_notconnected), Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        if (mGeofenceList != null && mGeofenceList.size() > 0) {
+            try {
+                LocationServices.GeofencingApi.addGeofences(
+                        mGoogleApiClient,
+                        // The GeofenceRequest object.
+                        getGeofencingRequest(),
+                        // A pending intent that that is reused when calling removeGeofences(). This
+                        // pending intent is used to generate an intent when a matched geofence
+                        // transition is observed.
+                        getGeofencePendingIntent()
+                ).setResultCallback(this); // Result processed in onResult().
+            } catch (SecurityException securityException) {
+                // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+            }
+        }
     }
 }

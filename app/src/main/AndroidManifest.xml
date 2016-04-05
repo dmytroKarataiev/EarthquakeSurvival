@@ -99,6 +99,7 @@
             <meta-data android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+        <service android:name=".geofence.GeofenceService" />
 
     </application>
 
