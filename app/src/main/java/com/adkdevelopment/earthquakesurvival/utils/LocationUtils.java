@@ -22,22 +22,27 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.geofence;
+package com.adkdevelopment.earthquakesurvival.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.adkdevelopment.earthquakesurvival.R;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Additional class with helper functions for Geofence functionality
+ * Additional class with helper functions for Geofence and Maps functionality
  */
-public class GeofenceUtils {
+public class LocationUtils {
+
     /**
      * Returns the error string for a geofencing error code.
      */
@@ -97,13 +102,51 @@ public class GeofenceUtils {
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
      * stops tracking the geofence.
+     * TODO: 4/5/16 don't forget to change to a closer range
      */
-    public static final long GEOFENCE_EXPIRATION_IN_HOURS = 12;
-
-    // geofences expire after twelve hours.
-    public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
-            GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    // TODO: 4/5/16 don't forget to change to a closer range 
+    public static final int CAMERA_DEFAULT_ZOOM = 6;
+    public static final long EXP_HOURS = 12;
+    public static final long EXP_MILLIS = EXP_HOURS * 60 * 60 * 1000;
     public static final float GEOFENCE_RADIUS_IN_METERS = 100000; // 100 km
+
+    /**
+     * Returns current location from the SharedPreferences
+     * @param context from which call is being made
+     * @return LatLng with current location
+     */
+    public static LatLng getLocation(Context context) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        Double latitude = Double.longBitsToDouble(
+                sharedPreferences.getLong(
+                        context.getString(R.string.sharedprefs_key_latitude), 0));
+
+        Double longitude = Double.longBitsToDouble(
+                sharedPreferences.getLong(
+                        context.getString(R.string.sharedprefs_key_longitude), 0));
+
+        return new LatLng(latitude, longitude);
+    }
+
+    /**
+     * Saves the current location in SharedPreferences
+     * @param context from which call is being made
+     * @param location current location
+     */
+    public static void setLocation(Context context, Location location) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // save the precision of Double by converting it to raw long bits
+        editor.putLong(context.getString(R.string.sharedprefs_key_latitude),
+                Double.doubleToRawLongBits(location.getLatitude()));
+
+        editor.putLong(context.getString(R.string.sharedprefs_key_longitude),
+                Double.doubleToRawLongBits(location.getLongitude()));
+
+        editor.apply();
+    }
 
 }

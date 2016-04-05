@@ -37,6 +37,7 @@ import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.PagerActivity;
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import com.squareup.picasso.Picasso;
@@ -66,7 +67,7 @@ public class GeofenceService extends IntentService {
 
         // if the event has an error - log the textual info about it
         if (geofencingEvent.hasError()) {
-            String textualError = GeofenceUtils.getErrorString(this, geofencingEvent.getErrorCode());
+            String textualError = LocationUtils.getErrorString(this, geofencingEvent.getErrorCode());
             Log.e(TAG, "onHandleIntent: " + textualError);
             return;
         }
@@ -80,7 +81,7 @@ public class GeofenceService extends IntentService {
             List<Geofence> geoEvents = geofencingEvent.getTriggeringGeofences();
 
             // Get the transition details as a String.
-            String geofenceDetails = GeofenceUtils
+            String geofenceDetails = LocationUtils
                     .getTransitionDetails(this, transition, geoEvents);
 
             sendNotification(geofenceDetails);

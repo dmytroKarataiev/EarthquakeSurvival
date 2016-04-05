@@ -52,3 +52,6 @@ captures/
 *.idea
 *.iml
 out/
+
+# api key
+app/src/main/res/values/apikeys.xml

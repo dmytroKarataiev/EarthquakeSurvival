@@ -26,6 +26,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Sync Adapter Permissions -->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
@@ -34,6 +35,11 @@
 
     <!-- Google API Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Google Maps OpenGL requirements -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -101,6 +107,10 @@
         </service>
         <service android:name=".geofence.GeofenceService" />
 
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/googel.maps.api.key.debug" />
     </application>
 
 </manifest>

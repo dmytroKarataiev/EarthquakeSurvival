@@ -52,7 +52,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adkdevelopment.earthquakesurvival.geofence.GeofenceService;
-import com.adkdevelopment.earthquakesurvival.geofence.GeofenceUtils;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
@@ -86,6 +86,7 @@ public class PagerActivity extends AppCompatActivity
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private PagerAdapter mPagerAdapter;
+
     private static final String TAG = PagerActivity.class.getSimpleName();
 
     // Locations, ApiClient
@@ -97,6 +98,10 @@ public class PagerActivity extends AppCompatActivity
     // Geofence variables
     private List<Geofence> mGeofenceList;
     private ContentObserver mObserver;
+
+    // Maps Variables
+    public static final String LATITUDE = "lat";
+    public static final String LONGITUDE = "lng";
 
     @Bind(R.id.sliding_tabs) TabLayout mTab;
     @Bind(R.id.container) ViewPager mViewPager;
@@ -321,6 +326,9 @@ public class PagerActivity extends AppCompatActivity
     public void onLocationChanged(Location location) {
         Log.i(TAG, location.toString());
         mLocation = location;
+
+        // save location in shared preferences
+        LocationUtils.setLocation(this, location);
     }
 
     @Override
@@ -383,8 +391,8 @@ public class PagerActivity extends AppCompatActivity
 
                 mGeofenceList.add(new Geofence.Builder()
                         .setRequestId(place)
-                        .setCircularRegion(lat, lng, GeofenceUtils.GEOFENCE_RADIUS_IN_METERS)
-                        .setExpirationDuration(GeofenceUtils.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
+                        .setCircularRegion(lat, lng, LocationUtils.GEOFENCE_RADIUS_IN_METERS)
+                        .setExpirationDuration(LocationUtils.EXP_MILLIS)
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                         .build());
 
@@ -418,7 +426,7 @@ public class PagerActivity extends AppCompatActivity
             Toast.makeText(this, getString(R.string.geofence_log_added), Toast.LENGTH_SHORT).show();
         } else {
             // Get the status code for the error and log it using a user-friendly message.
-            String errorMessage = GeofenceUtils.getErrorString(this, status.getStatusCode());
+            String errorMessage = LocationUtils.getErrorString(this, status.getStatusCode());
             Log.e(TAG, errorMessage);
         }
     }

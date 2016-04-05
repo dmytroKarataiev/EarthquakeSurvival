@@ -114,6 +114,10 @@
     <!-- Google Api Client -->
     <string name="googleapiclient.notconnected">GoogleApiClient not yet connected. Try again.</string>
 
+    <!-- Shared Preferences Values -->
+    <string name="sharedprefs.key.latitude" translatable="false">lat</string>
+    <string name="sharedprefs.key.longitude" translatable="false">lng</string>
+
 
 
 </resources>

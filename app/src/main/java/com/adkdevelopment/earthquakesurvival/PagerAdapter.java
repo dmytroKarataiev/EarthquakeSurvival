@@ -56,7 +56,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return RecentFragment.newInstance(position + 1);
             case 1:
-                return PlaceholderFragment.newInstance(position + 1);
+                return MapviewFragment.newInstance(position + 1);
             case 2:
                 return NewsFragment.newInstance(position + 1);
             case 3:
@@ -102,7 +102,11 @@ public class PagerAdapter extends FragmentPagerAdapter {
     }
 
     public Fragment getRegisteredFragment(int position) {
-        return registeredFragments.valueAt(position).get();
+        if (position == 1) {
+            return getItem(position);
+        } else {
+            return registeredFragments.valueAt(position).get();
+        }
     }
 
 }
