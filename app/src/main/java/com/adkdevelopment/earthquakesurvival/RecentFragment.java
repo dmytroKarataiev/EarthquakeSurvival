@@ -125,7 +125,6 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             if (Utilities.isOnline(getContext())) {
-                // TODO: 4/1/16 update loader on sync 
                 SyncAdapter.syncImmediately(getContext());
                 mSwipeRefreshLayout.setRefreshing(false);
             } else {

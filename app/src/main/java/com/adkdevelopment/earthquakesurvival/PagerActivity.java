@@ -99,10 +99,6 @@ public class PagerActivity extends AppCompatActivity
     private List<Geofence> mGeofenceList;
     private ContentObserver mObserver;
 
-    // Maps Variables
-    public static final String LATITUDE = "lat";
-    public static final String LONGITUDE = "lng";
-
     @Bind(R.id.sliding_tabs) TabLayout mTab;
     @Bind(R.id.container) ViewPager mViewPager;
     @Bind(R.id.toolbar) Toolbar mToolbar;

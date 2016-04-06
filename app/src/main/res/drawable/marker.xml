@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ MIT License
   ~
@@ -22,31 +23,12 @@
   ~ SOFTWARE.
   -->
 
-<resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="padding">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="appbar_padding_top">8dp</dimen>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
 
-    <!-- Pager Strip -->
-    <dimen name="pager_strip_padding">4dp</dimen>
+    <solid android:color="@android:color/holo_green_light" />
 
-    <!-- Earthquake Item Dimens -->
-    <dimen name="earthquake_item_padding">16dp</dimen>
-    <dimen name="earthquake_item_height">60dp</dimen>
+    <size android:width="@dimen/marker.size"
+        android:height="@dimen/marker.size" />
 
-    <!-- Toolbar -->
-    <dimen name="toolbar.height">50dp</dimen>
-
-    <!-- Tab Layout Dimens -->
-    <dimen name="tab.elevation">8dp</dimen>
-    <dimen name="tab.height">52dp</dimen>
-    <dimen name="tab.layout.padding">4dp</dimen>
-    <dimen name="tab.image.size">30dp</dimen>
-
-    <!-- Marker Drawable Size -->
-    <dimen name="marker.size">10dp</dimen>
-
-</resources>
+</shape>

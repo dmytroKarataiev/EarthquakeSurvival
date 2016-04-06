@@ -24,26 +24,43 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Date;
 
 import butterknife.Bind;
+import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MapviewFragment extends Fragment implements OnMapReadyCallback {
+public class MapviewFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -54,8 +71,11 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mGoogleMap;
     private CameraPosition mCameraPosition;
+    private Cursor mCursor;
+    private static final int CURSOR_LOADER_ID = 20;
 
     @Bind(R.id.map) MapView mMapView;
+    @BindDrawable(R.drawable.marker) Drawable mOval;
 
     public MapviewFragment() {
     }
@@ -98,10 +118,10 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-
         if (mCameraPosition != null) {
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
         }
+        addMarkers();
     }
 
     @Override
@@ -136,5 +156,99 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback {
         outState.putParcelable(CAMERA_POSITION, save);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(),
+                EarthquakeColumns.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursor = data;
+        addMarkers();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursor = null;
+    }
+
+    /**
+     * Creates Bitmap for a Map marker depending on the magnitude of an earthquake
+     * @param magnitude from 0 to 10 scale earthquake intensity
+     * @return colorful oval of size depending on magnitude
+     */
+    private Bitmap getEarthquakeMarker(Double magnitude) {
+
+        GradientDrawable oval = (GradientDrawable) mOval;
+
+        if (magnitude > 3 && magnitude < 5) {
+            oval.setColor(Color.BLUE);
+        } else if (magnitude > 5 && magnitude < 7) {
+            oval.setColor(Color.YELLOW);
+        } else if (magnitude > 7) {
+            oval.setColor(Color.RED);
+        }
+
+        int diameter = (int) (oval.getIntrinsicWidth() * magnitude);
+
+        Canvas canvas = new Canvas();
+        Bitmap icon = Bitmap.createBitmap(
+                diameter,
+                diameter,
+                Bitmap.Config.ARGB_8888);
+
+        canvas.setBitmap(icon);
+        oval.setBounds(0, 0, diameter, diameter);
+        oval.draw(canvas);
+
+        return icon;
+    }
+
+    /**
+     * Adds markers to the map from the database
+     */
+    private void addMarkers() {
+        if (mGoogleMap != null && mCursor != null) {
+            mCursor.moveToFirst();
+
+            int lat = mCursor.getColumnIndex(EarthquakeColumns.LATITUDE);
+            int lng = mCursor.getColumnIndex(EarthquakeColumns.LONGITUDE);
+            int desc = mCursor.getColumnIndex(EarthquakeColumns.PLACE);
+            int magn = mCursor.getColumnIndex(EarthquakeColumns.MAG);
+            int date = mCursor.getColumnIndex(EarthquakeColumns.TIME);
+
+            while (mCursor.moveToNext()) {
+
+                Double latitude = mCursor.getDouble(lat);
+                Double longitude = mCursor.getDouble(lng);
+                String description = mCursor.getString(desc);
+                Long dateMillis = mCursor.getLong(date);
+                Date time = new Date(dateMillis);
+
+                Double magnitude = mCursor.getDouble(magn);
+
+                LatLng latLng = new LatLng(latitude, longitude);
+
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(latLng)
+                        .title(DateUtils.getRelativeTimeSpanString(time.getTime()).toString() + " "
+                                + description + ", "
+                                + getString(R.string.earthquake_magnitude, magnitude))
+                        .icon(BitmapDescriptorFactory.fromBitmap(getEarthquakeMarker(magnitude)));
+
+                mGoogleMap.addMarker(markerOptions);
+            }
+        }
+    }
 }

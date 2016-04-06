@@ -38,7 +38,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.news_objects.Channel;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
@@ -59,7 +58,6 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     private static final int CURSOR_LOADER_ID = 10;
     private Cursor mCursor;
 
-    private Channel mNews;
     private NewsAdapter mNewsAdapter;
     private static final String TAG = NewsFragment.class.getSimpleName();
 
@@ -124,8 +122,6 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             if (Utilities.isOnline(getContext())) {
-
-                // TODO: 4/1/16 update loader on sync
                 SyncAdapter.syncImmediately(getContext());
                 mSwipeRefreshLayout.setRefreshing(false);
             } else {
@@ -141,7 +137,6 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
 
     // Attach loader to our flavors database query
     // run when loader is initialized
