@@ -56,6 +56,7 @@ import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -374,9 +375,9 @@ public class PagerActivity extends AppCompatActivity
 
         Cursor cursor = getContentResolver().query(EarthquakeColumns.CONTENT_URI,
                 null,
-                null,
-                null,
-                EarthquakeColumns.TIME + " DESC LIMIT 15");
+                EarthquakeColumns.MAG + " >= ?",
+                new String[] {String.valueOf(Utilities.getMagnitudePrefs(getBaseContext()))},
+                null);
 
         if (cursor != null && cursor.getCount() > 0) {
             mGeofenceList.clear();
@@ -387,11 +388,10 @@ public class PagerActivity extends AppCompatActivity
 
                 mGeofenceList.add(new Geofence.Builder()
                         .setRequestId(place)
-                        .setCircularRegion(lat, lng, LocationUtils.GEOFENCE_RADIUS_IN_METERS)
+                        .setCircularRegion(lat, lng, Utilities.getDistancePrefs(getBaseContext()))
                         .setExpirationDuration(LocationUtils.EXP_MILLIS)
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                         .build());
-
             }
             cursor.close();
             Log.d(TAG, "mGeofenceList.size():" + mGeofenceList.size());

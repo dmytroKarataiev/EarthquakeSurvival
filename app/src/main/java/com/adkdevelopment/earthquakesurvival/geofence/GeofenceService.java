@@ -38,6 +38,7 @@ import android.util.Log;
 import com.adkdevelopment.earthquakesurvival.PagerActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 import com.squareup.picasso.Picasso;
@@ -84,7 +85,9 @@ public class GeofenceService extends IntentService {
             String geofenceDetails = LocationUtils
                     .getTransitionDetails(this, transition, geoEvents);
 
-            sendNotification(geofenceDetails);
+            if (Utilities.getNotificationsPrefs(getBaseContext())) {
+                sendNotification(geofenceDetails);
+            }
 
         } else {
             Log.e(TAG, getString(R.string.geofence_error_invalid_type, transition));

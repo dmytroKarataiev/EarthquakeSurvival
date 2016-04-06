@@ -102,12 +102,10 @@ public class LocationUtils {
     /**
      * Used to set an expiration time for a geofence. After this amount of time Location Services
      * stops tracking the geofence.
-     * TODO: 4/5/16 don't forget to change to a closer range
      */
     public static final int CAMERA_DEFAULT_ZOOM = 6;
     public static final long EXP_HOURS = 12;
     public static final long EXP_MILLIS = EXP_HOURS * 60 * 60 * 1000;
-    public static final float GEOFENCE_RADIUS_IN_METERS = 100000; // 100 km
 
     /**
      * Returns current location from the SharedPreferences

@@ -25,8 +25,12 @@
 package com.adkdevelopment.earthquakesurvival.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
+
+import com.adkdevelopment.earthquakesurvival.R;
 
 /**
  * Utilities class with helper functions
@@ -49,7 +53,53 @@ public class Utilities {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         }
-
         return false;
     }
+
+    /**
+     * Returns true if to send geofence notifications
+     * @param context from which call is being made
+     * @return true if to send notifications
+     */
+    public static boolean getNotificationsPrefs(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(context.getString(R.string.sharedprefs_key_notifications), true);
+    }
+
+    /**
+     * Method to get SyncInterval from SharedPreferences
+     * @param context from which call is being made
+     * @return interval in minutes
+     */
+    public static int getSyncIntervalPrefs(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String syncFrequency = sharedPreferences
+                .getString(context.getString(R.string.sharedprefs_key_syncfrequency), "180");
+
+        return Integer.parseInt(syncFrequency);
+    }
+
+    /**
+     * Method to return Magnitude from SharedPreferences
+     * @param context from which call is being made
+     * @return value of magnitude to query and show
+     */
+    public static int getMagnitudePrefs(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(context.getString(R.string.sharedprefs_key_magnitude), 3);
+    }
+
+    /**
+     * Method to get Distance parameter from the SharedPreferences
+     * @param context from which call is being made
+     * @return distance in meters to use in Geofence radius
+     */
+    public static int getDistancePrefs(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int distance = sharedPreferences.getInt(context.getString(R.string.sharedprefs_key_distance), 25);
+        // miles
+        distance = (int) (distance * 1000 * 1.6);
+        return distance;
+    }
+
 }

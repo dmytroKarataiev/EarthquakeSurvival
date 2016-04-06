@@ -24,8 +24,10 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -50,7 +52,7 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RecentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -133,7 +135,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         });
         
         mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                   .setAction("Action", null).show());
+                .setAction("Action", null).show());
 
         return rootView;
     }
@@ -151,9 +153,9 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         return new CursorLoader(getActivity(),
                 EarthquakeColumns.CONTENT_URI,
                 null,
-                null,
-                null,
-                EarthquakeColumns.TIME + " DESC LIMIT 15");
+                EarthquakeColumns.MAG + " >= ?",
+                new String[] {String.valueOf(Utilities.getMagnitudePrefs(getContext()))},
+                EarthquakeColumns.TIME + " DESC");
     }
 
     // Set the cursor in our CursorAdapter once the Cursor is loaded
@@ -183,8 +185,21 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(getContext()).unregisterOnSharedPreferenceChangeListener(this);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.sharedprefs_key_magnitude))) {
+            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        }
     }
 }

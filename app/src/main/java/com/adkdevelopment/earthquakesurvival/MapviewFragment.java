@@ -24,13 +24,17 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -42,6 +46,7 @@ import android.view.ViewGroup;
 
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -60,7 +65,7 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MapviewFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor> {
+public class MapviewFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -128,6 +133,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -147,6 +154,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
         super.onDestroy();
         mMapView.onDestroy();
         ButterKnife.unbind(this);
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -167,8 +176,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
         return new CursorLoader(getActivity(),
                 EarthquakeColumns.CONTENT_URI,
                 null,
-                null,
-                null,
+                EarthquakeColumns.MAG + " >= ?",
+                new String[] {String.valueOf(Utilities.getMagnitudePrefs(getContext()))},
                 null);
     }
 
@@ -188,9 +197,19 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
      * @param magnitude from 0 to 10 scale earthquake intensity
      * @return colorful oval of size depending on magnitude
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private Bitmap getEarthquakeMarker(Double magnitude) {
 
-        GradientDrawable oval = (GradientDrawable) mOval;
+        if (magnitude < 1) {
+            magnitude = 1.0;
+        }
+
+        GradientDrawable oval;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            oval = (GradientDrawable) getResources().getDrawable(R.drawable.marker, getActivity().getTheme());
+        } else {
+            oval = (GradientDrawable) getResources().getDrawable(R.drawable.marker);
+        }
 
         if (magnitude > 3 && magnitude < 5) {
             oval.setColor(Color.BLUE);
@@ -198,6 +217,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
             oval.setColor(Color.YELLOW);
         } else if (magnitude > 7) {
             oval.setColor(Color.RED);
+        } else {
+            oval.setColor(Color.GREEN);
         }
 
         int diameter = (int) (oval.getIntrinsicWidth() * magnitude);
@@ -220,6 +241,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
      */
     private void addMarkers() {
         if (mGoogleMap != null && mCursor != null) {
+            mGoogleMap.clear();
             mCursor.moveToFirst();
 
             int lat = mCursor.getColumnIndex(EarthquakeColumns.LATITUDE);
@@ -249,6 +271,13 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
 
                 mGoogleMap.addMarker(markerOptions);
             }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.sharedprefs_key_magnitude))) {
+            getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
         }
     }
 }

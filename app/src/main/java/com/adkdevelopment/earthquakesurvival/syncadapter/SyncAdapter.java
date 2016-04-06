@@ -47,6 +47,7 @@ import com.adkdevelopment.earthquakesurvival.news_objects.Item;
 import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,12 +64,6 @@ import retrofit2.Response;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = SyncAdapter.class.getSimpleName();
-
-    // // TODO: 4/4/16 add from settings
-    // Interval at which to sync with the events, in seconds.
-    // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 60 * 180;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -241,7 +236,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Since we've created an account
          */
-        SyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        SyncAdapter.configurePeriodicSync(context,
+                Utilities.getSyncIntervalPrefs(context),
+                Utilities.getSyncIntervalPrefs(context) / 3);
 
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.
