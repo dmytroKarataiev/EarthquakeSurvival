@@ -37,7 +37,7 @@
         android:id="@+id/earthquake_item_magnitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+        android:text="@string/app.name"/>
 
     <TextView
         android:paddingTop="@dimen/padding"
@@ -46,7 +46,7 @@
         android:layout_below="@id/earthquake_item_magnitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+        android:text="@string/app.name"/>
 
     <TextView
         android:paddingTop="@dimen/padding"
@@ -56,7 +56,7 @@
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+        android:text="@string/app.name"/>
 
     <View
         android:layout_below="@id/earthquake_item_place"

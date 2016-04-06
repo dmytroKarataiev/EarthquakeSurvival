@@ -76,13 +76,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return mContext.getString(R.string.title_recent);
+                return mContext.getString(R.string.title_tab_recent);
             case 1:
-                return mContext.getString(R.string.title_maps);
+                return mContext.getString(R.string.title_tab_maps);
             case 2:
-                return mContext.getString(R.string.title_news);
+                return mContext.getString(R.string.title_tab_news);
             case 3:
-                return mContext.getString(R.string.title_info);
+                return mContext.getString(R.string.title_tab_info);
             default:
                 return "";
         }

@@ -25,17 +25,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sample="http://schemas.android.com/apk/res-auto">
 
-    <!-- A 'parent' preference, which enables/disables child preferences (below)
-         when checked/unchecked. -->
     <SwitchPreference
         android:defaultValue="true"
         android:key="@string/sharedprefs.key.notifications"
-        android:title="@string/pref_title_new_message_notifications" />
+        android:title="@string/settings.title.notifications" />
 
     <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="@string/sharedprefs.key.magnitude"
-        android:title="Magnitude"
-        android:summary="Show earthquakes stronger than"
+        android:title="@string/settings.title.magnitude"
+        android:summary="@string/settings.summary.magnitude"
         android:enabled="true"
         android:defaultValue="1"
         sample:msbp_minValue="-1"
@@ -45,8 +43,8 @@
 
     <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="@string/sharedprefs.key.distance"
-        android:title="Notify when in the area"
-        android:summary="Enter in active area"
+        android:title="@string/settings.title.distance"
+        android:summary="@string/settings.summary.distance"
         android:enabled="true"
         android:defaultValue="25"
         sample:msbp_minValue="0"
@@ -54,16 +52,14 @@
         sample:msbp_interval="1"
         sample:msbp_measurementUnit="miles"/>
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
         android:defaultValue="180"
-        android:entries="@array/pref_sync_frequency_titles"
-        android:entryValues="@array/pref_sync_frequency_values"
+        android:entries="@array/settings_sync_titles"
+        android:entryValues="@array/settings_sync_values"
         android:key="@string/sharedprefs.key.syncfrequency"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_sync_frequency" />
+        android:title="@string/settings.header.sync" />
 
 </PreferenceScreen>

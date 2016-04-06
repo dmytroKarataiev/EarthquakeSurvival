@@ -71,7 +71,7 @@ public class PlaceholderFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        mSectionLabel.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        mSectionLabel.setText(getString(R.string.temp_string, getArguments().getInt(ARG_SECTION_NUMBER)));
         return rootView;
     }
 

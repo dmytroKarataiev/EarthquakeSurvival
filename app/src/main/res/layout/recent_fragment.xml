@@ -37,15 +37,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/padding"
             android:layout_gravity="center_horizontal"
-            android:text="@string/list_empty" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_dialog_email" />
+            android:text="@string/recyclerview.empty.text" />
 
         <android.support.v7.widget.RecyclerView
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -54,10 +46,6 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
-
-
     </FrameLayout>
-
-
 
 </android.support.v4.widget.SwipeRefreshLayout>

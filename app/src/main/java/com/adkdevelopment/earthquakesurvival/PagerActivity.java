@@ -120,6 +120,7 @@ public class PagerActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), getApplicationContext());
@@ -152,6 +153,12 @@ public class PagerActivity extends AppCompatActivity
             }
         };
         getContentResolver().registerContentObserver(EarthquakeColumns.CONTENT_URI, false, mObserver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle();
     }
 
     @Override
@@ -246,10 +253,12 @@ public class PagerActivity extends AppCompatActivity
                 }
             }
 
+            // TODO: 4/6/16 refactor
             // Highlight image and text on selection
             mTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
+                    setTitle();
                     View customView = tab.getCustomView();
                     if (customView != null) {
                         ImageView imageView = ButterKnife.findById(customView, R.id.tab_item_image);
@@ -449,6 +458,31 @@ public class PagerActivity extends AppCompatActivity
                 ).setResultCallback(this); // Result processed in onResult().
             } catch (SecurityException securityException) {
                 // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+            }
+        }
+    }
+
+    /**
+     * Sets ActionBar title to the corresponding view
+     */
+    private void setTitle() {
+        if (mToolbar != null && mTab != null) {
+
+            switch (mTab.getSelectedTabPosition()) {
+                case 0:
+                    mToolbar.setTitle(getString(R.string.title_recent));
+                    break;
+                case 1:
+                    mToolbar.setTitle(getString(R.string.title_maps));
+                    break;
+                case 2:
+                    mToolbar.setTitle(getString(R.string.title_news));
+                    break;
+                case 3:
+                    mToolbar.setTitle(getString(R.string.title_info));
+                    break;
+                default:
+                    break;
             }
         }
     }

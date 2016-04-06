@@ -23,21 +23,23 @@
   -->
 
 <resources xmlns:xliff="http://schemas.android.com/tools">
-    <string name="app_name">Earthquake Survival</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="title_activity_settings">Settings</string>
+
+    <string name="app.name">Earthquake Survival</string>
+    <string name="recyclerview.empty.text">Oops! Something is wrong. Please check your internet connection and try again.</string>
+    <string name="temp.string">Hello World from section: %1$d</string>
+
+    <!-- Strings related to Menu -->
+    <string name="menu.button.settings">Settings</string>
+    <string name="menu.button.refresh">Refresh</string>
 
     <!-- Strings related to Settings -->
+    <string name="settings.title">Settings</string>
+    <string name="settings.title.sync">System sync settings</string>
+    <string name="settings.title.notifications">New message notifications</string>
+    <string name="settings.header.sync">Sync frequency</string>
+    <string name="settings.header.notifications">Notifications</string>
 
-    <!-- Example General settings -->
-    <string name="pref.refresh">Refresh</string>
-    <string name="pref_header_general">General</string>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
+    <string-array name="settings_sync_titles">
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
@@ -45,7 +47,7 @@
         <item>6 hours</item>
         <item>Never</item>
     </string-array>
-    <string-array name="pref_sync_frequency_values">
+    <string-array name="settings_sync_values">
         <item>15</item>
         <item>30</item>
         <item>60</item>
@@ -53,20 +55,32 @@
         <item>360</item>
         <item>-1</item>
     </string-array>
-    <string name="pref_title_system_sync_settings">System sync settings</string>
 
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="settings.title.magnitude">Magnitude</string>
+    <string name="settings.summary.magnitude">Show earthquakes stronger than</string>
+    <string name="settings.title.distance">Notify when near the area</string>
+    <string name="settings.summary.distance">Distance from the earthquake</string>
 
-    <string name="title_activity_detailed">DetailedActivity</string>
-    <string name="list_empty">Oops! Something is wrong. Please check your internet connection and try again.</string>
+    <!-- Shared Preferences Values -->
+    <string name="sharedprefs.key.latitude" translatable="false">lat</string>
+    <string name="sharedprefs.key.longitude" translatable="false">lng</string>
+    <string name="sharedprefs.key.syncfrequency" translatable="false">sync-frequency</string>
+    <string name="sharedprefs.key.magnitude" translatable="false">magn</string>
+    <string name="sharedprefs.key.distance" translatable="false">dist</string>
+    <string name="sharedprefs.key.notifications" translatable="false">notif</string>
 
     <!-- Fragments titles -->
-    <string name="title.news">News</string>
-    <string name="title.maps">Map</string>
-    <string name="title.recent">Recent</string>
-    <string name="title.info">Info</string>
+    <string name="title.details">Earthquake Details</string>
+    <string name="title.news">Current News</string>
+    <string name="title.maps">World Map</string>
+    <string name="title.recent">Recent earthquakes</string>
+    <string name="title.info">Survival Info</string>
+
+    <!-- Tabs titles -->
+    <string name="title.tab.news">News</string>
+    <string name="title.tab.maps">Map</string>
+    <string name="title.tab.recent">Recent</string>
+    <string name="title.tab.info">Info</string>
 
     <!-- Sync Adapter -->
     <string name="sync.account.type">com.adkdevelopment.earthquakesurvival</string>
@@ -91,15 +105,5 @@
 
     <!-- Google Api Client -->
     <string name="googleapiclient.notconnected">GoogleApiClient not yet connected. Try again.</string>
-
-    <!-- Shared Preferences Values -->
-    <string name="sharedprefs.key.latitude" translatable="false">lat</string>
-    <string name="sharedprefs.key.longitude" translatable="false">lng</string>
-    <string name="sharedprefs.key.syncfrequency" translatable="false">sync-frequency</string>
-    <string name="sharedprefs.key.magnitude" translatable="false">magn</string>
-    <string name="sharedprefs.key.distance" translatable="false">dist</string>
-    <string name="sharedprefs.key.notifications" translatable="false">notif</string>
-
-
 
 </resources>

@@ -26,6 +26,8 @@ package com.adkdevelopment.earthquakesurvival;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +49,7 @@ public class DetailFragment extends Fragment {
     @Bind(R.id.earthquake_title) TextView mEarthquakeTitle;
     @Bind(R.id.earthquake_latitude) TextView mEarthquakeLatitude;
     @Bind(R.id.earthquake_longitude) TextView mEarthquakeLongitude;
+    @Bind(R.id.fab) FloatingActionButton mFab;
 
     public DetailFragment() {
     }
@@ -64,6 +67,9 @@ public class DetailFragment extends Fragment {
 
             mEarthquakeTitle.setText(input.getStringExtra(Feature.EARTHQUAKE));
         }
+
+        mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         return rootView;
     }
