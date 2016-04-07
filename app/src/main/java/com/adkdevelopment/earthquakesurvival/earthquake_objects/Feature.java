@@ -48,7 +48,11 @@ public class Feature implements Parcelable {
     @Expose
     private String id;
 
-    public static final String EARTHQUAKE = "earthquake";
+    public static final String MAGNITUDE = "magnitude";
+    public static final String DATE = "date";
+    public static final String PLACE = "place";
+    public static final String LINK = "link";
+    public static final String LATLNG = "latlng";
 
     /**
      *

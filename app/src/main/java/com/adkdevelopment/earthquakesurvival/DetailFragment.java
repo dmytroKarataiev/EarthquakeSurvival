@@ -25,31 +25,53 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.Bind;
+import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
-    @Bind(R.id.earthquake_image) ImageView mEarhquakeImage;
-    @Bind(R.id.earthquake_title) TextView mEarthquakeTitle;
-    @Bind(R.id.earthquake_latitude) TextView mEarthquakeLatitude;
-    @Bind(R.id.earthquake_longitude) TextView mEarthquakeLongitude;
     @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.map) MapView mMapView;
+    @Bind(R.id.earthquake_place) TextView mEarthquakePlace;
+    @Bind(R.id.earthquake_magnitude) TextView mEarthquakeMagnitude;
+    @Bind(R.id.earthquake_date) TextView mEarthquakeDate;
+    @Bind(R.id.earthquake_link) TextView mEarthquakeLink;
+    @BindDrawable(R.drawable.marker) Drawable mOval;
+
+    private GoogleMap mGoogleMap;
+    private CameraPosition mCameraPosition;
+    private LatLng mPosition;
+    private Double mMagnitude;
+    private String mLink;
+
+    public static final String CAMERA_POSITION = "camera";
 
     public DetailFragment() {
     }
@@ -63,14 +85,109 @@ public class DetailFragment extends Fragment {
 
         if (getActivity().getIntent() != null) {
             Intent input = getActivity().getIntent();
-            //Feature earthquake = input.getParcelableExtra(Feature.EARTHQUAKE);
+            String date = input.getStringExtra(Feature.DATE);
+            String place = input.getStringExtra(Feature.PLACE);
+            mLink = input.getStringExtra(Feature.LINK);
+            mMagnitude = input.getDoubleExtra(Feature.MAGNITUDE, 1.0);
+            mPosition = input.getParcelableExtra(Feature.LATLNG);
 
-            mEarthquakeTitle.setText(input.getStringExtra(Feature.EARTHQUAKE));
+            mEarthquakeLink.setText(getString(R.string.earthquake_link, mLink));
+
+            // awesome method to make all links clickable!
+            Linkify.addLinks(mEarthquakeLink, Linkify.ALL);
+
+            mEarthquakeDate.setText(date);
+            mEarthquakePlace.setText(place);
+            mEarthquakeMagnitude.setText(getString(R.string.earthquake_magnitude, mMagnitude));
+
+            if (mPosition == null) {
+                mPosition = LocationUtils.getLocation(getContext());
+            }
+        }
+
+        mMapView.onCreate(savedInstanceState);
+        mMapView.getMapAsync(this);
+
+        if (savedInstanceState != null) {
+            mCameraPosition = savedInstanceState.getParcelable(CAMERA_POSITION);
+        } else {
+            mCameraPosition = CameraPosition.builder()
+                    .target(mPosition)
+                    .zoom(LocationUtils.CAMERA_DEFAULT_ZOOM)
+                    .build();
         }
 
         mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
         return rootView;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        if (mCameraPosition != null) {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
+        }
+        addMarkers();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        CameraPosition save = mGoogleMap.getCameraPosition();
+        outState.putParcelable(CAMERA_POSITION, save);
+    }
+
+    /**
+     * Adds markers to the map from the database
+     */
+    private void addMarkers() {
+        if (mGoogleMap != null) {
+            mGoogleMap.clear();
+
+            LatLng latLng = LocationUtils.getLocation(getContext());
+            if (mPosition != null) {
+                latLng = mPosition;
+            }
+
+            Double magnitude = 1.0;
+            if (mMagnitude != null) {
+                magnitude = mMagnitude;
+            }
+
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory
+                            .fromBitmap(Utilities.getEarthquakeMarker(getContext(), magnitude)));
+
+            mGoogleMap.addMarker(markerOptions);
+
+        }
     }
 }

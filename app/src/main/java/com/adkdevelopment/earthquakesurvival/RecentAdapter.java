@@ -33,7 +33,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +42,8 @@ import android.widget.TextView;
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
-
-import java.util.Date;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,19 +73,27 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
 
+        String link = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
         String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
         Long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
-        Date date = new Date(dateMillis);
-
         Double magnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
+        Double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+        Double longitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+
+        LatLng latLng = new LatLng(latitude, longitude);
 
         viewHolder.mEarthquakePlace.setText(place);
-        viewHolder.mEarthquakeDate.setText(DateUtils.getRelativeTimeSpanString(date.getTime()).toString());
+        viewHolder.mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
         viewHolder.mEarthquakeMagnitude.setText(Double.toString(magnitude));
 
         viewHolder.mEarthquakeClick.setOnClickListener(click -> {
             Intent intent = new Intent(mContext, DetailActivity.class);
-            intent.putExtra(Feature.EARTHQUAKE, place);
+            intent.putExtra(Feature.MAGNITUDE, magnitude);
+            intent.putExtra(Feature.PLACE, place);
+            intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
+            intent.putExtra(Feature.LINK, link);
+            intent.putExtra(Feature.LATLNG, latLng);
+
             mContext.startActivity(intent);
 
             // TODO: 3/25/16 add shared transitions

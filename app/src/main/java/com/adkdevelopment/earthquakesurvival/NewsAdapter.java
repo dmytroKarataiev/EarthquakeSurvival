@@ -33,7 +33,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +42,7 @@ import android.widget.Toast;
 
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
-
-import java.util.Date;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,8 +90,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolde
     public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
 
         Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));
-        Date date = new Date(dateMillis);
-        holder.mDate.setText(DateUtils.getRelativeTimeSpanString(date.getTime()).toString());
+        holder.mDate.setText(Utilities.getNiceDate(dateMillis));
 
         String description = cursor.getString(cursor.getColumnIndex(NewsColumns.DESCRIPTION));
         String title = cursor.getString(cursor.getColumnIndex(NewsColumns.TITLE));

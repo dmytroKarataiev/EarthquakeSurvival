@@ -90,6 +90,7 @@
     <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
     <string name="earthquake.longitude">Longitude: <xliff:g id="longitude">%1$.4f</xliff:g></string>
     <string name="earthquake.magnitude">Magnitude: <xliff:g id="longitude">%1$.1f</xliff:g></string>
+    <string name="earthquake.link">Learn more: <xliff:g id="longitude">%1$s</xliff:g></string>
 
     <!-- Geofence Strings -->
     <string name="geofence.error.unavailable">Geofence service is not available now</string>

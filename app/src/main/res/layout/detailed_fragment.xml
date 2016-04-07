@@ -22,6 +22,7 @@
   ~ SOFTWARE.
   -->
 
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -33,39 +34,71 @@
     tools:context=".DetailFragment"
     tools:showIn="@layout/detailed_activity">
 
-    <ImageView
-        android:id="@+id/earthquake_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/earthquake_title"
-        android:layout_below="@+id/earthquake_image"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:id="@+id/map_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        android:layout_margin="8dp">
 
-    <TextView
-        android:id="@+id/earthquake_latitude"
-        android:layout_below="@+id/earthquake_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test"/>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
 
-    <TextView
-        android:id="@+id/earthquake_longitude"
-        android:layout_below="@+id/earthquake_latitude"
-        android:layout_width="wrap_content"
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/info_card"
+        android:layout_width="match_parent"
+        android:layout_below="@id/map_card"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        android:layout_margin="8dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding" >
+
+            <TextView
+                android:id="@+id/earthquake_magnitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Magnitude 5.9" />
+
+            <TextView
+                android:id="@+id/earthquake_date"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date" />
+
+            <TextView
+                android:id="@+id/earthquake_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/earthquake_magnitude"
+                android:text="Place" />
+
+            <TextView
+                android:id="@+id/earthquake_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/earthquake_place" />
+
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email" />
 
 </RelativeLayout>
+
