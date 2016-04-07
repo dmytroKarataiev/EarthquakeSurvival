@@ -30,13 +30,20 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +64,8 @@ import butterknife.ButterKnife;
  */
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
+    private static final String TAG = DetailFragment.class.getSimpleName();
+
     @Bind(R.id.fab) FloatingActionButton mFab;
     @Bind(R.id.map) MapView mMapView;
     @Bind(R.id.earthquake_place) TextView mEarthquakePlace;
@@ -67,11 +76,17 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mGoogleMap;
     private CameraPosition mCameraPosition;
+    public static final String CAMERA_POSITION = "camera";
+
+    // Earthquake event
     private LatLng mPosition;
     private Double mMagnitude;
     private String mLink;
+    private String mDescription;
+    private String mDate;
 
-    public static final String CAMERA_POSITION = "camera";
+    // ShareActionProvider - sharing info with others
+    ShareActionProvider mShareActionProvider;
 
     public DetailFragment() {
     }
@@ -80,13 +95,14 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.detailed_fragment, container, false);
+        setHasOptionsMenu(true);
 
         ButterKnife.bind(this, rootView);
 
         if (getActivity().getIntent() != null) {
             Intent input = getActivity().getIntent();
-            String date = input.getStringExtra(Feature.DATE);
-            String place = input.getStringExtra(Feature.PLACE);
+            mDate = input.getStringExtra(Feature.DATE);
+            mDescription = input.getStringExtra(Feature.PLACE);
             mLink = input.getStringExtra(Feature.LINK);
             mMagnitude = input.getDoubleExtra(Feature.MAGNITUDE, 1.0);
             mPosition = input.getParcelableExtra(Feature.LATLNG);
@@ -96,8 +112,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             // awesome method to make all links clickable!
             Linkify.addLinks(mEarthquakeLink, Linkify.ALL);
 
-            mEarthquakeDate.setText(date);
-            mEarthquakePlace.setText(place);
+            mEarthquakeDate.setText(mDate);
+            mEarthquakePlace.setText(mDescription);
             mEarthquakeMagnitude.setText(getString(R.string.earthquake_magnitude, mMagnitude));
 
             if (mPosition == null) {
@@ -117,6 +133,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                     .build();
         }
 
+        // TODO: 4/6/16 replace
         mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
@@ -188,6 +205,52 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
             mGoogleMap.addMarker(markerOptions);
 
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_detailed, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_item_share);
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+
+        setShareIntent();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.menu_item_settings:
+                startActivity(new Intent(getContext(), SettingsActivity.class));
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Sets a share intent on ShareActionProvider
+     */
+    private void setShareIntent() {
+        if (mShareActionProvider != null) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    getString(R.string.earthquake_magnitude, mMagnitude) + "\n"
+                            + mDate + "\n"
+                            + mDescription + "\n"
+                            + getString(R.string.earthquake_link, mLink));
+            mShareActionProvider.setShareIntent(intent);
+        } else {
+            Log.e(TAG, "ShareActionProvider is null");
         }
     }
 }

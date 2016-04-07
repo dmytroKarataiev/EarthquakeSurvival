@@ -18,7 +18,7 @@ Final Nanodegree Project
 * SharedTransitions
 * Parallax Scrolling
 * [Notifications](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/b7d081d0fafe7db03648ba55b8dd22326ddfca5a/app/src/main/java/com/adkdevelopment/earthquakesurvival/geofence/GeofenceService.java#L97)
-* ShareActionProvider
+* [ShareActionProvider](app/src/main/java/com/adkdevelopment/earthquakesurvival/DetailFragment.java)
 * Broadcast Events
 * Custom Views
 
