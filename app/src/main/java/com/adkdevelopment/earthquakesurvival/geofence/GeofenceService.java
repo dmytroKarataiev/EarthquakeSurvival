@@ -129,9 +129,12 @@ public class GeofenceService extends IntentService {
         builder.setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(largeIcon)
                 .setColor(Color.RED)
-                .setContentTitle(notificationDetails)
+                .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.geofence_notification_text))
-                .setContentIntent(notificationPendingIntent);
+                .setContentIntent(notificationPendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(notificationDetails + "\n"
+                                + getString(R.string.geofence_notification_text)));
 
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);

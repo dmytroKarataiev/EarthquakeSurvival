@@ -147,7 +147,6 @@ public class PagerActivity extends AppCompatActivity
         // Observe SyncAdapter work and update Geofences
         mObserver = new ContentObserver(new Handler(Looper.getMainLooper())) {
             public void onChange(boolean selfChange) {
-                Log.d(TAG, "called");
                 populateGeofenceList();
                 observeGeofences();
             }
@@ -390,20 +389,20 @@ public class PagerActivity extends AppCompatActivity
 
         if (cursor != null && cursor.getCount() > 0) {
             mGeofenceList.clear();
-            while (cursor.moveToNext()) {
+            int i = 0;
+            while (cursor.moveToNext() && i < 80) { // Geofence limit is around 80 per device
                 String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
                 double lat = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
                 double lng = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
-
                 mGeofenceList.add(new Geofence.Builder()
                         .setRequestId(place)
                         .setCircularRegion(lat, lng, Utilities.getDistancePrefs(getBaseContext()))
                         .setExpirationDuration(LocationUtils.EXP_MILLIS)
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                         .build());
+                i++;
             }
             cursor.close();
-            Log.d(TAG, "mGeofenceList.size():" + mGeofenceList.size());
         }
     }
 

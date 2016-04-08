@@ -27,7 +27,6 @@ package com.adkdevelopment.earthquakesurvival.syncadapter;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 /**
  * Define a Service that returns an IBinder for the
@@ -52,8 +51,6 @@ public class SyncService extends Service {
          * Set the sync adapter as syncable
          * Disallow parallel syncs
          */
-        Log.d(TAG, "onCreate - SunshineSyncService");
-
         synchronized (sSyncAdapterLock) {
             if (sSyncAdapter == null) {
                 sSyncAdapter = new SyncAdapter(getApplicationContext(), true);

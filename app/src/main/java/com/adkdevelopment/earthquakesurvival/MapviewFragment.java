@@ -159,8 +159,10 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        CameraPosition save = mGoogleMap.getCameraPosition();
-        outState.putParcelable(CAMERA_POSITION, save);
+        if (mGoogleMap != null) {
+            CameraPosition save = mGoogleMap.getCameraPosition();
+            outState.putParcelable(CAMERA_POSITION, save);
+        }
     }
 
     @Override

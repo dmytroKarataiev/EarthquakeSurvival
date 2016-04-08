@@ -83,7 +83,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             public void onResponse(Call<EarthquakeObject> call, Response<EarthquakeObject> response) {
                 EarthquakeObject earthquake = response.body();
 
-                Log.d(TAG, "onResponse: success " + earthquake.getFeatures().size());
+                //Log.d(TAG, "onResponse: success " + earthquake.getFeatures().size());
 
                 Vector<ContentValues> cVVector = new Vector<>(earthquake.getFeatures().size());
                 for (Feature each : earthquake.getFeatures()) {
@@ -120,12 +120,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS);
 
                 int deleted = resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{String.valueOf(date.getTime())});
-                Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
+                //Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
             }
 
             @Override
             public void onFailure(Call<EarthquakeObject> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
+                Log.e(TAG, "onFailure: " + t.toString());
             }
         });
 
@@ -182,7 +182,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             @Override
             public void onFailure(Call<Rss> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.toString());
+                Log.e(TAG, "onFailure: " + t.toString());
             }
         });
 
