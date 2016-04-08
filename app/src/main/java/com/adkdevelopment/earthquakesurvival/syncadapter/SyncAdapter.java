@@ -35,6 +35,8 @@ import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannedString;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -149,7 +151,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                     weatherValues.put(NewsColumns.DATE, date.getTime());
                     weatherValues.put(NewsColumns.TITLE, each.getTitle());
-                    weatherValues.put(NewsColumns.DESCRIPTION, each.getDescription());
+                    weatherValues.put(NewsColumns.DESCRIPTION, Html.toHtml(new SpannedString(each.getDescription())));
                     weatherValues.put(NewsColumns.URL, each.getLink());
                     weatherValues.put(NewsColumns.GUID, each.getGuid().getContent());
 

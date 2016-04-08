@@ -32,7 +32,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.text.util.Linkify;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -107,10 +108,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mMagnitude = input.getDoubleExtra(Feature.MAGNITUDE, 1.0);
             mPosition = input.getParcelableExtra(Feature.LATLNG);
 
-            mEarthquakeLink.setText(getString(R.string.earthquake_link, mLink));
-
-            // awesome method to make all links clickable!
-            Linkify.addLinks(mEarthquakeLink, Linkify.ALL);
+            mEarthquakeLink.setText(Html.fromHtml(getString(R.string.earthquake_link, mLink)));
+            mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
 
             mEarthquakeDate.setText(mDate);
             mEarthquakePlace.setText(mDescription);
@@ -204,7 +203,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                             .fromBitmap(Utilities.getEarthquakeMarker(getContext(), magnitude)));
 
             mGoogleMap.addMarker(markerOptions);
-
         }
     }
 
@@ -214,24 +212,18 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         inflater.inflate(R.menu.menu_detailed, menu);
 
         MenuItem menuItem = menu.findItem(R.id.menu_item_share);
-
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-
-
         setShareIntent();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
         switch (id) {
             case R.id.menu_item_settings:
                 startActivity(new Intent(getContext(), SettingsActivity.class));
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -34,23 +34,42 @@
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
-            android:id="@+id/news_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/news_item_description"
-            android:layout_below="@id/news_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/news_item_date"
+            android:id="@+id/stat_item_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/news_item_title"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:paddingBottom="@dimen/padding" />
+
+        <TextView
+            android:id="@+id/stat_item_largest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_below="@+id/stat_item_total"
+            android:text="@string/earthquake.statistics.largest"/>
+
+        <TextView
+            android:id="@+id/stat_item_magnitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_below="@+id/stat_item_largest" />
+
+        <TextView
+            android:id="@+id/stat_item_description"
+            android:layout_below="@id/stat_item_magnitude"
+            android:layout_width="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/stat_item_date"
+            android:layout_below="@id/stat_item_largest"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

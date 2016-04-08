@@ -78,10 +78,6 @@ dependencies {
     // google play services
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
-
-    // stream support
-    compile 'com.annimon:stream:1.0.8'
-
 }
 
 retrolambda {

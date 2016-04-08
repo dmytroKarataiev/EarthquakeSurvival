@@ -33,13 +33,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
@@ -51,7 +52,7 @@ import butterknife.ButterKnife;
  * Creates RecyclerView adapter which populates task items in MainFragment
  * Each element has an onClickListener
  */
-public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolder> {
+public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
 
@@ -62,8 +63,20 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolde
         @Bind(R.id.news_item_date) TextView mDate;
         @Bind(R.id.news_item_description) TextView mDescription;
 
-
         public ViewHolder(View v) {
+            super(v);
+            ButterKnife.bind(this, v);
+        }
+    }
+
+    public class ViewHolderStats extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        @Bind(R.id.stat_item_total) TextView mStatTotal;
+        @Bind(R.id.stat_item_magnitude) TextView mStatMagnitude;
+        @Bind(R.id.stat_item_description) TextView mStatDescription;
+        @Bind(R.id.stat_item_date) TextView mStatDate;
+
+        public ViewHolderStats(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
@@ -77,34 +90,82 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolde
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.news_item, parent, false);
+        View v;
+        switch (viewType) {
+            case 0:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.news_statistics, parent, false);
 
-        return new ViewHolder(v);
+                return new ViewHolderStats(v);
+            default:
+                v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.news_item, parent, false);
+
+                return new ViewHolder(v);
+        }
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
 
-        Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));
-        holder.mDate.setText(Utilities.getNiceDate(dateMillis));
+        // TODO: 4/7/16 refactor
+        if (holder.getItemViewType() == 0) {
 
-        String description = cursor.getString(cursor.getColumnIndex(NewsColumns.DESCRIPTION));
-        String title = cursor.getString(cursor.getColumnIndex(NewsColumns.TITLE));
+            Cursor tempCursor = mContext.getContentResolver()
+                    .query(EarthquakeColumns.CONTENT_URI,
+                            new String[]{EarthquakeColumns.TIME},
+                            null,
+                            null,
+                            null);
 
-        if (description != null) {
-            holder.mDescription.setText(Html.fromHtml(description));
+            if (tempCursor != null) {
+
+                long count = tempCursor.getCount();
+                ((ViewHolderStats) holder).mStatTotal.setText(mContext.getString(R.string.earthquake_statistics_day, count));
+
+                tempCursor.close();
+                tempCursor = mContext.getContentResolver().query(EarthquakeColumns.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        EarthquakeColumns.MAG + " DESC LIMIT 1");
+
+                if (tempCursor != null) {
+                    tempCursor.moveToFirst();
+
+                    String desc = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.PLACE));
+                    ((ViewHolderStats) holder).mStatDescription.setText(desc);
+
+                    Double magnitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.MAG));
+                    ((ViewHolderStats) holder).mStatMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
+
+                    Long dateMillis = tempCursor.getLong(tempCursor.getColumnIndex(EarthquakeColumns.TIME));
+                    ((ViewHolderStats) holder).mStatDate.setText(Utilities.getNiceDate(dateMillis));
+
+                    tempCursor.close();
+                }
+            }
+
+        } else {
+            Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));
+            ((ViewHolder) holder).mDate.setText(Utilities.getNiceDate(dateMillis));
+
+            String title = cursor.getString(cursor.getColumnIndex(NewsColumns.TITLE));
+            String link = cursor.getString(cursor.getColumnIndex(NewsColumns.URL));
+
+            link = mContext.getString(R.string.earthquake_link, link);
+            ((ViewHolder) holder).mDescription.setText(Html.fromHtml(link));
+            ((ViewHolder) holder).mDescription.setMovementMethod(LinkMovementMethod.getInstance());
+
+            ((ViewHolder) holder).mTitle.setText(title);
+
+            ((ViewHolder) holder).mTitle.setOnClickListener(click -> {
+                Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show();
+            });
         }
-        holder.mTitle.setText(title);
-
-        holder.mTitle.setOnClickListener(click -> {
-            if (BuildConfig.DEBUG) Log.d("ViewHolder", title);
-            Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show();
-        });
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -118,4 +179,8 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<NewsAdapter.ViewHolde
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

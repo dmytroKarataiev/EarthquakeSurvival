@@ -25,8 +25,6 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -35,7 +33,6 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
-    @Bind(R.id.fab) FloatingActionButton mFab;
     @Bind(R.id.toolbar) Toolbar mToolbar;
 
     @Override
@@ -46,9 +43,6 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-
-        mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

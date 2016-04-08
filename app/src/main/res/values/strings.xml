@@ -36,7 +36,7 @@
     <!-- Strings related to Settings -->
     <string name="settings.title">Settings</string>
     <string name="settings.title.sync">System sync settings</string>
-    <string name="settings.title.notifications">New message notifications</string>
+    <string name="settings.title.notifications">Notifications</string>
     <string name="settings.header.sync">Sync frequency</string>
     <string name="settings.header.notifications">Notifications</string>
 
@@ -90,8 +90,11 @@
     <!-- Placeholder Strings -->
     <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
     <string name="earthquake.longitude">Longitude: <xliff:g id="longitude">%1$.4f</xliff:g></string>
-    <string name="earthquake.magnitude">Magnitude: <xliff:g id="longitude">%1$.1f</xliff:g></string>
-    <string name="earthquake.link">Learn more: <xliff:g id="longitude">%1$s</xliff:g></string>
+    <string name="earthquake.magnitude">Magnitude: <xliff:g id="magn">%1$.1f</xliff:g></string>
+    <string name="earthquake.statistics.day">Earthquakes today: <xliff:g id="magn">%1$d</xliff:g></string>
+    <string name="earthquake.statistics.largest">Largest earthquake today</string>
+
+    <string name="earthquake.link"><![CDATA[<a href="]]><xliff:g id="link">%1$s</xliff:g><![CDATA[">Learn more</a>]]></string>
 
     <!-- Geofence Strings -->
     <string name="geofence.error.unavailable">Geofence service is not available now</string>

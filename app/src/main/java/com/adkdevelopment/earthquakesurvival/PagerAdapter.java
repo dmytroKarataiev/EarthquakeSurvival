@@ -105,7 +105,11 @@ public class PagerAdapter extends FragmentPagerAdapter {
         if (position == 1) {
             return getItem(position);
         } else {
-            return registeredFragments.valueAt(position).get();
+            if (registeredFragments.valueAt(position) != null) {
+                return registeredFragments.valueAt(position).get();
+            } else {
+                return getItem(position);
+            }
         }
     }
 

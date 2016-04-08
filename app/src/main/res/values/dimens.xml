@@ -49,4 +49,6 @@
     <!-- Marker Drawable Size -->
     <dimen name="marker.size">10dp</dimen>
 
+    <dimen name="cardview.padding">8dp</dimen>
+
 </resources>

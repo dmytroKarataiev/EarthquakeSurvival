@@ -37,7 +37,7 @@ public interface EarthquakeService {
 
     String sEarthquakeLink = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
 
-    @GET(sEarthquakeLink + "all_hour.geojson")
+    @GET(sEarthquakeLink + "all_day.geojson")
     Call<EarthquakeObject> getData();
 
     @GET("https://news.google.com/news?q=earthquake&output=rss")
