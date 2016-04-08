@@ -27,6 +27,7 @@ package com.adkdevelopment.earthquakesurvival;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -34,6 +35,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -52,6 +54,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adkdevelopment.earthquakesurvival.geofence.GeofenceService;
+import com.adkdevelopment.earthquakesurvival.ui.ZoomOutPageTransformer;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
@@ -76,7 +79,7 @@ import butterknife.ButterKnife;
 
 public class PagerActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<Status> {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<Status>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -128,7 +131,7 @@ public class PagerActivity extends AppCompatActivity
         // Set up the ViewPager with the sections adapter.
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setOffscreenPageLimit(mPagerAdapter.getCount());
-
+        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mTab.setupWithViewPager(mViewPager);
         setTabImages();
 
@@ -158,6 +161,8 @@ public class PagerActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         setTitle();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -180,6 +185,8 @@ public class PagerActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         getContentResolver().unregisterContentObserver(mObserver);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -483,6 +490,15 @@ public class PagerActivity extends AppCompatActivity
                 default:
                     break;
             }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.sharedprefs_key_syncfrequency))) {
+            SyncAdapter.configurePeriodicSync(this,
+                    Utilities.getSyncIntervalPrefs(this),
+                    Utilities.getSyncIntervalPrefs(this) / 3);
         }
     }
 }

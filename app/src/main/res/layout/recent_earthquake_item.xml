@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2016. Dmytro Karataiev
@@ -24,44 +23,47 @@
   -->
 
 <RelativeLayout
-    android:id="@+id/earthquake_item_click"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/earthquake_item_click"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white" >
+    android:background="@color/white">
 
 
     <TextView
-        android:paddingTop="@dimen/padding"
-        android:paddingLeft="@dimen/padding"
         android:id="@+id/earthquake_item_magnitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app.name"/>
+        android:paddingLeft="@dimen/padding"
+        android:paddingTop="@dimen/padding"
+        android:text="@string/app.name"
+        android:transitionName="@string/transition.magnitude" />
 
     <TextView
-        android:paddingTop="@dimen/padding"
-        android:paddingLeft="@dimen/padding"
         android:id="@+id/earthquake_item_place"
-        android:layout_below="@id/earthquake_item_magnitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app.name"/>
+        android:layout_below="@id/earthquake_item_magnitude"
+        android:paddingLeft="@dimen/padding"
+        android:paddingTop="@dimen/padding"
+        android:text="@string/app.name"
+        android:transitionName="@string/transition.place" />
 
     <TextView
-        android:paddingTop="@dimen/padding"
-        android:paddingRight="@dimen/padding"
         android:id="@+id/earthquake_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app.name"/>
+        android:paddingRight="@dimen/padding"
+        android:paddingTop="@dimen/padding"
+        android:text="@string/app.name"
+        android:transitionName="@string/transition.date" />
 
     <View
-        android:layout_below="@id/earthquake_item_place"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/earthquake_item_place"
         android:background="@color/colorPrimary" />
 
 

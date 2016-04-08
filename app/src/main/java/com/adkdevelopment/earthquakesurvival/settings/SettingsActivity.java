@@ -65,7 +65,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // the preference's 'entries' list.
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(stringValue);
-
             // Set the summary to reflect the new value.
             preference.setSummary(
                     index >= 0

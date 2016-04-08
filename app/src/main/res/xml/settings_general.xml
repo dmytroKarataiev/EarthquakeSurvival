@@ -54,7 +54,7 @@
 
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:defaultValue="180"
+        android:defaultValue="10800"
         android:entries="@array/settings_sync_titles"
         android:entryValues="@array/settings_sync_values"
         android:key="@string/sharedprefs.key.syncfrequency"

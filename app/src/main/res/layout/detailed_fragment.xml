@@ -50,34 +50,37 @@
     <android.support.v7.widget.CardView
         android:id="@+id/info_card"
         android:layout_width="match_parent"
-        android:layout_below="@id/map_card"
         android:layout_height="wrap_content"
+        android:layout_below="@id/map_card"
         android:layout_margin="8dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding" >
+            android:padding="@dimen/padding">
 
             <TextView
                 android:id="@+id/earthquake_magnitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Magnitude 5.9" />
+                android:text="Magnitude 5.9"
+                android:transitionName="@string/transition.magnitude" />
 
             <TextView
                 android:id="@+id/earthquake_date"
-                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date" />
+                android:layout_alignParentRight="true"
+                android:text="Date"
+                android:transitionName="@string/transition.date" />
 
             <TextView
                 android:id="@+id/earthquake_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/earthquake_magnitude"
-                android:text="Place" />
+                android:text="Place"
+                android:transitionName="@string/transition.place" />
 
             <TextView
                 android:id="@+id/earthquake_link"

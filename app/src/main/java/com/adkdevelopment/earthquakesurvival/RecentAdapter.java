@@ -24,15 +24,14 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
-/**
- * Simple RecyclerView adapter with OnClickListener on each element
- * Created by karataev on 3/15/16.
- */
-
-import android.content.Context;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,7 @@ import butterknife.ButterKnife;
  */
 public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewHolder> {
 
-    private final Context mContext;
+    private final Activity mContext;
 
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -84,7 +83,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
         viewHolder.mEarthquakePlace.setText(place);
         viewHolder.mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
-        viewHolder.mEarthquakeMagnitude.setText(Double.toString(magnitude));
+        viewHolder.mEarthquakeMagnitude.setText(String.format("%.1f", magnitude));
 
         viewHolder.mEarthquakeClick.setOnClickListener(click -> {
             Intent intent = new Intent(mContext, DetailActivity.class);
@@ -94,16 +93,22 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
             intent.putExtra(Feature.LINK, link);
             intent.putExtra(Feature.LATLNG, latLng);
 
-            mContext.startActivity(intent);
-
-            // TODO: 3/25/16 add shared transitions
-            // Shared Transitions for SDK >= 21
-            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //    @SuppressWarnings("unchecked") Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((AppCompatActivity) mContext).toBundle();
-            //     mContext.startActivity(intent, bundle);
-            // } else {
-            //mContext.startActivity(intent);
-            // }
+            // Check if a phone supports shared transitions
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //noinspection unchecked always true
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
+                        mContext,
+                        Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_place),
+                                viewHolder.itemView.findViewById(R.id.earthquake_item_place).getTransitionName()),
+                        Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_date),
+                                viewHolder.itemView.findViewById(R.id.earthquake_item_date).getTransitionName()),
+                        Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude),
+                                viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude).getTransitionName()))
+                        .toBundle();
+                mContext.startActivity(intent, bundle);
+            } else {
+                mContext.startActivity(intent);
+            }
         });
     }
 
@@ -116,7 +121,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecentAdapter(Context context, Cursor c) {
+    public RecentAdapter(Activity context, Cursor c) {
         super(context, c);
         mContext = context;
     }
