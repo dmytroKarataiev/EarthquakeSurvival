@@ -147,4 +147,35 @@ public class LocationUtils {
         editor.apply();
     }
 
+    /**
+     * Metho uses the ‘haversine’ formula to calculate the great-circle distance between two points –
+     * that is, the shortest distance over the earth’s surface – giving an ‘as-the-crow-flies’
+     * distance between the points (ignoring any hills they fly over, of course!).
+     * @param latLng initial coordiantes
+     * @param location distance to calculate from
+     * @return distance in miles from your location to this point
+     */
+    public static double getDistance(LatLng latLng, LatLng location) {
+
+        if (location.latitude != 0) {
+            double EARTH_RADIUS = 6371000;
+
+            double phi1 = Math.toRadians(latLng.latitude);
+            double phi2 = Math.toRadians(location.latitude);
+
+            double dPhi = Math.toRadians(location.latitude - latLng.latitude);
+            double dGamma = Math.toRadians(location.longitude - latLng.longitude);
+
+            double a = Math.sin(dPhi / 2) * Math.sin(dPhi / 2) +
+                    Math.cos(phi1) * Math.cos(phi2) *
+                    Math.sin(dGamma / 2) * Math.sin(dGamma / 2);
+
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return EARTH_RADIUS * c / 1.6 / 1000;
+        } else {
+            return 0.0;
+        }
+    }
+
 }

@@ -82,20 +82,23 @@
                     android:transitionName="@string/transition.place" />
 
                 <TextView
+                    android:id="@+id/earthquake_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/earthquake_place"
+                    android:transitionName="@string/transition.distance" />
+
+                <TextView
                     android:id="@+id/earthquake_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/earthquake_place" />
-
+                    android:layout_below="@+id/earthquake_distance" />
 
             </RelativeLayout>
 
-
         </android.support.v7.widget.CardView>
 
-
     </LinearLayout>
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

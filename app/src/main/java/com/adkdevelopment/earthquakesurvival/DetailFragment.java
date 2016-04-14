@@ -74,6 +74,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Bind(R.id.earthquake_date) TextView mEarthquakeDate;
     @Bind(R.id.earthquake_link) TextView mEarthquakeLink;
     @BindDrawable(R.drawable.marker) Drawable mOval;
+    @Bind(R.id.earthquake_distance) TextView mEarthquakeDistance;
 
     private GoogleMap mGoogleMap;
     private CameraPosition mCameraPosition;
@@ -85,6 +86,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private String mLink;
     private String mDescription;
     private String mDate;
+    private String mDistance;
 
     // ShareActionProvider - sharing info with others
     ShareActionProvider mShareActionProvider;
@@ -107,10 +109,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mLink = input.getStringExtra(Feature.LINK);
             mMagnitude = input.getDoubleExtra(Feature.MAGNITUDE, 1.0);
             mPosition = input.getParcelableExtra(Feature.LATLNG);
+            mDistance = input.getStringExtra(Feature.DISTANCE);
 
             mEarthquakeLink.setText(Html.fromHtml(getString(R.string.earthquake_link, mLink)));
             mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
 
+            mEarthquakeDistance.setText(mDistance);
             mEarthquakeDate.setText(mDate);
             mEarthquakePlace.setText(mDescription);
             mEarthquakeMagnitude.setText(getString(R.string.earthquake_magnitude, mMagnitude));

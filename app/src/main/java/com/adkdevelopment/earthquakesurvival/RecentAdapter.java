@@ -41,6 +41,7 @@ import android.widget.TextView;
 import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -61,6 +62,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
         @Bind(R.id.earthquake_item_place) TextView mEarthquakePlace;
         @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
         @Bind(R.id.earthquake_item_date) TextView mEarthquakeDate;
+        @Bind(R.id.earthquake_item_distance) TextView mEarthquakeDistance;
         @Bind(R.id.earthquake_item_click) RelativeLayout mEarthquakeClick;
 
         public ViewHolder(View v) {
@@ -81,9 +83,13 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
         LatLng latLng = new LatLng(latitude, longitude);
 
+        String distance = mContext.getString(R.string.earthquake_distance,
+                LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
+
         viewHolder.mEarthquakePlace.setText(place);
         viewHolder.mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
         viewHolder.mEarthquakeMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
+        viewHolder.mEarthquakeDistance.setText(distance);
 
         viewHolder.mEarthquakeClick.setOnClickListener(click -> {
             Intent intent = new Intent(mContext, DetailActivity.class);
@@ -92,6 +98,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
             intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
             intent.putExtra(Feature.LINK, link);
             intent.putExtra(Feature.LATLNG, latLng);
+            intent.putExtra(Feature.DISTANCE, distance);
 
             // Check if a phone supports shared transitions
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -103,7 +110,9 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
                         Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_date),
                                 viewHolder.itemView.findViewById(R.id.earthquake_item_date).getTransitionName()),
                         Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude),
-                                viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude).getTransitionName()))
+                                viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude).getTransitionName()),
+                        Pair.create(viewHolder.mEarthquakeDistance,
+                                viewHolder.mEarthquakeDistance.getTransitionName()))
                         .toBundle();
                 mContext.startActivity(intent, bundle);
             } else {
