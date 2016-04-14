@@ -33,7 +33,7 @@ import android.view.ViewGroup;
 
 import com.adkdevelopment.earthquakesurvival.MapviewFragment;
 import com.adkdevelopment.earthquakesurvival.NewsFragment;
-import com.adkdevelopment.earthquakesurvival.PlaceholderFragment;
+import com.adkdevelopment.earthquakesurvival.SurvivalFragment;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.RecentFragment;
 
@@ -57,7 +57,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
+        // Return a SurvivalFragment (defined as a static inner class below).
         switch (position) {
             case 0:
                 return RecentFragment.newInstance(position + 1);
@@ -66,7 +66,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return NewsFragment.newInstance(position + 1);
             case 3:
-                return PlaceholderFragment.newInstance(position + 1);
+                return SurvivalFragment.newInstance(position + 1);
             default:
                 return null;
         }

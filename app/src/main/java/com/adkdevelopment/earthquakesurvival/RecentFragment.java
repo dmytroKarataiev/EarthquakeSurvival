@@ -35,6 +35,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +133,8 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
+        animateViewsIn();
+
         return rootView;
     }
 
@@ -156,7 +159,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     // Set the cursor in our CursorAdapter once the Cursor is loaded
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (mCursor == null || mCursor.getCount() < 1) {
+        if (data == null || data.getCount() < 1) {
             mListEmpty.setVisibility(View.VISIBLE);
         } else {
             mListEmpty.setVisibility(View.INVISIBLE);
@@ -189,6 +192,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     public void onResume() {
         super.onResume();
         PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
+        Log.d(TAG, "onResume: ");
     }
 
     @Override
@@ -196,5 +200,9 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         if (key.equals(getString(R.string.sharedprefs_key_magnitude))) {
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
         }
+    }
+
+    public void animateViewsIn() {
+        Utilities.animateViewsIn(getContext(), mRecyclerView);
     }
 }

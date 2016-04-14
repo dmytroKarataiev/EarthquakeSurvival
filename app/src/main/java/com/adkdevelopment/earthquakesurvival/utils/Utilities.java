@@ -36,6 +36,10 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 
 import com.adkdevelopment.earthquakesurvival.R;
 
@@ -165,5 +169,34 @@ public class Utilities {
     public static String getNiceDate(Long millis) {
         Date date = new Date(millis);
         return DateUtils.getRelativeTimeSpanString(date.getTime()).toString();
+    }
+
+    public static void animateViewsIn(Context context, ViewGroup viewGroup) {
+        if (viewGroup != null) {
+            int count = viewGroup.getChildCount();
+            float offset = context.getResources().getDimensionPixelSize(R.dimen.offset_y);
+
+            // TODO: 4/14/16 FIX API version
+            Interpolator interpolator =
+                    AnimationUtils.loadInterpolator(context, android.R.interpolator.linear_out_slow_in);
+
+            // loop over the children setting an increasing translation y but the same animation
+            // duration + interpolation
+            for (int i = 0; i < count; i++) {
+                View view = viewGroup.getChildAt(i);
+                view.setVisibility(View.VISIBLE);
+                view.setTranslationY(offset);
+                view.setAlpha(0.85f);
+                // then animate back to natural position
+                view.animate()
+                        .translationY(0f)
+                        .alpha(1f)
+                        .setInterpolator(interpolator)
+                        .setDuration(1000L)
+                        .start();
+                // increase the offset distance for the next view
+                offset *= 1.5f;
+            }
+        }
     }
 }

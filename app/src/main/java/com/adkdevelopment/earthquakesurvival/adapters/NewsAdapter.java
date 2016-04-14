@@ -29,13 +29,17 @@ package com.adkdevelopment.earthquakesurvival.adapters;
  * Created by karataev on 3/15/16.
  */
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +64,7 @@ import butterknife.ButterKnife;
  */
 public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
-    private final Context mContext;
+    private final Activity mContext;
 
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +94,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NewsAdapter(Context context, Cursor cursor) {
+    public NewsAdapter(Activity context, Cursor cursor) {
         super(cursor);
         mContext = context;
     }
@@ -168,13 +172,22 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                         intent.putExtra(Feature.LINK, link);
                         intent.putExtra(Feature.LATLNG, latLng);
 
-                        mContext.startActivity(intent);
+                        // Check if a phone supports shared transitions
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            //noinspection unchecked always true
+                            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
+                                    mContext,
+                                    Pair.create(((ViewHolderStats) holder).itemView.findViewById(R.id.earthquake_item_click),
+                                            ((ViewHolderStats) holder).itemView.findViewById(R.id.earthquake_item_click).getTransitionName()))
+                                    .toBundle();
+                            mContext.startActivity(intent, bundle);
+                        } else {
+                            mContext.startActivity(intent);
+                        }
 
                     });
                 }
             }
-
-
 
         } else {
             Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));

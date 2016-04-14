@@ -224,9 +224,9 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
 
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(latLng)
-                        .title(Utilities.getNiceDate(dateMillis) + " "
-                                + description + ", "
-                                + getString(R.string.earthquake_magnitude, magnitude))
+                        .title(getString(R.string.earthquake_magnitude, magnitude) + ", "
+                                + Utilities.getNiceDate(dateMillis))
+                        .snippet(description)
                         .icon(BitmapDescriptorFactory.fromBitmap(Utilities.getEarthquakeMarker(getContext(), magnitude)));
 
                 Intent intent = new Intent(getContext(), DetailActivity.class);

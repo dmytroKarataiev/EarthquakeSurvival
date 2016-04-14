@@ -24,6 +24,7 @@
 
 package com.adkdevelopment.earthquakesurvival.adapters;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,8 +60,11 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
     private final Activity mContext;
 
+    static int green;
+    static int white;
+
     // Provide a reference to the views for each data item
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.earthquake_item_place) TextView mEarthquakePlace;
         @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
@@ -70,7 +75,13 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
         public ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+
+            if (green == 0)
+                green = itemView.getContext().getResources().getColor(R.color.colorPrimary);
+            if (white == 0)
+                white = itemView.getContext().getResources().getColor(R.color.background_material_light);
         }
+
     }
 
     @Override
@@ -102,19 +113,44 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
             intent.putExtra(Feature.LATLNG, latLng);
             intent.putExtra(Feature.DISTANCE, distance);
 
+            int finalRadius = (int)Math.hypot(viewHolder.itemView.getWidth()/2, viewHolder.itemView.getHeight()/2);
+
             // Check if a phone supports shared transitions
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
+                        (int) viewHolder.itemView.getWidth()/2,
+                        (int) viewHolder.itemView.getHeight()/2, 0, finalRadius);
+
+                viewHolder.mEarthquakeClick.setBackgroundColor(green);
+                anim.start();
+                anim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        viewHolder.mEarthquakeClick.setBackgroundColor(white);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+
                 //noinspection unchecked always true
                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
                         mContext,
-                        Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_place),
-                                viewHolder.itemView.findViewById(R.id.earthquake_item_place).getTransitionName()),
-                        Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_date),
-                                viewHolder.itemView.findViewById(R.id.earthquake_item_date).getTransitionName()),
-                        Pair.create(viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude),
-                                viewHolder.itemView.findViewById(R.id.earthquake_item_magnitude).getTransitionName()),
-                        Pair.create(viewHolder.mEarthquakeDistance,
-                                viewHolder.mEarthquakeDistance.getTransitionName()))
+                        Pair.create(viewHolder.itemView.findViewById(R.id.survive_card_image),
+                                viewHolder.itemView.findViewById(R.id.survive_card_image).getTransitionName()))
                         .toBundle();
                 mContext.startActivity(intent, bundle);
             } else {

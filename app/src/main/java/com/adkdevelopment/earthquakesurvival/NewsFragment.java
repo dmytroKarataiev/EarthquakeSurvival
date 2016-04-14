@@ -176,4 +176,9 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
             mRecyclerView.smoothScrollToPosition(0);
         }
     }
+
+    public void animateViewsIn() {
+        Utilities.animateViewsIn(getContext(), mRecyclerView);
+    }
+
 }

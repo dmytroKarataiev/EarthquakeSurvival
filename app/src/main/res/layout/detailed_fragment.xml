@@ -53,7 +53,8 @@
             android:id="@+id/info_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:transitionName="@string/transition.card" >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -61,12 +62,14 @@
                 android:padding="@dimen/padding">
 
                 <TextView
+                    style="@style/CardText"
                     android:id="@+id/earthquake_magnitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:transitionName="@string/transition.magnitude" />
 
                 <TextView
+                    style="@style/CardText"
                     android:id="@+id/earthquake_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

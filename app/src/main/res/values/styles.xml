@@ -41,4 +41,23 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Survival.Text" parent="Base.TextAppearance.AppCompat.Headline">
+        <item name="android:layout_margin">@dimen/padding</item>
+
+    </style>
+
+    <style name="SurvivalCard">
+        <item name="android:layout_marginLeft">@dimen/cardview.padding</item>
+        <item name="cardBackgroundColor">#fff</item>
+        <item name="android:layout_marginTop">@dimen/cardview.padding_small</item>
+        <item name="android:layout_marginRight">@dimen/cardview.padding</item>
+        <item name="android:layout_marginBottom">@dimen/cardview.padding_small</item>
+    </style>
+
+    <style name="CardText">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textAppearance">?android:textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

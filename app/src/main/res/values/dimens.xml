@@ -51,9 +51,16 @@
     <dimen name="map.height">300dp</dimen>
 
     <dimen name="cardview.padding">8dp</dimen>
+    <dimen name="cardview.padding_small">4dp</dimen>
 
     <!-- Widget Dimensions -->
     <dimen name="widget_width">250dp</dimen>
     <dimen name="widget_height">110dp</dimen>
+
+    <!-- Coordinated motion -->
+    <dimen name="offset_y">450dp</dimen>
+
+    <dimen name="text_medium">16sp</dimen>
+
 
 </resources>

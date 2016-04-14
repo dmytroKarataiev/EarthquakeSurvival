@@ -156,6 +156,7 @@ public class PagerActivity extends AppCompatActivity
             }
         };
         getContentResolver().registerContentObserver(EarthquakeColumns.CONTENT_URI, false, mObserver);
+
     }
 
     @Override
@@ -260,7 +261,7 @@ public class PagerActivity extends AppCompatActivity
                 }
             }
 
-            // TODO: 4/6/16 refactor
+            // TODO: 4/6/16 refactor, probably add AddPageChangeListener
             // Highlight image and text on selection
             mTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -277,9 +278,13 @@ public class PagerActivity extends AppCompatActivity
                     mViewPager.setCurrentItem(tab.getPosition());
 
                     Fragment fragment = mPagerAdapter.getRegisteredFragment(tab.getPosition());
-                    if (fragment instanceof PlaceholderFragment) {
-                        PlaceholderFragment placeholderFragment = (PlaceholderFragment) fragment;
-                        placeholderFragment.setLocationText(mLocation);
+                    if (fragment instanceof SurvivalFragment) {
+                        ((SurvivalFragment) fragment).setLocationText(mLocation);
+                        ((SurvivalFragment) fragment).animateViewsIn();
+                    } else if (fragment instanceof NewsFragment) {
+                        ((NewsFragment) fragment).animateViewsIn();
+                    } else if (fragment instanceof RecentFragment) {
+                        ((RecentFragment) fragment).animateViewsIn();
                     }
                 }
 
@@ -297,15 +302,12 @@ public class PagerActivity extends AppCompatActivity
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
-
                     Fragment fragment = mPagerAdapter.getRegisteredFragment(tab.getPosition());
 
                     if (fragment instanceof RecentFragment) {
-                        RecentFragment recentFragment = (RecentFragment) fragment;
-                        recentFragment.scrollToTop();
+                        ((RecentFragment) fragment).scrollToTop();
                     } else if (fragment instanceof NewsFragment) {
-                        NewsFragment newsFragment = (NewsFragment) fragment;
-                        newsFragment.scrollToTop();
+                        ((NewsFragment) fragment).scrollToTop();
                     }
                 }
             });

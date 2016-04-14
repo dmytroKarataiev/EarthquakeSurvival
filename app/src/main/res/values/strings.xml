@@ -41,8 +41,6 @@
     <string name="settings.header.notifications">Notifications</string>
 
     <string-array name="settings_sync_titles">
-        <item>1 minute</item>
-        <item>3 minutes</item>
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
@@ -53,8 +51,6 @@
         <item>Never</item>
     </string-array>
     <string-array name="settings_sync_values">
-        <item>60</item>
-        <item>180</item>
         <item>900</item>
         <item>1800</item>
         <item>3600</item>
@@ -128,5 +124,13 @@
     <string name="transition.date" translatable="false">date</string>
     <string name="transition.place" translatable="false">place</string>
     <string name="transition.distance" translatable="false">distance</string>
+    <string name="transition.card" translatable="false">card</string>
+
+    <!-- Survival Strings -->
+    <string name="survival_before">Before An Earthquake</string>
+    <string name="survival_during">During An Earthquake</string>
+    <string name="survival_after">After An Earthquake</string>
+    <string name="survival_resources">Resources</string>
+
 
 </resources>

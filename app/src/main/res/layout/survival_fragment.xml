@@ -26,19 +26,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/cardview.padding"
-    tools:context=".PlaceholderFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SurvivalFragment">
 
     <LinearLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
+            style="@style/SurvivalCard"
             android:id="@+id/survive_card_image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/cardview.padding">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/survive_card_image_top"
@@ -52,54 +53,62 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            style="@style/SurvivalCard"
             android:id="@+id/survive_card_before"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/cardview.padding">
+            android:layout_height="wrap_content" >
 
             <TextView
+                style="@style/Survival.Text"
                 android:id="@+id/section_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/survival_before"/>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            style="@style/SurvivalCard"
             android:id="@+id/survive_card_during"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/cardview.padding">
+            android:layout_height="wrap_content" >
 
             <TextView
+                style="@style/Survival.Text"
                 android:id="@+id/earthquake_latitude"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/survival_during"/>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            style="@style/SurvivalCard"
             android:id="@+id/survive_card_after"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/cardview.padding">
+            android:layout_height="wrap_content" >
 
             <TextView
+                style="@style/Survival.Text"
                 android:id="@+id/earthquake_longitude"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/survival_after" />
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            style="@style/SurvivalCard"
             android:id="@+id/survive_card_more"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/cardview.padding">
+            android:layout_height="wrap_content" >
 
             <TextView
+                style="@style/Survival.Text"
                 android:id="@+id/survive_more_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/survival_resources" />
 
 
         </android.support.v7.widget.CardView>
