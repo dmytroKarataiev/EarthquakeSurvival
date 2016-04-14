@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.adkdevelopment.earthquakesurvival.provider.EarthquakeProvider;
-import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
-import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 
 /**
  * News

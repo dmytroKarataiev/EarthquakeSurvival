@@ -35,6 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/padding"
+        android:paddingRight="@dimen/padding"
+        android:paddingStart="@dimen/padding"
+        android:paddingEnd="@dimen/padding"
         android:paddingTop="@dimen/padding"
         android:text="@string/app.name"
         android:transitionName="@string/transition.magnitude" />
@@ -44,8 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/earthquake_item_magnitude"
-        android:paddingLeft="@dimen/padding"
-        android:paddingTop="@dimen/padding"
+        android:padding="@dimen/padding"
         android:text="@string/app.name"
         android:transitionName="@string/transition.place" />
 
@@ -55,7 +57,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:paddingLeft="@dimen/padding"
         android:paddingRight="@dimen/padding"
+        android:paddingStart="@dimen/padding"
+        android:paddingEnd="@dimen/padding"
         android:paddingTop="@dimen/padding"
         android:text="@string/app.name"
         android:transitionName="@string/transition.date" />

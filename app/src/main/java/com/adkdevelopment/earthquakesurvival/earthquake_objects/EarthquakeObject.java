@@ -43,10 +43,10 @@ public class EarthquakeObject {
     private Metadata metadata;
     @SerializedName("features")
     @Expose
-    private List<Feature> features = new ArrayList<Feature>();
+    private List<Feature> features = new ArrayList<>();
     @SerializedName("bbox")
     @Expose
-    private List<Double> bbox = new ArrayList<Double>();
+    private List<Double> bbox = new ArrayList<>();
 
     /**
      *

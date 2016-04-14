@@ -48,7 +48,12 @@
 
     <!-- Marker Drawable Size -->
     <dimen name="marker.size">10dp</dimen>
+    <dimen name="map.height">300dp</dimen>
 
     <dimen name="cardview.padding">8dp</dimen>
+
+    <!-- Widget Dimensions -->
+    <dimen name="widget_width">250dp</dimen>
+    <dimen name="widget_height">110dp</dimen>
 
 </resources>

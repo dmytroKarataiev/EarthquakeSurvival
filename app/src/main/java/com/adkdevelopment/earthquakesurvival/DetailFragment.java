@@ -120,7 +120,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
-        mMapView.onCreate(savedInstanceState);
+        final Bundle mapViewSavedInstanceState = savedInstanceState != null ? savedInstanceState.getBundle("mapViewSaveState") : null;
+        mMapView.onCreate(mapViewSavedInstanceState);
         mMapView.getMapAsync(this);
 
         if (savedInstanceState != null) {
@@ -176,6 +177,9 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        final Bundle mapViewSaveState = new Bundle(outState);
+        mMapView.onSaveInstanceState(mapViewSaveState);
+        outState.putBundle("mapViewSaveState", mapViewSaveState);
         CameraPosition save = mGoogleMap.getCameraPosition();
         outState.putParcelable(CAMERA_POSITION, save);
     }

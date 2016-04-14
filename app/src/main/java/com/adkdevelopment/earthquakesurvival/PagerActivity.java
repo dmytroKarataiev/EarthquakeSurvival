@@ -118,7 +118,7 @@ public class PagerActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_activity);
 
-        mGeofenceList = new ArrayList<Geofence>();
+        mGeofenceList = new ArrayList<>();
 
         ButterKnife.bind(this);
 
@@ -375,10 +375,7 @@ public class PagerActivity extends AppCompatActivity
                     } catch (SecurityException e) {
                         Log.e(TAG, "e:" + e);
                     }
-                } else {
-                    // no granted
                 }
-                return;
             }
         }
     }

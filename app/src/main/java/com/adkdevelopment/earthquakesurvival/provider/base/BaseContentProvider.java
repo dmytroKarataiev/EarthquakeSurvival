@@ -1,9 +1,5 @@
 package com.adkdevelopment.earthquakesurvival.provider.base;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -14,8 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class BaseContentProvider extends ContentProvider {
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
@@ -43,11 +41,16 @@ public abstract class BaseContentProvider extends ContentProvider {
     public final boolean onCreate() {
         if (hasDebug()) {
             // Enable logging of SQL statements as they are executed.
+
+            Log.d("SQL Helper", "onCreate: ");
+            /*
             try {
-                Class<?> sqliteDebugClass = Class.forName("android.database.sqlite.SQLiteDebug");
-                Field field = sqliteDebugClass.getDeclaredField("DEBUG_SQL_STATEMENTS");
-                field.setAccessible(true);
-                field.set(null, true);
+                // Logging is not necessary
+
+                // Class<?> sqliteDebugClass = Class.forName("android.database.sqlite.SQLiteDebug");
+                // Field field = sqliteDebugClass.getDeclaredField("DEBUG_SQL_STATEMENTS");
+                // field.setAccessible(true);
+                // field.set(null, true);
 
                 // Uncomment the following block if you also want logging of execution time (more verbose)
                 // field = sqliteDebugClass.getDeclaredField("DEBUG_SQL_TIME");
@@ -56,6 +59,8 @@ public abstract class BaseContentProvider extends ContentProvider {
             } catch (Throwable t) {
                 if (hasDebug()) Log.w(getClass().getSimpleName(), "Could not enable SQLiteDebug logging", t);
             }
+
+            */
         }
         mSqLiteOpenHelper = createSqLiteOpenHelper();
         return false;
@@ -150,7 +155,7 @@ public abstract class BaseContentProvider extends ContentProvider {
 
     @Override
     public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
-        HashSet<Uri> urisToNotify = new HashSet<Uri>(operations.size());
+        HashSet<Uri> urisToNotify = new HashSet<>(operations.size());
         for (ContentProviderOperation operation : operations) {
             urisToNotify.add(operation.getUri());
         }

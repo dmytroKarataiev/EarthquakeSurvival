@@ -24,4 +24,4 @@ Final Nanodegree Project
 
 ## Important information
 * For the app to work you need to add Google Maps Api key to the apikeys.xml file in values folder <br>
-String should look like this: \<string name="googel.maps.api.key.release">YOUR API KEY\</string>
+String should look like this: \<string name="google.maps.api.key.release">YOUR API KEY\</string>

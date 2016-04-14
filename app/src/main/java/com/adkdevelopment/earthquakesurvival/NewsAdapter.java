@@ -30,7 +30,9 @@ package com.adkdevelopment.earthquakesurvival;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -40,10 +42,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,6 +79,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         @Bind(R.id.stat_item_magnitude) TextView mStatMagnitude;
         @Bind(R.id.stat_item_description) TextView mStatDescription;
         @Bind(R.id.stat_item_date) TextView mStatDate;
+        @Bind(R.id.earthquake_item_click) CardView mEarthquakeClick;
 
         public ViewHolderStats(View v) {
             super(v);
@@ -84,7 +89,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public NewsAdapter(Context context, Cursor cursor) {
-        super(context, cursor);
+        super(cursor);
         mContext = context;
     }
 
@@ -145,9 +150,29 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                     Long dateMillis = tempCursor.getLong(tempCursor.getColumnIndex(EarthquakeColumns.TIME));
                     ((ViewHolderStats) holder).mStatDate.setText(Utilities.getNiceDate(dateMillis));
 
+                    Double latitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+                    Double longitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+                    LatLng latLng = new LatLng(latitude, longitude);
+
+                    String link = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.URL));
+
                     tempCursor.close();
+
+                    ((ViewHolderStats) holder).mEarthquakeClick.setOnClickListener(click -> {
+                        Intent intent = new Intent(mContext, DetailActivity.class);
+                        intent.putExtra(Feature.MAGNITUDE, magnitude);
+                        intent.putExtra(Feature.PLACE, desc);
+                        intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
+                        intent.putExtra(Feature.LINK, link);
+                        intent.putExtra(Feature.LATLNG, latLng);
+
+                        mContext.startActivity(intent);
+
+                    });
                 }
             }
+
+
 
         } else {
             Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));
@@ -162,9 +187,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
             ((ViewHolder) holder).mTitle.setText(title);
 
-            ((ViewHolder) holder).mTitle.setOnClickListener(click -> {
-                Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show();
-            });
+            ((ViewHolder) holder).mTitle.setOnClickListener(click -> Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show());
         }
     }
 

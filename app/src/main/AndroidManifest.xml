@@ -110,7 +110,21 @@
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/googel.maps.api.key.debug" />
+            android:value="@string/google.maps.api.key.debug" />
+
+        <!-- Widget Provider -->
+        <receiver android:name=".widget.EarthquakeWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+
+                <!-- Receives broadcast messages from SyncAdapter and updates data -->
+                <action android:name="com.adkdevelopment.earhquakesurvival.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <service android:name=".widget.EarthquakeInfoService" />
+
     </application>
 
 </manifest>

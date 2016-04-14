@@ -1,13 +1,13 @@
 package com.adkdevelopment.earthquakesurvival.provider.base;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import android.content.Context;
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.net.Uri;
 
 public abstract class AbstractSelection<T extends AbstractSelection<?>> {
     private static final String EQ = "=?";
@@ -33,7 +33,7 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
     private static final String DESC = " DESC";
 
     private final StringBuilder mSelection = new StringBuilder();
-    private final List<String> mSelectionArgs = new ArrayList<String>(5);
+    private final List<String> mSelectionArgs = new ArrayList<>(5);
 
     private final StringBuilder mOrderBy = new StringBuilder();
 

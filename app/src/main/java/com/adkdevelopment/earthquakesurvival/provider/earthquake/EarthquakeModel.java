@@ -1,11 +1,8 @@
 package com.adkdevelopment.earthquakesurvival.provider.earthquake;
 
-import com.adkdevelopment.earthquakesurvival.provider.base.BaseModel;
-
-import java.util.Date;
-
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.adkdevelopment.earthquakesurvival.provider.base.BaseModel;
 
 /**
  * An earthquake object

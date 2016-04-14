@@ -83,7 +83,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
         viewHolder.mEarthquakePlace.setText(place);
         viewHolder.mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
-        viewHolder.mEarthquakeMagnitude.setText(String.format("%.1f", magnitude));
+        viewHolder.mEarthquakeMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
 
         viewHolder.mEarthquakeClick.setOnClickListener(click -> {
             Intent intent = new Intent(mContext, DetailActivity.class);
@@ -122,7 +122,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public RecentAdapter(Activity context, Cursor c) {
-        super(context, c);
+        super(c);
         mContext = context;
     }
 

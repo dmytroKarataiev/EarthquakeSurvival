@@ -86,6 +86,7 @@
     <string name="title.info">Survival Info</string>
 
     <!-- Tabs titles -->
+    <string name="tab.description">Tab button</string>
     <string name="title.tab.news">News</string>
     <string name="title.tab.maps">Map</string>
     <string name="title.tab.recent">Recent</string>

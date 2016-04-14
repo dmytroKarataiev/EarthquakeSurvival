@@ -31,6 +31,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
@@ -66,6 +67,10 @@ import retrofit2.Response;
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String TAG = SyncAdapter.class.getSimpleName();
+
+    // Broadcast message to the widget
+    public static final String ACTION_DATA_UPDATE = "com.adkdevelopment.earthquakesurvival.ACTION_DATA_UPDATED";
+
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -188,6 +193,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // notify PagerActivity that data has been updated
         getContext().getContentResolver().notifyChange(EarthquakeColumns.CONTENT_URI, null, false);
+
+        updateWidgets();
     }
 
     public static void initializeSyncAdapter(Context context) {
@@ -289,6 +296,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         ContentResolver.requestSync(getSyncAccount(context),
                 context.getString(R.string.sync_provider_authority), bundle);
+    }
+
+    /**
+     * Broadcast Message to widgets to update data
+     */
+    public void updateWidgets() {
+
+        // Send intent to the Widget to notify that the data was updated
+        Intent dataUpdated = new Intent(ACTION_DATA_UPDATE)
+                // Ensures that only components in the app will receive the broadcast
+                .setPackage(getContext().getPackageName());
+        getContext().sendBroadcast(dataUpdated);
     }
 
 }

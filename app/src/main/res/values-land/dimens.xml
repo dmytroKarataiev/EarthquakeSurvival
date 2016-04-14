@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ MIT License
   ~
@@ -23,25 +22,8 @@
   ~ SOFTWARE.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/tab.height"
-    android:gravity="center" >
+<resources>
+    <dimen name="map.height">200dp</dimen>
 
-    <ImageView
-        android:contentDescription="@string/tab.description"
-        android:paddingTop="@dimen/tab.layout.padding"
-        android:id="@+id/tab_item_image"
-        android:layout_width="@dimen/tab.image.size"
-        android:layout_height="@dimen/tab.image.size" />
-    <TextView
-        android:paddingBottom="@dimen/tab.layout.padding"
-        android:id="@+id/tab_item_text"
-        android:gravity="center"
-        android:textAppearance="?android:textAppearance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-</LinearLayout>
+</resources>

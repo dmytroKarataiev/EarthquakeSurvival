@@ -40,7 +40,7 @@ import java.lang.ref.WeakReference;
 public class PagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    SparseArray<WeakReference<Fragment>> registeredFragments = new SparseArray<WeakReference<Fragment>>();
+    SparseArray<WeakReference<Fragment>> registeredFragments = new SparseArray<>();
 
 
     public PagerAdapter(FragmentManager fm, Context context) {
@@ -91,7 +91,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        registeredFragments.put(position, new WeakReference<Fragment>(fragment));
+        registeredFragments.put(position, new WeakReference<>(fragment));
         return fragment;
     }
 

@@ -43,7 +43,7 @@ public class Geometry implements Parcelable {
     private String type;
     @SerializedName("coordinates")
     @Expose
-    private List<Double> coordinates = new ArrayList<Double>();
+    private List<Double> coordinates = new ArrayList<>();
 
     /**
      *
@@ -97,7 +97,7 @@ public class Geometry implements Parcelable {
 
     protected Geometry(Parcel in) {
         this.type = in.readString();
-        this.coordinates = new ArrayList<Double>();
+        this.coordinates = new ArrayList<>();
         in.readList(this.coordinates, Double.class.getClassLoader());
     }
 

@@ -128,32 +128,38 @@ public class Utilities {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             oval = (GradientDrawable) context.getResources().getDrawable(R.drawable.marker, context.getTheme());
         } else {
+            //noinspection deprecation
             oval = (GradientDrawable) context.getResources().getDrawable(R.drawable.marker);
         }
 
-        if (magnitude > 3 && magnitude < 5) {
-            oval.setColor(Color.BLUE);
-        } else if (magnitude > 5 && magnitude < 7) {
-            oval.setColor(Color.YELLOW);
-        } else if (magnitude > 7) {
-            oval.setColor(Color.RED);
+        if (oval != null) {
+            if (magnitude > 3 && magnitude < 5) {
+                oval.setColor(Color.BLUE);
+            } else if (magnitude > 5 && magnitude < 7) {
+                oval.setColor(Color.YELLOW);
+            } else if (magnitude > 7) {
+                oval.setColor(Color.RED);
+            } else {
+                oval.setColor(Color.GREEN);
+            }
+
+
+            int diameter = (int) (oval.getIntrinsicWidth() * magnitude);
+
+            Canvas canvas = new Canvas();
+            Bitmap icon = Bitmap.createBitmap(
+                    diameter,
+                    diameter,
+                    Bitmap.Config.ARGB_8888);
+
+            canvas.setBitmap(icon);
+            oval.setBounds(0, 0, diameter, diameter);
+            oval.draw(canvas);
+
+            return icon;
         } else {
-            oval.setColor(Color.GREEN);
+            return null;
         }
-
-        int diameter = (int) (oval.getIntrinsicWidth() * magnitude);
-
-        Canvas canvas = new Canvas();
-        Bitmap icon = Bitmap.createBitmap(
-                diameter,
-                diameter,
-                Bitmap.Config.ARGB_8888);
-
-        canvas.setBitmap(icon);
-        oval.setBounds(0, 0, diameter, diameter);
-        oval.draw(canvas);
-
-        return icon;
     }
 
     public static String getNiceDate(Long millis) {
