@@ -22,28 +22,43 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.news_objects;
+package com.adkdevelopment.earthquakesurvival.objects.news;
+
+import org.simpleframework.xml.Attribute;
 
 /**
  * Created by karataev on 3/25/16.
  */
-public class News
+public class Guid
 {
-    private Rss rss;
+    private String content;
 
-    public Rss getRss ()
+    @Attribute
+    private String isPermaLink;
+
+    public String getContent ()
     {
-        return rss;
+        return content;
     }
 
-    public void setRss (Rss rss)
+    public void setContent (String content)
     {
-        this.rss = rss;
+        this.content = content;
+    }
+
+    public String getIsPermaLink ()
+    {
+        return isPermaLink;
+    }
+
+    public void setIsPermaLink (String isPermaLink)
+    {
+        this.isPermaLink = isPermaLink;
     }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [rss = "+rss+"]";
+        return "ClassPojo [content = "+content+", isPermaLink = "+isPermaLink+"]";
     }
 }

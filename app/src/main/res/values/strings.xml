@@ -102,6 +102,8 @@
     <string name="earthquake.magnitude">Magnitude: <xliff:g id="magn">%1$.1f</xliff:g></string>
     <string name="earthquake.statistics.day">Earthquakes today: <xliff:g id="magn">%1$d</xliff:g></string>
     <string name="earthquake.statistics.largest">Largest earthquake today</string>
+    <string name="earthquake.widget.largest">Largest:</string>
+    <string name="earthquake.survive.image">Drop! Cover! Hold on!</string>
     <string name="earthquake.distance">Distance to: <xliff:g id="distance">%1$,.0f</xliff:g> miles</string>
 
     <string name="earthquake.link"><![CDATA[<a href="]]><xliff:g id="link">%1$s</xliff:g><![CDATA[">Learn more</a>]]></string>

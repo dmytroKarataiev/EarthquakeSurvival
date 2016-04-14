@@ -22,52 +22,28 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.news_objects;
+package com.adkdevelopment.earthquakesurvival.objects.news;
 
 /**
  * Created by karataev on 3/25/16.
  */
-public class Image
+public class News
 {
-    private String title;
+    private Rss rss;
 
-    private String link;
-
-    private String url;
-
-    public String getTitle ()
+    public Rss getRss ()
     {
-        return title;
+        return rss;
     }
 
-    public void setTitle (String title)
+    public void setRss (Rss rss)
     {
-        this.title = title;
-    }
-
-    public String getLink ()
-    {
-        return link;
-    }
-
-    public void setLink (String link)
-    {
-        this.link = link;
-    }
-
-    public String getUrl ()
-    {
-        return url;
-    }
-
-    public void setUrl (String url)
-    {
-        this.url = url;
+        this.rss = rss;
     }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [title = "+title+", link = "+link+", url = "+url+"]";
+        return "ClassPojo [rss = "+rss+"]";
     }
 }

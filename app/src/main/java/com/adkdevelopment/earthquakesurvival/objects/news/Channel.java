@@ -22,27 +22,23 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.news_objects;
+package com.adkdevelopment.earthquakesurvival.objects.news;
 
-import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+
+import java.util.List;
 
 /**
  * Created by karataev on 3/25/16.
  */
-public class Item
+public class Channel
 {
-    @Element
-    private Guid guid;
-
     @Element
     private String pubDate;
 
     @Element
     private String title;
-
-    @Element(required = false)
-    private String category;
 
     @Element
     private String description;
@@ -50,28 +46,26 @@ public class Item
     @Element
     private String link;
 
-    @Attribute(required = false)
-    private String isPermaLink;
+    @Element
+    private String lastBuildDate;
 
-    public String getIsPermaLink ()
-    {
-        return isPermaLink;
-    }
+    @ElementList(entry = "item", inline = true)
+    private List<Item> item;
 
-    public void setIsPermaLink (String isPermaLink)
-    {
-        this.isPermaLink = isPermaLink;
-    }
+    @Element
+    private String generator;
 
-    public Guid getGuid ()
-    {
-        return guid;
-    }
+    @Element
+    private Image image;
 
-    public void setGuid (Guid guid)
-    {
-        this.guid = guid;
-    }
+    @Element
+    private String language;
+
+    @Element
+    private String copyright;
+
+    @Element
+    private String webMaster;
 
     public String getPubDate ()
     {
@@ -91,16 +85,6 @@ public class Item
     public void setTitle (String title)
     {
         this.title = title;
-    }
-
-    public String getCategory ()
-    {
-        return category;
-    }
-
-    public void setCategory (String category)
-    {
-        this.category = category;
     }
 
     public String getDescription ()
@@ -123,9 +107,79 @@ public class Item
         this.link = link;
     }
 
+    public String getLastBuildDate ()
+    {
+        return lastBuildDate;
+    }
+
+    public void setLastBuildDate (String lastBuildDate)
+    {
+        this.lastBuildDate = lastBuildDate;
+    }
+
+    public List<Item> getItem ()
+    {
+        return item;
+    }
+
+    public void setItem (List<Item> item)
+    {
+        this.item = item;
+    }
+
+    public String getGenerator ()
+    {
+        return generator;
+    }
+
+    public void setGenerator (String generator)
+    {
+        this.generator = generator;
+    }
+
+    public Image getImage ()
+    {
+        return image;
+    }
+
+    public void setImage (Image image)
+    {
+        this.image = image;
+    }
+
+    public String getLanguage ()
+    {
+        return language;
+    }
+
+    public void setLanguage (String language)
+    {
+        this.language = language;
+    }
+
+    public String getCopyright ()
+    {
+        return copyright;
+    }
+
+    public void setCopyright (String copyright)
+    {
+        this.copyright = copyright;
+    }
+
+    public String getWebMaster ()
+    {
+        return webMaster;
+    }
+
+    public void setWebMaster (String webMaster)
+    {
+        this.webMaster = webMaster;
+    }
+
     @Override
     public String toString()
     {
-        return "ClassPojo [guid = "+guid+", pubDate = "+pubDate+", title = "+title+", category = "+category+", description = "+description+", link = "+link+"]";
+        return "ClassPojo [pubDate = "+pubDate+", title = "+title+", description = "+description+", link = "+link+", lastBuildDate = "+lastBuildDate+", item = "+item+", generator = "+generator+", image = "+image+", language = "+language+", copyright = "+copyright+", webMaster = "+webMaster+"]";
     }
 }

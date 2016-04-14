@@ -22,45 +22,52 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.news_objects;
-
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
+package com.adkdevelopment.earthquakesurvival.objects.news;
 
 /**
  * Created by karataev on 3/25/16.
  */
-public class Rss
+public class Image
 {
-    @Element(required = false)
-    private Channel channel;
+    private String title;
 
-    @Attribute
-    private String version;
+    private String link;
 
-    public Channel getChannel ()
+    private String url;
+
+    public String getTitle ()
     {
-        return channel;
+        return title;
     }
 
-    public void setChannel (Channel channel)
+    public void setTitle (String title)
     {
-        this.channel = channel;
+        this.title = title;
     }
 
-    public String getVersion ()
+    public String getLink ()
     {
-        return version;
+        return link;
     }
 
-    public void setVersion (String version)
+    public void setLink (String link)
     {
-        this.version = version;
+        this.link = link;
+    }
+
+    public String getUrl ()
+    {
+        return url;
+    }
+
+    public void setUrl (String url)
+    {
+        this.url = url;
     }
 
     @Override
     public String toString()
     {
-        return "ClassPojo [channel = "+channel+", version = "+version+"]";
+        return "ClassPojo [title = "+title+", link = "+link+", url = "+url+"]";
     }
 }

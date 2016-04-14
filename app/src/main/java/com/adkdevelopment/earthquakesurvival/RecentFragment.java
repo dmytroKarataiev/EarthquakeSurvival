@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.adkdevelopment.earthquakesurvival.adapters.RecentAdapter;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;

@@ -24,8 +24,8 @@
 
 package com.adkdevelopment.earthquakesurvival.remote;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
-import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.objects.news.Rss;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

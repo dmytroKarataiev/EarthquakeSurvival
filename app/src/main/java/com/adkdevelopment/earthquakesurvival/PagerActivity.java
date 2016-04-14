@@ -53,6 +53,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adkdevelopment.earthquakesurvival.adapters.PagerAdapter;
 import com.adkdevelopment.earthquakesurvival.geofence.GeofenceService;
 import com.adkdevelopment.earthquakesurvival.ui.ZoomOutPageTransformer;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;

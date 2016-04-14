@@ -43,7 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;

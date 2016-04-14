@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.earthquake_objects;
+package com.adkdevelopment.earthquakesurvival.objects.earthquake;
 
 import android.os.Parcel;
 import android.os.Parcelable;

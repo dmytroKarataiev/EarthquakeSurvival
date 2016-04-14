@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.adkdevelopment.earthquakesurvival.adapters.NewsAdapter;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;

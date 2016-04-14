@@ -43,11 +43,11 @@ import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.App;
 import com.adkdevelopment.earthquakesurvival.R;
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.EarthquakeObject;
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
-import com.adkdevelopment.earthquakesurvival.news_objects.Channel;
-import com.adkdevelopment.earthquakesurvival.news_objects.Item;
-import com.adkdevelopment.earthquakesurvival.news_objects.Rss;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
+import com.adkdevelopment.earthquakesurvival.objects.news.Channel;
+import com.adkdevelopment.earthquakesurvival.objects.news.Item;
+import com.adkdevelopment.earthquakesurvival.objects.news.Rss;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;

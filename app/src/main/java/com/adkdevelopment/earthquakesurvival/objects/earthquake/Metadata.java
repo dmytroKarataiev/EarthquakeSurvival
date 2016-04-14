@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival.earthquake_objects;
+package com.adkdevelopment.earthquakesurvival.objects.earthquake;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

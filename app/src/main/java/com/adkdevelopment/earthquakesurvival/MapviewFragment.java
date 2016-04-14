@@ -38,7 +38,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
@@ -219,6 +219,9 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
 
                 LatLng latLng = new LatLng(latitude, longitude);
 
+                String distance = getContext().getString(R.string.earthquake_distance,
+                        LocationUtils.getDistance(latLng, LocationUtils.getLocation(getContext())));
+
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(latLng)
                         .title(Utilities.getNiceDate(dateMillis) + " "
@@ -232,6 +235,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
                 intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
                 intent.putExtra(Feature.LINK, linkDetails);
                 intent.putExtra(Feature.LATLNG, latLng);
+                intent.putExtra(Feature.DISTANCE, distance);
 
                 mMarkers.put(mGoogleMap.addMarker(markerOptions).getId(), intent);
             }

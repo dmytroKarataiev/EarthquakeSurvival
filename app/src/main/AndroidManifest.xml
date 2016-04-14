@@ -39,17 +39,19 @@
     <!-- Google Maps OpenGL requirements -->
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_database"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app.name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <!-- Play services -->
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <provider
@@ -66,12 +68,22 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- to be searchable by Google -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="www.adkdevelopment.com"
+                    android:scheme="http" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings.title"
-            android:parentActivityName=".PagerActivity" >
+            android:parentActivityName=".PagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
@@ -88,21 +100,23 @@
         </activity>
 
         <!-- Sync Adapter Declarations -->
-        <service android:name=".syncadapter.AuthenticatorService">
+        <service android:name=".syncadapter.AuthenticatorService" android:permission="android.permission.ACCOUNT_MANAGER" >
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <service android:name=".syncadapter.SyncService"
+        <service
+            android:name=".syncadapter.SyncService"
             android:exported="true"
             android:process=":sync">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
+            <meta-data
+                android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
         <service android:name=".geofence.GeofenceService" />
@@ -113,14 +127,15 @@
             android:value="@string/google.maps.api.key.debug" />
 
         <!-- Widget Provider -->
-        <receiver android:name=".widget.EarthquakeWidgetProvider" >
+        <receiver android:name=".widget.EarthquakeWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 
                 <!-- Receives broadcast messages from SyncAdapter and updates data -->
                 <action android:name="com.adkdevelopment.earhquakesurvival.ACTION_DATA_UPDATED" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
         <service android:name=".widget.EarthquakeInfoService" />

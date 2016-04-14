@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival;
+package com.adkdevelopment.earthquakesurvival.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -30,6 +30,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
+import com.adkdevelopment.earthquakesurvival.MapviewFragment;
+import com.adkdevelopment.earthquakesurvival.NewsFragment;
+import com.adkdevelopment.earthquakesurvival.PlaceholderFragment;
+import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.RecentFragment;
 
 import java.lang.ref.WeakReference;
 

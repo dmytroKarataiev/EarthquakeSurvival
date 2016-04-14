@@ -35,7 +35,9 @@ import android.widget.RemoteViews;
 import com.adkdevelopment.earthquakesurvival.PagerActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Updates widget on background thread
@@ -91,8 +93,17 @@ public class EarthquakeInfoService extends IntentService {
         }
 
         String desc = data.getString(data.getColumnIndex(EarthquakeColumns.PLACE));
+        desc = getBaseContext().getString(R.string.earthquake_widget_largest) + " " + desc;
+
         Double magnitude = data.getDouble(data.getColumnIndex(EarthquakeColumns.MAG));
         Long dateMillis = data.getLong(data.getColumnIndex(EarthquakeColumns.TIME));
+        Double latitude = data.getDouble(data.getColumnIndex(EarthquakeColumns.LATITUDE));
+        Double longitude = data.getDouble(data.getColumnIndex(EarthquakeColumns.LONGITUDE));
+
+        LatLng latLng = new LatLng(latitude, longitude);
+
+        String distance = getBaseContext().getString(R.string.earthquake_distance,
+                LocationUtils.getDistance(latLng, LocationUtils.getLocation(getBaseContext())));
 
         data.close();
 
@@ -104,6 +115,7 @@ public class EarthquakeInfoService extends IntentService {
             remoteViews.setTextViewText(R.id.widget_text_description, desc);
             remoteViews.setTextViewText(R.id.widget_text_magnitude, getBaseContext().getString(R.string.earthquake_magnitude, magnitude));
             remoteViews.setTextViewText(R.id.widget_text_date, Utilities.getNiceDate(dateMillis));
+            remoteViews.setTextViewText(R.id.widget_text_distance, distance);
 
             Intent launchIntent = new Intent(this, PagerActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);

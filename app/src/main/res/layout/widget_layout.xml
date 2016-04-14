@@ -34,26 +34,32 @@
     <TextView
         android:id="@+id/widget_text_total"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/widget_text_largest"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/widget_text_total"
-        android:text="@string/earthquake.statistics.largest" />
+        android:text="Total" />
 
     <TextView
         android:id="@+id/widget_text_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/widget_text_largest" />
+        android:layout_below="@id/widget_text_total"
+        android:text="Description"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_alignRight="@+id/widget_text_date"
+        android:layout_alignEnd="@+id/widget_text_date" />
 
     <TextView
         android:id="@+id/widget_text_magnitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/widget_text_description" />
+        android:layout_below="@id/widget_text_description"
+        android:text="Magnitude"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/widget_text_date"
@@ -61,6 +67,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/widget_text_description" />
+        android:layout_below="@id/widget_text_description"
+        android:text="Date"/>
+
+    <TextView
+        android:id="@+id/widget_text_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/widget_text_magnitude"
+        android:text="Date"/>
 
 </RelativeLayout>

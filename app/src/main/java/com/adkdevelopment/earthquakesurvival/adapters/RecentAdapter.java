@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.adkdevelopment.earthquakesurvival;
+package com.adkdevelopment.earthquakesurvival.adapters;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -38,7 +38,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.adkdevelopment.earthquakesurvival.earthquake_objects.Feature;
+import com.adkdevelopment.earthquakesurvival.DetailActivity;
+import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
