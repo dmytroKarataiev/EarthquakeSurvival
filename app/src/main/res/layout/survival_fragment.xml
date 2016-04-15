@@ -22,99 +22,26 @@
   ~ SOFTWARE.
   -->
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SurvivalFragment">
 
-    <LinearLayout
-        android:id="@+id/root"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nested_scroll"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.CardView
-            style="@style/SurvivalCard"
-            android:id="@+id/survive_card_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/survive_card_image_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/earthquake.survive.image"
-                android:scaleType="fitCenter"
-                android:src="@drawable/dropcoverholdon" />
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            style="@style/SurvivalCard"
-            android:id="@+id/survive_card_before"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                style="@style/Survival.Text"
-                android:id="@+id/section_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/survival_before"/>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            style="@style/SurvivalCard"
-            android:id="@+id/survive_card_during"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                style="@style/Survival.Text"
-                android:id="@+id/earthquake_latitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/survival_during"/>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            style="@style/SurvivalCard"
-            android:id="@+id/survive_card_after"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                style="@style/Survival.Text"
-                android:id="@+id/earthquake_longitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/survival_after" />
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            style="@style/SurvivalCard"
-            android:id="@+id/survive_card_more"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                style="@style/Survival.Text"
-                android:id="@+id/survive_more_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/survival_resources" />
+        <include layout="@layout/survival_fragment_inside" />
 
 
-        </android.support.v7.widget.CardView>
+    </android.support.v4.widget.NestedScrollView>
 
-
-    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -24,6 +24,7 @@
 
 <resources>
     <dimen name="map.height">200dp</dimen>
+    <dimen name="suvival_width">500dp</dimen>
 
 
 </resources>

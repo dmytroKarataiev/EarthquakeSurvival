@@ -27,8 +27,6 @@ package com.adkdevelopment.earthquakesurvival;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
@@ -67,7 +65,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = DetailFragment.class.getSimpleName();
 
-    @Bind(R.id.fab) FloatingActionButton mFab;
     @Bind(R.id.map) MapView mMapView;
     @Bind(R.id.earthquake_place) TextView mEarthquakePlace;
     @Bind(R.id.earthquake_magnitude) TextView mEarthquakeMagnitude;
@@ -136,10 +133,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                     .zoom(LocationUtils.CAMERA_DEFAULT_ZOOM)
                     .build();
         }
-
-        // TODO: 4/6/16 replace
-        mFab.setOnClickListener(v -> Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
 
         return rootView;
     }

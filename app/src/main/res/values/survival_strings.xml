@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2016. Dmytro Karataiev
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<resources>
+
+    <string name="survival_before_title">Drop, Cover, Hold On!</string>
+    <string name="survival_before_text">Look around places where you spend time.  Identify safe places such as under a sturdy piece of furniture or against an interior wall in your home,
+        office or school so that when the shaking starts, you Drop to the ground, Cover your head and neck with your arms, and if a safer place is nearby, crawl to it and Hold On.
+Practice how to “Drop, Cover, and Hold On!”
+To react quickly you must practice often. You may only have seconds to protect yourself in an earthquake.
+Before an earthquake occurs, secure items that could fall and cause injuries (e.g., bookshelves, mirrors, light fixtures).
+Store critical supplies (e.g., water, medication) and documents.
+Plan how you will communicate with family members, including multiple methods by making a <a href="http://www.ready.gov/make-a-plan">family emergency communication plan.</a>
+When choosing your home or business, check if the building is earthquake resistant per local building codes. </string>
+
+    <string name="survival_during_building_title">If you are inside a building</string>
+    <string name="survival_during_building">
+
+Stay where you are until the shaking stops. Do not run outside. Do not get in a doorway as this does not provide protection from falling or flying objects, and you may not be able to remain standing.
+Drop down onto your hands and knees so the earthquake doesn’t knock you down. Drop to the ground (before the earthquake drops you!)
+Cover your head and neck with your arms to protect yourself from falling debris.
+If you are in danger from falling objects, and you can move safely, crawl for additional cover under a sturdy desk or table.
+If there is low furniture or an interior wall or corner nearby, and the path is clear, these may also provide some additional cover.
+Stay away from glass, windows, outside doors and walls, and anything that could fall, such as light fixtures or furniture.
+Hold on to any sturdy covering so you can move with it until the shaking stops. Stay where you are until the shaking stops.</string>
+
+    <string name="survival_during_floor_title">If getting safely to the floor to take cover won’t be possible:</string>
+    <string name="survival_during_floor">Identify an inside corner of the room away from windows and objects that could fall on you.  The Earthquake Country Alliance
+        advises getting as low as possible to the floor. People who use wheelchairs or other mobility devices should lock their wheels and remain seated until the shaking stops.
+        Protect your head and neck with your arms, a pillow, a book, or whatever is available.</string>
+
+    <string name="survival_during_bed_title">If you are in bed when you feel the shaking:</string>
+    <string name="survival_during_bed">If you are in bed: Stay there and Cover your head and neck with a pillow. At night, hazards and debris are difficult to see and avoid;
+        attempts to move in the dark result in more injuries than remaining in bed.</string>
+
+    <string name="survival_during_outside_title">If you are outside when you feel the shaking:</string>
+    <string name="survival_during_outside">If you are outdoors when the shaking starts, move away from buildings, streetlights, and utility wires. Once in the open,
+        “Drop, Cover, and Hold On.” Stay there until the shaking stops. This might not be possible in a city, so you may need to duck inside a building to avoid falling debris.</string>
+
+    <string name="survival_during_car_title">If you are in a moving vehicle when you feel the shaking:</string>
+    <string name="survival_during_car">If you are in a moving vehicle, stop as quickly and safely as possible and stay in the vehicle. Avoid stopping near or under
+        buildings, trees, overpasses, and utility wires. Proceed cautiously once the earthquake has stopped. Avoid roads, bridges, or ramps that the earthquake may have damaged.</string>
+
+    <string name="survival_after_title">Listen to Local Officials</string>
+    <string name="survival_after_text">When the shaking stops, look around. If there is a clear path to safety, leave the building and go to an open space away from damaged areas.
+If you are trapped, do not move about or kick up dust.
+If you have a cell phone with you, use it to call or text for help.
+Tap on a pipe or wall or use a whistle, if you have one, so that rescuers can locate you.
+Once safe, monitor local news reports via battery operated radio, TV, social media, and cell phone text alerts for emergency information and instructions.
+Be prepared to “Drop, Cover, and Hold on” in the likely event of aftershocks. \n
+Listen to Local Officials \n
+
+Learn about the emergency plans that have been established in your area by your <a href="http://www.ready.gov/community-state-info">state and local government.</a>
+        In any emergency, always listen to the instructions given by local emergency management officials.</string>
+
+
+
+
+</resources>

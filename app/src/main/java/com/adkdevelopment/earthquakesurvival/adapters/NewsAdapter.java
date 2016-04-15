@@ -52,6 +52,7 @@ import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -162,6 +163,9 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
                     String link = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.URL));
 
+                    String distance = mContext.getString(R.string.earthquake_distance,
+                            LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
+
                     tempCursor.close();
 
                     ((ViewHolderStats) holder).mEarthquakeClick.setOnClickListener(click -> {
@@ -171,6 +175,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                         intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
                         intent.putExtra(Feature.LINK, link);
                         intent.putExtra(Feature.LATLNG, latLng);
+                        intent.putExtra(Feature.DISTANCE, distance);
 
                         // Check if a phone supports shared transitions
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

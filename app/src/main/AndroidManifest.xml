@@ -55,7 +55,7 @@
             android:value="@integer/google_play_services_version" />
 
         <provider
-            android:name="com.adkdevelopment.earthquakesurvival.provider.EarthquakeProvider"
+            android:name=".provider.EarthquakeProvider"
             android:authorities="@string/sync.provider.authority"
             android:exported="false"
             android:syncable="true" />
@@ -66,20 +66,22 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <!-- to be searchable by Google -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="www.adkdevelopment.com"
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/settings.title"
@@ -88,7 +90,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
         </activity>
-
         <activity
             android:name=".DetailActivity"
             android:label="@string/title.details"
@@ -100,10 +101,13 @@
         </activity>
 
         <!-- Sync Adapter Declarations -->
-        <service android:name=".syncadapter.AuthenticatorService" android:permission="android.permission.ACCOUNT_MANAGER" >
+        <service
+            android:name=".syncadapter.AuthenticatorService"
+            android:permission="android.permission.ACCOUNT_MANAGER">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
@@ -115,6 +119,7 @@
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
@@ -134,12 +139,23 @@
                 <!-- Receives broadcast messages from SyncAdapter and updates data -->
                 <action android:name="com.adkdevelopment.earhquakesurvival.ACTION_DATA_UPDATED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
+
         <service android:name=".widget.EarthquakeInfoService" />
 
+        <activity
+            android:name=".InfoActivity"
+            android:label="@string/title_activity_info"
+            android:parentActivityName=".PagerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
+        </activity>
     </application>
 
 </manifest>

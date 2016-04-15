@@ -279,7 +279,6 @@ public class PagerActivity extends AppCompatActivity
 
                     Fragment fragment = mPagerAdapter.getRegisteredFragment(tab.getPosition());
                     if (fragment instanceof SurvivalFragment) {
-                        ((SurvivalFragment) fragment).setLocationText(mLocation);
                         ((SurvivalFragment) fragment).animateViewsIn();
                     } else if (fragment instanceof NewsFragment) {
                         ((NewsFragment) fragment).animateViewsIn();

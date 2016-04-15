@@ -24,19 +24,22 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
-import android.location.Location;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -47,11 +50,22 @@ public class SurvivalFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+    public static final String SECTION = "section";
 
-    @Bind(R.id.section_label) TextView mSectionLabel;
-    @Bind(R.id.earthquake_latitude) TextView mEarthquakeLatitude;
-    @Bind(R.id.earthquake_longitude) TextView mEarthquakeLongitude;
+    @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
+    @Bind(R.id.nested_scroll) NestedScrollView mNestedScroll;
     View mRootView;
+
+    @OnClick({ R.id.survive_card_before,
+            R.id.survive_card_during,
+            R.id.survive_card_after,
+            R.id.survive_card_more })
+    public void startActivity(View view) {
+        Intent intent = new Intent(getContext(), InfoActivity.class);
+        Log.d("SurvivalFragment", "listener.getId():" + view.getId() + " " + R.id.survive_card_before);
+        intent.putExtra(SECTION, view.getId());
+        startActivity(intent);
+    }
 
     public SurvivalFragment() {
     }
@@ -75,20 +89,23 @@ public class SurvivalFragment extends Fragment {
 
         ButterKnife.bind(this, mRootView);
 
-        mSectionLabel.setText(getString(R.string.temp_string, getArguments().getInt(ARG_SECTION_NUMBER)));
+        // only in landscape mode
+        if (mParallaxBar != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                mNestedScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    int max = mParallaxBar.getHeight();
+                    // scroll change
+                    int dy = scrollY - oldScrollY;
+                    if (dy > 0) {
+                        mParallaxBar.setTranslationY(Math.max(-max, mParallaxBar.getTranslationY() - dy / 2));
+                    } else {
+                        mParallaxBar.setTranslationY(Math.min(0, mParallaxBar.getTranslationY() - dy / 2));
+                    }
+                });
+            }
+        }
 
         return mRootView;
-    }
-
-    /**
-     * Method to set location lat and long from PagerActivity
-     * @param location current location of a phone
-     */
-    public void setLocationText(Location location) {
-        if (location != null) {
-            mEarthquakeLatitude.setText(getString(R.string.earthquake_latitude, location.getLatitude()));
-            mEarthquakeLongitude.setText(getString(R.string.earthquake_longitude, location.getLongitude()));
-        }
     }
 
     public void animateViewsIn() {
@@ -102,6 +119,5 @@ public class SurvivalFragment extends Fragment {
     public void onResume() {
         super.onResume();
         animateViewsIn();
-        Log.d("SurvivalFragment", "resume");
     }
 }
