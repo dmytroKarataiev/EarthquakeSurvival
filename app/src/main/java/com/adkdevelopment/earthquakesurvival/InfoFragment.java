@@ -24,17 +24,25 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.adkdevelopment.earthquakesurvival.adapters.InfoAdapter;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,13 +52,8 @@ import butterknife.ButterKnife;
  */
 public class InfoFragment extends Fragment {
 
-    @Bind(R.id.info_first_title) TextView mFirstTitle;
-    @Bind(R.id.info_first_text) TextView mFirstText;
-    @Bind(R.id.info_second_title) TextView mSecondTitle;
-    @Bind(R.id.info_second_text) TextView mSecondText;
-    @Bind(R.id.info_third_title) TextView mThirdTitle;
-    @Bind(R.id.info_third_text) TextView mThirdText;
-
+    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
+    private InfoAdapter mRecentAdapter;
 
     public InfoFragment() {
     }
@@ -61,56 +64,66 @@ public class InfoFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.info_fragment, container, false);
         ImageView backdrop = ButterKnife.findById(getActivity(), R.id.backdrop);
+        FloatingActionButton floatingActionButton = ButterKnife.findById(getActivity(), R.id.fab);
+
         ButterKnife.bind(this, rootView);
 
         if (getActivity().getIntent() != null) {
-            int drawable = -1;
-            String actionBarTitle = null;
-            String firstTitle = null;
-            String firstText = null;
-            String secondTitle = null;
-            String secondText = null;
-            String thirdTitle = null;
-            String thirdText = null;
-            String fourthTitle = null;
-            String fourthText = null;
-            String fifthTitle = null;
-            String fifthText = null;
 
-            // TODO: 4/14/16 refactor
-            switch (getActivity().getIntent().getIntExtra(SurvivalFragment.SECTION, -1)) {
+            int section = getActivity().getIntent().getIntExtra(SurvivalFragment.SECTION, -1);
+            List<String> titles = new ArrayList<>();
+            List<String> text = new ArrayList<>();
+            String title = "";
+
+            int drawable = -1;
+
+            switch (section) {
                 case R.id.survive_card_before:
-                    mFirstTitle.setText(R.string.survival_before_title);
-                    mFirstText.setText(R.string.survival_before_text);
+                    titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_before_title)));
+                    text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_before_text)));
                     drawable = R.drawable.earth1;
-                    actionBarTitle = getString(R.string.survival_before);
+                    title = getString(R.string.survival_before);
                     break;
                 case R.id.survive_card_during:
-                    firstTitle = getString(R.string.survival_during_building_title);
-                    firstText = getString(R.string.survival_during_building);
-                    secondTitle = getString(R.string.survival_during_bed_title);
-                    secondText = getString(R.string.survival_during_bed);
-                    thirdTitle = getString(R.string.survival_during_car_title);
-                    thirdText = getString(R.string.survival_during_car);
+                    titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_during_title)));
+                    text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_during_text)));
                     drawable = R.drawable.earth2;
-                    actionBarTitle = getString(R.string.survival_during);
+                    title = getString(R.string.survival_during);
+                    break;
+                case R.id.survive_card_after:
+                    titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_after_title)));
+                    text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_after_text)));
+                    drawable = R.drawable.earth3;
+                    title = getString(R.string.survival_after);
+                    break;
+                // TODO: 4/17/16 add more info 
+                case R.id.survive_card_more:
+                    title = getString(R.string.survival_resources);
                     break;
                 default:
-                    drawable = R.drawable.dropcoverholdon;
-                    actionBarTitle = getString(R.string.title_activity_info);
                     break;
             }
 
-            mFirstTitle.setText(firstTitle);
-            mFirstText.setText(firstText);
-            mSecondTitle.setText(secondTitle);
-            mSecondText.setText(secondText);
-            mThirdTitle.setText(thirdTitle);
-            mThirdText.setText(thirdText);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            mRecentAdapter = new InfoAdapter(titles, text, getContext());
+
+            mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setAdapter(mRecentAdapter);
+
+            floatingActionButton.setOnClickListener(click -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                if (titles.size() > 0 && text.size() > 0) {
+                    intent.putExtra(Intent.EXTRA_SUBJECT, titles.get(0));
+                    intent.putExtra(Intent.EXTRA_TEXT, text.get(0));
+                }
+                startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
+            });
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
-                actionBar.setTitle(actionBarTitle);
+                actionBar.setTitle(title);
             }
 
             Picasso.with(getContext()).load(drawable).error(R.drawable.dropcoverholdon).into(backdrop);

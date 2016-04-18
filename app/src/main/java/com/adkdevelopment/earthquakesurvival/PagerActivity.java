@@ -98,7 +98,6 @@ public class PagerActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private static final int REQUEST_FINE_LOCATION = 0;
-    private Location mLocation;
 
     // Geofence variables
     private List<Geofence> mGeofenceList;
@@ -338,9 +337,6 @@ public class PagerActivity extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i(TAG, location.toString());
-        mLocation = location;
-
         // save location in shared preferences
         LocationUtils.setLocation(this, location);
     }

@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,6 @@ public class SurvivalFragment extends Fragment {
             R.id.survive_card_more })
     public void startActivity(View view) {
         Intent intent = new Intent(getContext(), InfoActivity.class);
-        Log.d("SurvivalFragment", "listener.getId():" + view.getId() + " " + R.id.survive_card_before);
         intent.putExtra(SECTION, view.getId());
         startActivity(intent);
     }

@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,8 +40,6 @@ public abstract class BaseContentProvider extends ContentProvider {
     public final boolean onCreate() {
         if (hasDebug()) {
             // Enable logging of SQL statements as they are executed.
-
-            Log.d("SQL Helper", "onCreate: ");
             /*
             try {
                 // Logging is not necessary
