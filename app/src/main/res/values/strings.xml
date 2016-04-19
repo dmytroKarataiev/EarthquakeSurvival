@@ -131,6 +131,8 @@
     <string name="survival_during">During An Earthquake</string>
     <string name="survival_after">After An Earthquake</string>
     <string name="survival_resources">Resources</string>
+    <string name="survival_kit">Emergency supplies</string>
+
     <string name="title_activity_info">How to survive</string>
     <string name="action_settings">Settings</string>
 

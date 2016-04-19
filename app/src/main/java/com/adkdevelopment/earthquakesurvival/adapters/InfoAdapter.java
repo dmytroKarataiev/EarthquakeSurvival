@@ -27,6 +27,8 @@ package com.adkdevelopment.earthquakesurvival.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +63,6 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
         @Bind(R.id.info_text) TextView mText;
         @Bind(R.id.info_card) CardView mInfoCard;
 
-
         public ViewHolder(View v)  {
             super(v);
             ButterKnife.bind(this, v);
@@ -80,7 +81,8 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mTitle.setText(mTitles.get(position));
-        holder.mText.setText(mTexts.get(position));
+        holder.mText.setText(Html.fromHtml(mTexts.get(position)));
+        holder.mText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

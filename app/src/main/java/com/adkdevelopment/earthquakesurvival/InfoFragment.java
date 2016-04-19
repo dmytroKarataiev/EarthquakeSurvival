@@ -32,6 +32,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,9 +97,18 @@ public class InfoFragment extends Fragment {
                     drawable = R.drawable.earth3;
                     title = getString(R.string.survival_after);
                     break;
-                // TODO: 4/17/16 add more info 
                 case R.id.survive_card_more:
                     title = getString(R.string.survival_resources);
+                    titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_resources_title)));
+                    text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_resources_text)));
+                    Log.d("InfoFragment", Arrays.toString(text.toArray()));
+                    drawable = R.drawable.earth3;
+                    break;
+                case R.id.survive_card_kit:
+                    title = getString(R.string.survival_kit);
+                    titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_kit_title)));
+                    text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_kit_text)));
+                    drawable = R.drawable.earth3;
                     break;
                 default:
                     break;

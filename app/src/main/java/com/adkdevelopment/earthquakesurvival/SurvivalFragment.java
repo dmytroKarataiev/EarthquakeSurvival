@@ -58,7 +58,8 @@ public class SurvivalFragment extends Fragment {
     @OnClick({ R.id.survive_card_before,
             R.id.survive_card_during,
             R.id.survive_card_after,
-            R.id.survive_card_more })
+            R.id.survive_card_more,
+            R.id.survive_card_kit })
     public void startActivity(View view) {
         Intent intent = new Intent(getContext(), InfoActivity.class);
         intent.putExtra(SECTION, view.getId());

@@ -34,6 +34,8 @@ String should look like this: \<string name="google.maps.api.key.release">YOUR A
 * Earthquake photo 1: http://themilitaryengineer.com/tme_online/2014_mar_apr/alaska/C_BuildingCollapse.jpg
 * Earthquake photo 2: http://sameblog.org/wp-content/uploads/2014/03/C_AKCOEComplex.jpg
 * Earthquake photo 3: https://upload.wikimedia.org/wikipedia/commons/a/ae/Good_Friday_Earthquake_at_Turnagain_Arm.jpg
+* Survival information: https://www.ready.gov/earthquakes
+* Emergency Supplies: http://emergency.cdc.gov/disasters/earthquakes/supplies.asp
 
 License
 -------
