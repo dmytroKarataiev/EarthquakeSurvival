@@ -102,8 +102,10 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
 
         ButterKnife.bind(this, rootView);
 
-        mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(this);
+        if (Utilities.checkPlayServices(getActivity())) {
+            mMapView.onCreate(savedInstanceState);
+            mMapView.getMapAsync(this);
+        }
 
         if (savedInstanceState != null) {
             mCameraPosition = savedInstanceState.getParcelable(CAMERA_POSITION);

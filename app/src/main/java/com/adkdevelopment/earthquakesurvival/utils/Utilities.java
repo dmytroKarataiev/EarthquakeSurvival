@@ -25,6 +25,7 @@
 package com.adkdevelopment.earthquakesurvival.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -36,12 +37,15 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.adkdevelopment.earthquakesurvival.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Date;
 
@@ -198,5 +202,24 @@ public class Utilities {
                 offset *= 1.5f;
             }
         }
+    }
+
+    /**
+     * Returns true if Google Play Services available on the phone,
+     * otherwise tries to ask user to install it
+     * @param activity from which call is made
+     * @return true if present, false otherwise
+     */
+    public static boolean checkPlayServices(Activity activity) {
+        int result = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity);
+        if (result != ConnectionResult.SUCCESS) {
+            if (GoogleApiAvailability.getInstance().isUserResolvableError(result)) {
+                GoogleApiAvailability.getInstance().getErrorDialog(activity, result, 0).show();
+            } else {
+                Log.e(TAG, "checkPlayServices not available");
+            }
+            return false;
+        }
+        return true;
     }
 }

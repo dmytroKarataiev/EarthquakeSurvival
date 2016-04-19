@@ -122,8 +122,11 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         }
 
         final Bundle mapViewSavedInstanceState = savedInstanceState != null ? savedInstanceState.getBundle("mapViewSaveState") : null;
-        mMapView.onCreate(mapViewSavedInstanceState);
-        mMapView.getMapAsync(this);
+
+        if (Utilities.checkPlayServices(getActivity())) {
+            mMapView.onCreate(mapViewSavedInstanceState);
+            mMapView.getMapAsync(this);
+        }
 
         if (savedInstanceState != null) {
             mCameraPosition = savedInstanceState.getParcelable(CAMERA_POSITION);

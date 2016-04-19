@@ -140,12 +140,14 @@ public class PagerActivity extends AppCompatActivity
 
         loadPermissions(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_FINE_LOCATION);
 
-        // Set up GoogleApiClient
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+        if (Utilities.checkPlayServices(this)) {
+            // Set up GoogleApiClient
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }
 
         // Observe SyncAdapter work and update Geofences
         mObserver = new ContentObserver(new Handler(Looper.getMainLooper())) {
@@ -169,7 +171,8 @@ public class PagerActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
+        if (mGoogleApiClient != null &&
+                (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting())) {
             mGoogleApiClient.connect();
         }
     }
@@ -177,7 +180,8 @@ public class PagerActivity extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+        if (mGoogleApiClient != null &&
+                (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting())) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -369,7 +373,9 @@ public class PagerActivity extends AppCompatActivity
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // granted, trying to get location again
                     try {
-                        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                        if (mGoogleApiClient.isConnected()) {
+                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                        }
                     } catch (SecurityException e) {
                         Log.e(TAG, "e:" + e);
                     }
