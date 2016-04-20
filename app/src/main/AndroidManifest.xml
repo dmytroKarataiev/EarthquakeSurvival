@@ -128,16 +128,12 @@
             android:value="@string/google.maps.api.key.debug" />
 
         <!-- Widget Provider -->
-        <receiver android:name=".widget.EarthquakeWidgetProvider"
-            android:exported="true" >
+        <receiver android:name=".widget.EarthquakeWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <intent-filter>
                 <!-- Receives broadcast messages from SyncAdapter and updates data -->
-                <action android:name="com.adkdevelopment.earhquakesurvival.ACTION_DATA_UPDATED" />
+                <action android:name="com.adkdevelopment.earthquakesurvival.ACTION_DATA_UPDATED" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />

@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 
@@ -52,10 +53,10 @@ public class EarthquakeWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
+        super.onReceive(context, intent);
         if (SyncAdapter.ACTION_DATA_UPDATE.equals(intent.getAction())) {
             context.startService(new Intent(context, EarthquakeInfoService.class));
         }
-        super.onReceive(context, intent);
     }
 }
 

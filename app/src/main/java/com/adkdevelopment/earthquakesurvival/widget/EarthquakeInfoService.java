@@ -56,15 +56,12 @@ public class EarthquakeInfoService extends IntentService {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, EarthquakeWidgetProvider.class));
 
-
         Cursor data = getContentResolver()
                 .query(EarthquakeColumns.CONTENT_URI,
                         new String[]{EarthquakeColumns.TIME},
                         null,
                         null,
                         null);
-
-
 
         if (data == null) {
             return;

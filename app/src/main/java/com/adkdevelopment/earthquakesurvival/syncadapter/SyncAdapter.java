@@ -71,7 +71,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     // Broadcast message to the widget
     public static final String ACTION_DATA_UPDATE = "com.adkdevelopment.earthquakesurvival.ACTION_DATA_UPDATED";
 
-
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -245,7 +244,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Since we've created an account
          */
-        Log.d(TAG, "Utilities.getSyncIntervalPrefs(context):" + Utilities.getSyncIntervalPrefs(context));
         SyncAdapter.configurePeriodicSync(context,
                 Utilities.getSyncIntervalPrefs(context),
                 Utilities.getSyncIntervalPrefs(context) / 3);
@@ -271,7 +269,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContentResolver.setSyncAutomatically(account, context.getString(R.string.sync_provider_authority), false);
         } else {
             ContentResolver.setSyncAutomatically(account, context.getString(R.string.sync_provider_authority), true);
-            Log.d(TAG, "syncInterval:" + syncInterval);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 // we can enable inexact timers in our periodic sync
                 SyncRequest request = new SyncRequest.Builder().
@@ -309,5 +307,4 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 .setPackage(getContext().getPackageName());
         getContext().sendBroadcast(dataUpdated);
     }
-
 }
