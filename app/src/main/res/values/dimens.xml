@@ -62,7 +62,7 @@
 
     <dimen name="text_medium">16sp</dimen>
 
-
+    <dimen name="survival_width">500dp</dimen>
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="card_margin">16dp</dimen>
 

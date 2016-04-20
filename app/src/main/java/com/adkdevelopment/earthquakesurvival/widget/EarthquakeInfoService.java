@@ -32,7 +32,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.widget.RemoteViews;
 
-import com.adkdevelopment.earthquakesurvival.PagerActivity;
+import com.adkdevelopment.earthquakesurvival.MainActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
@@ -117,7 +117,7 @@ public class EarthquakeInfoService extends IntentService {
             remoteViews.setTextViewText(R.id.widget_text_date, Utilities.getNiceDate(dateMillis));
             remoteViews.setTextViewText(R.id.widget_text_distance, distance);
 
-            Intent launchIntent = new Intent(this, PagerActivity.class);
+            Intent launchIntent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, launchIntent, 0);
 
             remoteViews.setOnClickPendingIntent(R.id.widget, pendingIntent);

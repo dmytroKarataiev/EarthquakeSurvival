@@ -91,7 +91,7 @@ public class Utilities {
     public static int getSyncIntervalPrefs(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String syncFrequency = sharedPreferences
-                .getString(context.getString(R.string.sharedprefs_key_syncfrequency), "180");
+                .getString(context.getString(R.string.sharedprefs_key_syncfrequency), "7200");
 
         return Integer.parseInt(syncFrequency);
     }
@@ -180,9 +180,14 @@ public class Utilities {
             int count = viewGroup.getChildCount();
             float offset = context.getResources().getDimensionPixelSize(R.dimen.offset_y);
 
-            // TODO: 4/14/16 FIX API version
-            Interpolator interpolator =
-                    AnimationUtils.loadInterpolator(context, android.R.interpolator.linear_out_slow_in);
+            Interpolator interpolator;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                interpolator =
+                        AnimationUtils.loadInterpolator(context, android.R.interpolator.linear_out_slow_in);
+            } else {
+                interpolator =
+                        AnimationUtils.loadInterpolator(context, android.R.interpolator.linear);
+            }
 
             // loop over the children setting an increasing translation y but the same animation
             // duration + interpolation

@@ -64,11 +64,7 @@
             android:name=".PagerActivity"
             android:label="@string/app.name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <!-- to be searchable by Google -->
             <intent-filter>
@@ -158,6 +154,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
         </activity>
+
+        <activity android:name=".MainActivity"
+            android:label="@string/app.name"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

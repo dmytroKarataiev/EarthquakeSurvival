@@ -224,7 +224,6 @@ public class PagerActivity extends AppCompatActivity
 
     /**
      * Method to set tab images and highlights on tab switching
-     * todo: add color tint on buttons
      */
     private void setTabImages() {
         if (mTab != null) {
@@ -264,7 +263,6 @@ public class PagerActivity extends AppCompatActivity
                 }
             }
 
-            // TODO: 4/6/16 refactor, probably add AddPageChangeListener
             // Highlight image and text on selection
             mTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override

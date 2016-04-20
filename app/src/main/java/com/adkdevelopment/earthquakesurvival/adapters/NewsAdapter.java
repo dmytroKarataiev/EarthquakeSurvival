@@ -123,7 +123,6 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
 
-        // TODO: 4/7/16 refactor
         if (holder.getItemViewType() == 0) {
 
             Cursor tempCursor = mContext.getContentResolver()
