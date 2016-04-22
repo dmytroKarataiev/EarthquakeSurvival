@@ -25,18 +25,20 @@
 package com.adkdevelopment.earthquakesurvival.geofence;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.PagerActivity;
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.location.Geofence;
@@ -47,6 +49,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Sends
  * Created by karataev on 4/4/16.
  */
 public class GeofenceService extends IntentService {
@@ -94,8 +97,11 @@ public class GeofenceService extends IntentService {
      * @param notificationDetails String with details to show in the notification
      */
     private void sendNotification(String notificationDetails) {
+
+        Context context = getBaseContext();
+
         // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), PagerActivity.class);
+        Intent notificationIntent = new Intent(context, PagerActivity.class);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -115,30 +121,30 @@ public class GeofenceService extends IntentService {
 
         Bitmap largeIcon = null;
         try {
-            largeIcon = Picasso.with(getApplicationContext()).load(R.mipmap.ic_launcher).get();
+            largeIcon = Picasso.with(context).load(R.mipmap.ic_launcher).get();
         } catch (IOException e) {
             Log.e(TAG, "e:" + e);
         }
 
         // Define the notification settings.
-        builder.setSmallIcon(R.mipmap.ic_launcher)
+        builder.setAutoCancel(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setLargeIcon(largeIcon)
                 .setColor(Color.RED)
+                .setTicker(getString(R.string.geofence_notification))
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.geofence_notification_text))
                 .setContentIntent(notificationPendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(notificationDetails + "\n"
-                                + getString(R.string.geofence_notification_text)));
-
-        // Dismiss notification once the user touches it.
-        builder.setAutoCancel(true);
+                                + getString(R.string.geofence_notification_text)))
+                .setGroup(EarthquakeObject.NOTIFICATION_GROUP);
 
         // Get an instance of the Notification manager
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(context);
 
         // Issue the notification
-        mNotificationManager.notify(0, builder.build());
+        mNotificationManager.notify(EarthquakeObject.NOTIFICATION_ID, builder.build());
     }
 }

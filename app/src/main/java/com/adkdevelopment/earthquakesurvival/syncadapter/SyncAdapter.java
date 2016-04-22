@@ -26,22 +26,29 @@ package com.adkdevelopment.earthquakesurvival.syncadapter;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.text.Html;
 import android.text.SpannedString;
 import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.App;
+import com.adkdevelopment.earthquakesurvival.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
@@ -50,7 +57,9 @@ import com.adkdevelopment.earthquakesurvival.objects.news.Item;
 import com.adkdevelopment.earthquakesurvival.objects.news.Rss;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -82,31 +91,40 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider,
                               SyncResult syncResult) {
 
+
         App.getApiManager().getEarthquakeService().getData().enqueue(new Callback<EarthquakeObject>() {
             @Override
             public void onResponse(Call<EarthquakeObject> call, Response<EarthquakeObject> response) {
                 EarthquakeObject earthquake = response.body();
 
-                //Log.d(TAG, "onResponse: success " + earthquake.getFeatures().size());
-
                 Vector<ContentValues> cVVector = new Vector<>(earthquake.getFeatures().size());
+
+                double currentBiggest = 0.0;
+                ContentValues notifyValues = null;
+
                 for (Feature each : earthquake.getFeatures()) {
 
-                    ContentValues weatherValues = new ContentValues();
+                    ContentValues earthquakeValues = new ContentValues();
 
-                    weatherValues.put(EarthquakeColumns.PLACE, each.getProperties().getPlace());
-                    weatherValues.put(EarthquakeColumns.ID_EARTH, each.getId());
-                    weatherValues.put(EarthquakeColumns.MAG, each.getProperties().getMag());
-                    weatherValues.put(EarthquakeColumns.TYPE, each.getProperties().getType());
-                    weatherValues.put(EarthquakeColumns.ALERT, each.getProperties().getAlert());
-                    weatherValues.put(EarthquakeColumns.TIME, each.getProperties().getTime());
-                    weatherValues.put(EarthquakeColumns.URL, each.getProperties().getUrl());
-                    weatherValues.put(EarthquakeColumns.DETAIL, each.getProperties().getDetail());
-                    weatherValues.put(EarthquakeColumns.DEPTH, each.getGeometry().getCoordinates().get(2));
-                    weatherValues.put(EarthquakeColumns.LONGITUDE, each.getGeometry().getCoordinates().get(0));
-                    weatherValues.put(EarthquakeColumns.LATITUDE, each.getGeometry().getCoordinates().get(1));
+                    earthquakeValues.put(EarthquakeColumns.PLACE, each.getProperties().getPlace());
+                    earthquakeValues.put(EarthquakeColumns.ID_EARTH, each.getId());
+                    earthquakeValues.put(EarthquakeColumns.MAG, each.getProperties().getMag());
+                    earthquakeValues.put(EarthquakeColumns.TYPE, each.getProperties().getType());
+                    earthquakeValues.put(EarthquakeColumns.ALERT, each.getProperties().getAlert());
+                    earthquakeValues.put(EarthquakeColumns.TIME, each.getProperties().getTime());
+                    earthquakeValues.put(EarthquakeColumns.URL, each.getProperties().getUrl());
+                    earthquakeValues.put(EarthquakeColumns.DETAIL, each.getProperties().getDetail());
+                    earthquakeValues.put(EarthquakeColumns.DEPTH, each.getGeometry().getCoordinates().get(2));
+                    earthquakeValues.put(EarthquakeColumns.LONGITUDE, each.getGeometry().getCoordinates().get(0));
+                    earthquakeValues.put(EarthquakeColumns.LATITUDE, each.getGeometry().getCoordinates().get(1));
 
-                    cVVector.add(weatherValues);
+                    cVVector.add(earthquakeValues);
+
+                    if (each.getProperties().getMag() != null &&
+                            each.getProperties().getMag() > currentBiggest) {
+                        currentBiggest = each.getProperties().getMag();
+                        notifyValues = earthquakeValues;
+                    }
                 }
 
                 int inserted = 0;
@@ -125,6 +143,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 int deleted = resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{String.valueOf(date.getTime())});
                 //Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
+                sendNotification(notifyValues);
             }
 
             @Override
@@ -307,4 +326,79 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 .setPackage(getContext().getPackageName());
         getContext().sendBroadcast(dataUpdated);
     }
+
+    /**
+     * Raises a notification with a biggest earthquake with each sync
+     * @param notifyValues data with the biggest recent earthquake
+     */
+    public void sendNotification(ContentValues notifyValues) {
+
+        Context context = getContext();
+
+        if (Utilities.getNotificationsPrefs(context)) {
+
+            //checking the last update and notify if it' the first of the day
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
+            long lastSync = prefs.getLong(lastNotificationKey, 0);
+
+            if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
+
+                Intent intent = new Intent(context, DetailActivity.class);
+
+                double latitude = notifyValues.getAsDouble(EarthquakeColumns.LATITUDE);
+                double longitude = notifyValues.getAsDouble(EarthquakeColumns.LONGITUDE);
+                LatLng latLng = new LatLng(latitude, longitude);
+
+                String distance = context.getString(R.string.earthquake_distance,
+                        LocationUtils.getDistance(latLng, LocationUtils.getLocation(context)));
+
+                String magnitude = context.getString(R.string.earthquake_magnitude, notifyValues.getAsDouble(EarthquakeColumns.MAG));
+                String date = Utilities.getNiceDate(notifyValues.getAsLong(EarthquakeColumns.TIME));
+
+                intent.putExtra(Feature.MAGNITUDE, notifyValues.getAsDouble(EarthquakeColumns.MAG));
+                intent.putExtra(Feature.PLACE, notifyValues.getAsString(EarthquakeColumns.PLACE));
+                intent.putExtra(Feature.DATE, date);
+                intent.putExtra(Feature.LINK, notifyValues.getAsString(EarthquakeColumns.URL));
+                intent.putExtra(Feature.LATLNG, latLng);
+                intent.putExtra(Feature.DISTANCE, distance);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(context,
+                        EarthquakeObject.NOTIFICATION_ID,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+                builder
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setAutoCancel(true)
+                        .setContentTitle(context.getString(R.string.earthquake_statistics_largest))
+                        .setContentText(context.getString(R.string.earthquake_magnitude, notifyValues.get(EarthquakeColumns.MAG)))
+                        .setContentIntent(pendingIntent)
+                        .setSmallIcon(R.drawable.ic_info_black_24dp)
+                        // TODO: 4/21/16 add large icon 
+                        // .setLargeIcon(largeIcon)
+                        .setTicker(context.getString(R.string.app_name))
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(notifyValues.get(EarthquakeColumns.PLACE).toString()
+                                        + "\n" + magnitude
+                                        + "\n" + date
+                                        + "\n" + distance))
+                        .setGroup(EarthquakeObject.NOTIFICATION_GROUP)
+                        .setGroupSummary(true);
+
+                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
+                managerCompat.notify(EarthquakeObject.NOTIFICATION_ID, builder.build());
+
+                //refreshing last sync
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putLong(lastNotificationKey, System.currentTimeMillis());
+                editor.apply();
+            }
+
+        }
+    }
+
 }

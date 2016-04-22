@@ -89,10 +89,10 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
         String link = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
         String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
-        Long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
-        Double magnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
-        Double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
-        Double longitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+        long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
+        double magnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
+        double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+        double longitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
 
         LatLng latLng = new LatLng(latitude, longitude);
 

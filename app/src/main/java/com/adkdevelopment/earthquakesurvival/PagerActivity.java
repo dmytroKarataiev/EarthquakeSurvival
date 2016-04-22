@@ -394,7 +394,7 @@ public class PagerActivity extends AppCompatActivity
                 null);
 
         if (cursor != null && cursor.getCount() > 0) {
-            mGeofenceList.clear();
+            mGeofenceList = new ArrayList<>();
             int i = 0;
             while (cursor.moveToNext() && i < 80) { // Geofence limit is around 80 per device
                 String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));

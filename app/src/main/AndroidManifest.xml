@@ -36,6 +36,9 @@
     <!-- Google API Location Permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- Notifications permissions -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <!-- Google Maps OpenGL requirements -->
     <uses-feature
         android:glEsVersion="0x00020000"

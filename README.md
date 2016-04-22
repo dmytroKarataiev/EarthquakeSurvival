@@ -24,6 +24,12 @@ Earthquake Survival allows you to see all the earthquakes around the world and n
 * [Parallax Scroll](app/src/main/java/com/adkdevelopment/earthquakesurvival/SurvivalFragment.java)
 * Accessibility features: content descriptions, RTL, correct navigation (whole app).
 
+## Future development
+* Design improvements
+* Collection widget
+* Add more information to earthquakes
+* Sort by magnitude, time, distance
+* Add more earthquakes (up to 7 days info)
 
 ## Important information
 * For the app to work you need to add Google Maps Api key to the apikeys.xml file in values folder <br>

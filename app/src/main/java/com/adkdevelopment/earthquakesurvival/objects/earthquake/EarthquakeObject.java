@@ -48,6 +48,9 @@ public class EarthquakeObject {
     @Expose
     private List<Double> bbox = new ArrayList<>();
 
+    public static final int NOTIFICATION_ID = 2000;
+    public static final String NOTIFICATION_GROUP = "earthquake_group";
+
     /**
      *
      * @return

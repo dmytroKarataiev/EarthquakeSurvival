@@ -74,6 +74,7 @@
     <string name="sharedprefs.key.magnitude" translatable="false">magn</string>
     <string name="sharedprefs.key.distance" translatable="false">dist</string>
     <string name="sharedprefs.key.notifications" translatable="false">notif</string>
+    <string name="sharedprefs_key_lastnotification" translatable="false">last_notification</string>
 
     <!-- Fragments titles -->
     <string name="title.details">Earthquake Details</string>
@@ -111,6 +112,7 @@
     <string name="geofence.error.many_intents">You have provided too many PendingIntents to the addGeofences() call</string>
     <string name="geofence.error.unknown">Unknown error: the Geofence service is not available now</string>
     <string name="geofence.error.invalid_type">Geofence transition error: invalid transition type %1$d</string>
+    <string name="geofence_notification">Geofence notification occurred</string>
     <string name="geofence.transition.entered">Entered</string>
     <string name="geofence.transition.exited">Exited</string>
     <string name="geofence.transition.unknown">Unknown Transition</string>
