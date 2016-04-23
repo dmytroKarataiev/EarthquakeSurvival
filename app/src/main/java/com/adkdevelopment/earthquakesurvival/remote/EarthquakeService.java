@@ -25,10 +25,12 @@
 package com.adkdevelopment.earthquakesurvival.remote;
 
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.objects.info.CountEarthquakes;
 import com.adkdevelopment.earthquakesurvival.objects.news.Rss;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Public interface with a link to the Endpoint
@@ -43,4 +45,12 @@ public interface EarthquakeService {
     @GET("https://news.google.com/news?q=earthquake&output=rss")
     Call<Rss> getNews();
 
+    @GET("http://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson")
+    Call<CountEarthquakes> getEarthquakeStats(@Query("starttime") String starttime,
+                                              @Query("endtime") String endtime,
+                                              @Query("minmagnitude") String magnitude);
+
+    @GET("http://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson")
+    Call<CountEarthquakes> getEarthquakeStats(@Query("starttime") String starttime,
+                                              @Query("endtime") String endtime);
 }

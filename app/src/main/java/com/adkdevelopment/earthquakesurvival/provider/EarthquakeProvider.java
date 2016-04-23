@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import com.adkdevelopment.earthquakesurvival.BuildConfig;
 import com.adkdevelopment.earthquakesurvival.provider.base.BaseContentProvider;
+import com.adkdevelopment.earthquakesurvival.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 
@@ -22,17 +23,20 @@ public class EarthquakeProvider extends BaseContentProvider {
     public static final String AUTHORITY = "com.adkdevelopment.earthquakesurvival.provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
-    private static final int URI_TYPE_EARTHQUAKE = 0;
-    private static final int URI_TYPE_EARTHQUAKE_ID = 1;
+    private static final int URI_TYPE_COUNT = 0;
+    private static final int URI_TYPE_COUNT_ID = 1;
 
-    private static final int URI_TYPE_NEWS = 2;
-    private static final int URI_TYPE_NEWS_ID = 3;
+    private static final int URI_TYPE_EARTHQUAKE = 2;
+    private static final int URI_TYPE_EARTHQUAKE_ID = 3;
 
-
+    private static final int URI_TYPE_NEWS = 4;
+    private static final int URI_TYPE_NEWS_ID = 5;
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
+        URI_MATCHER.addURI(AUTHORITY, CountColumns.TABLE_NAME, URI_TYPE_COUNT);
+        URI_MATCHER.addURI(AUTHORITY, CountColumns.TABLE_NAME + "/#", URI_TYPE_COUNT_ID);
         URI_MATCHER.addURI(AUTHORITY, EarthquakeColumns.TABLE_NAME, URI_TYPE_EARTHQUAKE);
         URI_MATCHER.addURI(AUTHORITY, EarthquakeColumns.TABLE_NAME + "/#", URI_TYPE_EARTHQUAKE_ID);
         URI_MATCHER.addURI(AUTHORITY, NewsColumns.TABLE_NAME, URI_TYPE_NEWS);
@@ -53,6 +57,11 @@ public class EarthquakeProvider extends BaseContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCHER.match(uri);
         switch (match) {
+            case URI_TYPE_COUNT:
+                return TYPE_CURSOR_DIR + CountColumns.TABLE_NAME;
+            case URI_TYPE_COUNT_ID:
+                return TYPE_CURSOR_ITEM + CountColumns.TABLE_NAME;
+
             case URI_TYPE_EARTHQUAKE:
                 return TYPE_CURSOR_DIR + EarthquakeColumns.TABLE_NAME;
             case URI_TYPE_EARTHQUAKE_ID:
@@ -105,6 +114,14 @@ public class EarthquakeProvider extends BaseContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
+            case URI_TYPE_COUNT:
+            case URI_TYPE_COUNT_ID:
+                res.table = CountColumns.TABLE_NAME;
+                res.idColumn = CountColumns._ID;
+                res.tablesWithJoins = CountColumns.TABLE_NAME;
+                res.orderBy = CountColumns.DEFAULT_ORDER;
+                break;
+
             case URI_TYPE_EARTHQUAKE:
             case URI_TYPE_EARTHQUAKE_ID:
                 res.table = EarthquakeColumns.TABLE_NAME;
@@ -126,6 +143,7 @@ public class EarthquakeProvider extends BaseContentProvider {
         }
 
         switch (matchedId) {
+            case URI_TYPE_COUNT_ID:
             case URI_TYPE_EARTHQUAKE_ID:
             case URI_TYPE_NEWS_ID:
                 id = uri.getLastPathSegment();

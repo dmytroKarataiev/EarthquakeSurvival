@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 
+import com.adkdevelopment.earthquakesurvival.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 
@@ -15,12 +16,21 @@ public class EarthquakeSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = EarthquakeSQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "earthquake.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static EarthquakeSQLiteOpenHelper sInstance;
     private final Context mContext;
     private final EarthquakeSQLiteCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
+    public static final String SQL_CREATE_TABLE_COUNT = "CREATE TABLE IF NOT EXISTS "
+            + CountColumns.TABLE_NAME + " ( "
+            + CountColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + CountColumns.COUNT_YEAR + " INTEGER, "
+            + CountColumns.COUNT_MONTH + " INTEGER, "
+            + CountColumns.COUNT_WEEK + " INTEGER, "
+            + CountColumns.COUNT_DAY + " INTEGER "
+            + " );";
+
     public static final String SQL_CREATE_TABLE_EARTHQUAKE = "CREATE TABLE IF NOT EXISTS "
             + EarthquakeColumns.TABLE_NAME + " ( "
             + EarthquakeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -103,6 +113,7 @@ public class EarthquakeSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
+        db.execSQL(SQL_CREATE_TABLE_COUNT);
         db.execSQL(SQL_CREATE_TABLE_EARTHQUAKE);
         db.execSQL(SQL_CREATE_TABLE_NEWS);
         mOpenHelperCallbacks.onPostCreate(mContext, db);

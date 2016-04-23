@@ -31,12 +31,14 @@ import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -52,9 +54,11 @@ import com.adkdevelopment.earthquakesurvival.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
+import com.adkdevelopment.earthquakesurvival.objects.info.CountEarthquakes;
 import com.adkdevelopment.earthquakesurvival.objects.news.Channel;
 import com.adkdevelopment.earthquakesurvival.objects.news.Item;
 import com.adkdevelopment.earthquakesurvival.objects.news.Rss;
+import com.adkdevelopment.earthquakesurvival.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
@@ -91,6 +95,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider,
                               SyncResult syncResult) {
 
+        Context context = getContext();
 
         App.getApiManager().getEarthquakeService().getData().enqueue(new Callback<EarthquakeObject>() {
             @Override
@@ -129,7 +134,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 int inserted = 0;
                 // add to database
-                ContentResolver resolver = getContext().getContentResolver();
+                ContentResolver resolver = context.getContentResolver();
 
                 if (cVVector.size() > 0) {
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
@@ -209,8 +214,70 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
         });
 
+        // TODO: 4/22/16 possible refactoring 
+        //checking the last update and notify if it' the first of the day
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String lastNotificationKey = context.getString(R.string.sharedprefs_key_last_countupdate);
+        long lastSync = prefs.getLong(lastNotificationKey, 0);
+
+        if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date(System.currentTimeMillis());
+
+            String startTime[] = new String[] {
+                    simpleDateFormat.format(date.getTime() - DateUtils.YEAR_IN_MILLIS),
+                    simpleDateFormat.format(date.getTime() - DateUtils.DAY_IN_MILLIS * 30),
+                    simpleDateFormat.format(date.getTime() - DateUtils.WEEK_IN_MILLIS),
+                    simpleDateFormat.format(date.getTime() - DateUtils.DAY_IN_MILLIS)
+            };
+
+            String endTime = simpleDateFormat.format(date);
+
+            int iterator = 1;
+            while (iterator < CountColumns.ALL_COLUMNS.length) {
+                final int round = iterator;
+
+                App.getApiManager().getEarthquakeService().getEarthquakeStats(startTime[round - 1], endTime).enqueue(new Callback<CountEarthquakes>() {
+                    @Override
+                    public void onResponse(Call<CountEarthquakes> call, Response<CountEarthquakes> response) {
+                        ContentValues count = new ContentValues();
+                        count.put(CountColumns.ALL_COLUMNS[round], response.body().getCount());
+
+                        ContentResolver contentResolver = context.getContentResolver();
+
+                        Cursor cursor = contentResolver.query(CountColumns.CONTENT_URI, null, null, null, null);
+
+                        if (cursor != null) {
+                            if (cursor.getCount() < 1) {
+                                long inserted = ContentUris.parseId(contentResolver.insert(CountColumns.CONTENT_URI, count));
+                                //Log.d(TAG, "inserted:" + inserted);
+                            } else {
+                                int updated = contentResolver.update(CountColumns.CONTENT_URI, count, CountColumns._ID + " = ?", new String[] {"1"});
+                                //Log.d(TAG, "updated: " + updated);
+                            }
+                            cursor.close();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<CountEarthquakes> call, Throwable t) {
+                        Log.e(TAG, "Error: " + t);
+                    }
+                });
+                iterator++;
+            }
+
+            //refreshing last sync
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putLong(lastNotificationKey, System.currentTimeMillis());
+            editor.apply();
+        }
+
         // notify PagerActivity that data has been updated
-        getContext().getContentResolver().notifyChange(EarthquakeColumns.CONTENT_URI, null, false);
+        context.getContentResolver().notifyChange(EarthquakeColumns.CONTENT_URI, null, false);
+        context.getContentResolver().notifyChange(NewsColumns.CONTENT_URI, null, false);
+        context.getContentResolver().notifyChange(CountColumns.CONTENT_URI, null, false);
 
         updateWidgets();
     }
@@ -237,7 +304,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
-        if (null == accountManager.getPassword(newAccount) ) {
+        if (null == accountManager.getPassword(newAccount)) {
 
         /*
          * Add the account and account type, no password or user data
@@ -305,6 +372,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Helper method to have the sync adapter sync immediately
+     *
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
@@ -329,6 +397,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Raises a notification with a biggest earthquake with each sync
+     *
      * @param notifyValues data with the biggest recent earthquake
      */
     public void sendNotification(ContentValues notifyValues) {
@@ -343,7 +412,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             long lastSync = prefs.getLong(lastNotificationKey, 0);
 
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
-
                 Intent intent = new Intent(context, DetailActivity.class);
 
                 double latitude = notifyValues.getAsDouble(EarthquakeColumns.LATITUDE);
@@ -365,7 +433,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                        EarthquakeObject.NOTIFICATION_ID,
+                        EarthquakeObject.NOTIFICATION_ID_1,
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -390,7 +458,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         .setGroupSummary(true);
 
                 NotificationManagerCompat managerCompat = NotificationManagerCompat.from(context);
-                managerCompat.notify(EarthquakeObject.NOTIFICATION_ID, builder.build());
+                managerCompat.notify(EarthquakeObject.NOTIFICATION_ID_1, builder.build());
 
                 //refreshing last sync
                 SharedPreferences.Editor editor = prefs.edit();

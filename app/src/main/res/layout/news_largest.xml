@@ -36,49 +36,50 @@
         android:padding="@dimen/activity_vertical_margin">
 
         <TextView
-            android:id="@+id/stat_item_title"
+            android:id="@+id/stat_item_largest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceLarge"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:text="@string/earthquake.statistics.title"/>
-
-        <TextView
-            android:id="@+id/stat_item_year"
-            android:layout_below="@id/stat_item_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearance"
-            android:text="@string/earthquake.statistics.largest"/>
-
-        <TextView
-            android:id="@+id/stat_item_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearance"
             android:layout_below="@+id/stat_item_year"
             android:text="@string/earthquake.statistics.largest"/>
 
         <TextView
-            android:id="@+id/stat_item_week"
+            android:id="@+id/stat_item_magnitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearance"
-            android:text="@string/earthquake.statistics.largest"
-            android:layout_below="@+id/stat_item_title"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:textSize="16sp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_below="@+id/stat_item_largest"
+            android:text="@string/earthquake.statistics.largest" />
 
         <TextView
-            android:id="@+id/stat_item_day"
-            android:layout_below="@id/stat_item_week"
+            android:id="@+id/stat_item_description"
+            android:layout_below="@id/stat_item_magnitude"
             android:layout_width="wrap_content"
-            android:textAppearance="?android:textAppearance"
+            android:textAppearance="?android:textAppearanceSmall"
             android:layout_height="wrap_content"
-            android:text="@string/earthquake.statistics.largest"
+            android:text="@string/earthquake.statistics.largest" />
+
+        <TextView
+            android:id="@+id/stat_item_date"
+            android:layout_below="@id/stat_item_largest"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_height="wrap_content"
+            android:text="@string/earthquake.statistics.largest" />
+
+        <TextView
+            android:id="@+id/stat_item_distance"
+            android:layout_below="@id/stat_item_description"
+            android:layout_width="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_height="wrap_content"
+            android:text="@string/earthquake.statistics.largest" />
 
     </RelativeLayout>
 

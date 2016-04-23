@@ -24,28 +24,47 @@
 
 package com.adkdevelopment.earthquakesurvival.objects.info;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by karataev on 4/16/16.
  */
-public class InfoItem {
+public class CountEarthquakes {
 
-    public String getTitle() {
-        return title;
+    @SerializedName("count")
+    @Expose
+    private int count;
+    @SerializedName("maxAllowed")
+    @Expose
+    private int maxAllowed;
+
+    /**
+     * @return The count
+     */
+    public int getCount() {
+        return count;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    /**
+     * @param count The count
+     */
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public String getText() {
-        return text;
+    /**
+     * @return The maxAllowed
+     */
+    public int getMaxAllowed() {
+        return maxAllowed;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    /**
+     * @param maxAllowed The maxAllowed
+     */
+    public void setMaxAllowed(int maxAllowed) {
+        this.maxAllowed = maxAllowed;
     }
-
-    private String title;
-    private String text;
 
 }

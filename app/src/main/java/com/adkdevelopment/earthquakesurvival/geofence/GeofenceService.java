@@ -145,6 +145,6 @@ public class GeofenceService extends IntentService {
         NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(context);
 
         // Issue the notification
-        mNotificationManager.notify(EarthquakeObject.NOTIFICATION_ID, builder.build());
+        mNotificationManager.notify(EarthquakeObject.NOTIFICATION_ID_1, builder.build());
     }
 }

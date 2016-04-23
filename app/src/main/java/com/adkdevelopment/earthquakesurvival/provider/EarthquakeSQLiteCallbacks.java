@@ -3,6 +3,7 @@ package com.adkdevelopment.earthquakesurvival.provider;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.adkdevelopment.earthquakesurvival.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 
@@ -32,9 +33,11 @@ public class EarthquakeSQLiteCallbacks {
     public void onUpgrade(final Context context, final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         //if (BuildConfig.DEBUG) Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
         // Insert your upgrading code here.
+        db.execSQL("DROP TABLE IF EXISTS " + CountColumns.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + EarthquakeColumns.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + NewsColumns.TABLE_NAME);
         onPreCreate(context, db);
+        db.execSQL(EarthquakeSQLiteOpenHelper.SQL_CREATE_TABLE_COUNT);
         db.execSQL(EarthquakeSQLiteOpenHelper.SQL_CREATE_TABLE_EARTHQUAKE);
         db.execSQL(EarthquakeSQLiteOpenHelper.SQL_CREATE_TABLE_NEWS);
         onPostCreate(context, db);

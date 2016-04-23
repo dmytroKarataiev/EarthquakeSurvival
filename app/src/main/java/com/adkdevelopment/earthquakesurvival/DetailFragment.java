@@ -108,8 +108,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mPosition = input.getParcelableExtra(Feature.LATLNG);
             mDistance = input.getStringExtra(Feature.DISTANCE);
 
-            Log.d(TAG, "onCreateView: " + mDistance + " " + mDate + " " + mDescription + " " + mPosition);
-
             mEarthquakeLink.setText(Html.fromHtml(getString(R.string.earthquake_link, mLink)));
             mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
 

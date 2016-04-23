@@ -75,6 +75,8 @@
     <string name="sharedprefs.key.distance" translatable="false">dist</string>
     <string name="sharedprefs.key.notifications" translatable="false">notif</string>
     <string name="sharedprefs_key_lastnotification" translatable="false">last_notification</string>
+    <string name="sharedprefs_key_last_countupdate" translatable="false">last_countupdate</string>
+
 
     <!-- Fragments titles -->
     <string name="title.details">Earthquake Details</string>
@@ -98,8 +100,14 @@
     <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
     <string name="earthquake.longitude">Longitude: <xliff:g id="longitude">%1$.4f</xliff:g></string>
     <string name="earthquake.magnitude">Magnitude: <xliff:g id="magn">%1$.1f</xliff:g></string>
-    <string name="earthquake.statistics.day">Earthquakes today: <xliff:g id="magn">%1$d</xliff:g></string>
-    <string name="earthquake.statistics.largest">Largest earthquake today</string>
+    <string name="earthquake.statistics.day">Earthquakes today: <xliff:g id="day">%1$d</xliff:g></string>
+    <string name="earthquake.statistics.week">This week: <xliff:g id="week">%1$d</xliff:g></string>
+    <string name="earthquake.statistics.month">Last 30 days: <xliff:g id="month">%1$d</xliff:g></string>
+    <string name="earthquake.statistics.year">Last 12 months: <xliff:g id="year">%1$d</xliff:g></string>
+    <string name="earthquake.statistics.title">Earthquakes statistics:</string>
+
+    <string name="earthquake.statistics.closest">Closest earthquake in 24 hours</string>
+    <string name="earthquake.statistics.largest">Largest earthquake in 24 hours</string>
     <string name="earthquake.widget.largest">Largest:</string>
     <string name="earthquake.survive.image">Drop! Cover! Hold on!</string>
     <string name="earthquake.distance">Distance to: <xliff:g id="distance">%1$,.0f</xliff:g> miles</string>
