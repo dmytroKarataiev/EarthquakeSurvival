@@ -25,6 +25,8 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +34,7 @@ import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -46,6 +49,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adkdevelopment.earthquakesurvival.adapters.PagerAdapter;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.geofence.GeofenceService;
 import com.adkdevelopment.earthquakesurvival.ui.ZoomOutPageTransformer;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
@@ -77,6 +82,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import rx.subscriptions.CompositeSubscription;
 
 public class PagerActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
@@ -109,6 +115,10 @@ public class PagerActivity extends AppCompatActivity
     @BindColor(R.color.tab_item_selected) int mColorSelected;
     @BindColor(R.color.tab_item_unselected) int mColorUnselected;
 
+    // RxJava eventbus
+    private RxBus _rxBus;
+    private CompositeSubscription _subscription;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -117,6 +127,8 @@ public class PagerActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_activity);
+
+        _rxBus = App.getRxBusSingleton();
 
         mGeofenceList = new ArrayList<>();
 
@@ -168,6 +180,7 @@ public class PagerActivity extends AppCompatActivity
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onStart() {
         super.onStart();
@@ -175,6 +188,18 @@ public class PagerActivity extends AppCompatActivity
                 (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting())) {
             mGoogleApiClient.connect();
         }
+
+        _subscription = new CompositeSubscription();
+        _subscription.add(_rxBus.toObservable().subscribe(o -> {
+            if (o instanceof Pair) {
+                Pair pair = (Pair) o;
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, (Pair) pair.second)
+                        .toBundle();
+                startActivity((Intent) pair.first, bundle);
+            } else if (o instanceof Intent) {
+                startActivity((Intent) o);
+            }
+        }));
     }
 
     @Override
@@ -184,6 +209,7 @@ public class PagerActivity extends AppCompatActivity
                 (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting())) {
             mGoogleApiClient.disconnect();
         }
+        _subscription.clear();
     }
 
     @Override

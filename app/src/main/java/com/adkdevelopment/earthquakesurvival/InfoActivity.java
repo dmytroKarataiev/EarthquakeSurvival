@@ -24,17 +24,25 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.subscriptions.CompositeSubscription;
 
 public class InfoActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
+
+    // RxJava eventbus
+    private RxBus _rxBus;
+    private CompositeSubscription _subscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,8 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.info_activity);
 
         ButterKnife.bind(this);
+
+        _rxBus = App.getRxBusSingleton();
 
         setSupportActionBar(mToolbar);
 
@@ -54,8 +64,23 @@ public class InfoActivity extends AppCompatActivity {
                     .add(R.id.fragment, new InfoFragment())
                     .commit();
         }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        _subscription = new CompositeSubscription();
+        _subscription.add(_rxBus.toObservable().subscribe(o -> {
+            if (o instanceof Intent) {
+                startActivity((Intent) o);
+            }
+        }));
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        _subscription.clear();
     }
 
     @Override

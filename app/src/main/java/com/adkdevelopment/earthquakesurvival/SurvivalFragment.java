@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import butterknife.Bind;
@@ -54,6 +55,7 @@ public class SurvivalFragment extends Fragment {
     @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
     @Bind(R.id.nested_scroll) NestedScrollView mNestedScroll;
     View mRootView;
+    private RxBus _rxBus;
 
     @OnClick({ R.id.survive_card_before,
             R.id.survive_card_during,
@@ -61,12 +63,20 @@ public class SurvivalFragment extends Fragment {
             R.id.survive_card_more,
             R.id.survive_card_kit })
     public void startActivity(View view) {
-        Intent intent = new Intent(getContext(), InfoActivity.class);
-        intent.putExtra(SECTION, view.getId());
-        startActivity(intent);
+        if (_rxBus.hasObservers()) {
+            Intent intent = new Intent(getContext(), InfoActivity.class);
+            intent.putExtra(SECTION, view.getId());
+            _rxBus.send(intent);
+        }
     }
 
     public SurvivalFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _rxBus = App.getRxBusSingleton();
     }
 
     /**

@@ -25,12 +25,11 @@
 package com.adkdevelopment.earthquakesurvival.adapters;
 
 import android.animation.Animator;
-import android.app.Activity;
-import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
-import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -40,8 +39,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.adkdevelopment.earthquakesurvival.App;
 import com.adkdevelopment.earthquakesurvival.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.ui.CursorRecyclerViewAdapter;
@@ -58,7 +59,9 @@ import butterknife.ButterKnife;
  */
 public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewHolder> {
 
-    private final Activity mContext;
+    private final Context mContext;
+
+    private RxBus _rxBus;
 
     static int green;
     static int white;
@@ -76,10 +79,12 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
             super(v);
             ButterKnife.bind(this, v);
 
-            if (green == 0)
-                green = itemView.getContext().getResources().getColor(R.color.colorPrimary);
-            if (white == 0)
-                white = itemView.getContext().getResources().getColor(R.color.background_material_light);
+            if (green == 0) {
+                green = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
+            }
+            if (white == 0) {
+                white = ContextCompat.getColor(itemView.getContext(), R.color.white);
+            }
         }
 
     }
@@ -113,48 +118,47 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
             intent.putExtra(Feature.LATLNG, latLng);
             intent.putExtra(Feature.DISTANCE, distance);
 
-            int finalRadius = (int)Math.hypot(viewHolder.itemView.getWidth()/2, viewHolder.itemView.getHeight()/2);
+            int finalRadius = (int) Math.hypot(viewHolder.itemView.getWidth() / 2, viewHolder.itemView.getHeight() / 2);
 
-            // Check if a phone supports shared transitions
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (_rxBus.hasObservers()) {
+                // Check if a phone supports shared transitions
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
-                        (int) viewHolder.itemView.getWidth()/2,
-                        (int) viewHolder.itemView.getHeight()/2, 0, finalRadius);
+                    Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
+                            viewHolder.itemView.getWidth() / 2,
+                            viewHolder.itemView.getHeight() / 2, 0, finalRadius);
 
-                viewHolder.mEarthquakeClick.setBackgroundColor(green);
-                anim.start();
-                anim.addListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
+                    viewHolder.mEarthquakeClick.setBackgroundColor(green);
+                    anim.start();
+                    anim.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        viewHolder.mEarthquakeClick.setBackgroundColor(white);
-                    }
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            viewHolder.mEarthquakeClick.setBackgroundColor(white);
+                        }
 
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
 
-                    }
-                });
+                        }
+                    });
 
-                //noinspection unchecked always true
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
-                        mContext,
-                        Pair.create(viewHolder.itemView.findViewById(R.id.survive_card_image),
-                                viewHolder.itemView.findViewById(R.id.survive_card_image).getTransitionName()))
-                        .toBundle();
-                mContext.startActivity(intent, bundle);
-            } else {
-                mContext.startActivity(intent);
+                    Pair pair = Pair.create(viewHolder.itemView.findViewById(R.id.survive_card_image),
+                            viewHolder.itemView.findViewById(R.id.survive_card_image).getTransitionName());
+                    _rxBus.send(Pair.create(intent, pair));
+                } else {
+                    _rxBus.send(intent);
+                }
+
             }
         });
     }
@@ -168,9 +172,10 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RecentAdapter(Activity context, Cursor c) {
+    public RecentAdapter(Context context, Cursor c) {
         super(c);
         mContext = context;
+        _rxBus = App.getRxBusSingleton();
     }
 
     // Return the size of your dataset (invoked by the layout manager)

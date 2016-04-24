@@ -48,7 +48,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     SparseArray<WeakReference<Fragment>> registeredFragments = new SparseArray<>();
 
-
     public PagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         mContext = context;

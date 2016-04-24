@@ -24,7 +24,6 @@
 
 package com.adkdevelopment.earthquakesurvival.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -42,19 +41,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * Populates InfoFragments with cards populated with data from resources
  * Created by karataev on 4/16/16.
  */
 public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
 
     private List<String> mTitles;
     private List<String> mTexts;
-    private Context mContext;
 
-    public InfoAdapter(List<String> title, List<String> text, Context context) {
+    public InfoAdapter(List<String> title, List<String> text) {
         super();
         mTitles = title;
         mTexts = text;
-        mContext = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

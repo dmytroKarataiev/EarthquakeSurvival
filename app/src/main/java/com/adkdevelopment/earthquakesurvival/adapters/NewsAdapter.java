@@ -24,17 +24,10 @@
 
 package com.adkdevelopment.earthquakesurvival.adapters;
 
-/**
- * Simple RecyclerView adapter with OnClickListener on each element
- * Created by karataev on 3/15/16.
- */
-
-import android.app.Activity;
-import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -46,8 +39,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adkdevelopment.earthquakesurvival.App;
 import com.adkdevelopment.earthquakesurvival.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
@@ -66,7 +61,9 @@ import butterknife.ButterKnife;
  */
 public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
-    private final Activity mContext;
+    private final Context mContext;
+
+    private RxBus _rxBus;
 
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -110,9 +107,10 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NewsAdapter(Activity context, Cursor cursor) {
+    public NewsAdapter(Context context, Cursor cursor) {
         super(cursor);
         mContext = context;
+        _rxBus = App.getRxBusSingleton();
     }
 
     // Create new views (invoked by the layout manager)
@@ -250,6 +248,12 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         return position;
     }
 
+    /**
+     * Populates similar cards with earthquake information
+     * @param holder which is being populated with the data
+     * @param tempCursor where data is taken from
+     * @param position position of a cursor with correct data
+     */
     private void populateView(RecyclerView.ViewHolder holder, Cursor tempCursor, int position) {
 
         tempCursor.moveToPosition(position);
@@ -275,8 +279,8 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
         tempCursor.close();
 
-        // TODO: 4/22/16 move to interface 
         ((ViewHolderLargest) holder).mEarthquakeClick.setOnClickListener(click -> {
+
             Intent intent = new Intent(mContext, DetailActivity.class);
             intent.putExtra(Feature.MAGNITUDE, magnitude);
             intent.putExtra(Feature.PLACE, desc);
@@ -285,19 +289,17 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             intent.putExtra(Feature.LATLNG, latLng);
             intent.putExtra(Feature.DISTANCE, distance);
 
-            // Check if a phone supports shared transitions
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //noinspection unchecked always true
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(
-                        mContext,
-                        Pair.create(((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click),
-                                ((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click).getTransitionName()))
-                        .toBundle();
-                mContext.startActivity(intent, bundle);
-            } else {
-                mContext.startActivity(intent);
+            if (_rxBus.hasObservers()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    //noinspection unchecked always true
+                    Pair pair = Pair.create(((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click),
+                            ((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click).getTransitionName());
+                    _rxBus.send(Pair.create(intent, pair));
+                } else {
+                    _rxBus.send(intent);
+                }
             }
-
         });
+
     }
 }

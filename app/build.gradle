@@ -70,11 +70,14 @@ dependencies {
     compile 'com.android.support:support-v13:23.3.0'
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
+
     // life simplifiers
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
     // seek bar preference
     compile 'com.pavelsikun:material-seekbar-preference:0.12.1'
+
     // data fetching and converting to objects
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
@@ -83,9 +86,14 @@ dependencies {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     }
+
     // google play services
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.android.gms:play-services-maps:8.4.0'
+
+    // RxJava + RxAndroid
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.1.3'
 }
 
 retrolambda {

@@ -26,6 +26,7 @@ package com.adkdevelopment.earthquakesurvival;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -38,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.adkdevelopment.earthquakesurvival.adapters.InfoAdapter;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -53,9 +55,15 @@ import butterknife.ButterKnife;
 public class InfoFragment extends Fragment {
 
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
-    private InfoAdapter mRecentAdapter;
+    private RxBus _rxBus;
 
     public InfoFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        _rxBus = App.getRxBusSingleton();
     }
 
     @Override
@@ -113,20 +121,22 @@ public class InfoFragment extends Fragment {
             }
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-            mRecentAdapter = new InfoAdapter(titles, text, getContext());
+            InfoAdapter mRecentAdapter = new InfoAdapter(titles, text);
 
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setAdapter(mRecentAdapter);
 
             floatingActionButton.setOnClickListener(click -> {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/html");
-                if (titles.size() > 0 && text.size() > 0) {
-                    intent.putExtra(Intent.EXTRA_SUBJECT, titles.get(0));
-                    intent.putExtra(Intent.EXTRA_TEXT, text.get(0));
+                if (_rxBus.hasObservers()) {
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/html");
+                    if (titles.size() > 0 && text.size() > 0) {
+                        intent.putExtra(Intent.EXTRA_SUBJECT, titles.get(0));
+                        intent.putExtra(Intent.EXTRA_TEXT, text.get(0));
+                    }
+                    _rxBus.send(Intent.createChooser(intent, getString(R.string.send_email)));
                 }
-                startActivity(Intent.createChooser(intent, getString(R.string.send_email)));
             });
 
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -135,9 +145,7 @@ public class InfoFragment extends Fragment {
             }
 
             Picasso.with(getContext()).load(drawable).error(R.drawable.dropcoverholdon).into(backdrop);
-
         }
-
         return rootView;
     }
 

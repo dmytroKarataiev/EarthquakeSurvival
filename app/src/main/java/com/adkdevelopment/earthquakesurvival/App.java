@@ -26,6 +26,7 @@ package com.adkdevelopment.earthquakesurvival;
 
 import android.app.Application;
 
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.remote.ApiManager;
 
 /**
@@ -34,6 +35,9 @@ import com.adkdevelopment.earthquakesurvival.remote.ApiManager;
 public class App extends Application {
 
     private static ApiManager sApiManager, sNewsManager;
+
+    // event bus from RxJava
+    private static RxBus _rxBus;
 
     // Singleton Retrofit for Earthquakes
     public static ApiManager getApiManager() {
@@ -49,6 +53,14 @@ public class App extends Application {
             sNewsManager = new ApiManager();
         }
         return sNewsManager;
+    }
+
+    // singleton RxBus
+    public static RxBus getRxBusSingleton() {
+        if (_rxBus == null) {
+            _rxBus = new RxBus();
+        }
+        return _rxBus;
     }
 
 }
