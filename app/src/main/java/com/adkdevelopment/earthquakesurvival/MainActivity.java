@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
             mToolbar.setTitle(getString(R.string.app_name));
         }
 
+        SyncAdapter.syncImmediately(this);
+
         if (findViewById(R.id.news_container) != null) {
 
             if (savedInstanceState == null) {

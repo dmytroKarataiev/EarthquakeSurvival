@@ -156,7 +156,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                                 null,
                                 CountColumns._ID + " LIMIT 1");
 
-                if (tempCursor != null) {
+                if (tempCursor != null && tempCursor.getCount() > 0) {
 
                     tempCursor.moveToFirst();
 
