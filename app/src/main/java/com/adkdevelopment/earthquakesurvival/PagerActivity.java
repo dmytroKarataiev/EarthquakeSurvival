@@ -475,7 +475,7 @@ public class PagerActivity extends AppCompatActivity
      */
     public void observeGeofences() {
         if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(this, getString(R.string.googleapiclient_notconnected), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.googleapiclient_notconnected), Toast.LENGTH_SHORT).show();
             return;
         }
 

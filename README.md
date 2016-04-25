@@ -5,7 +5,7 @@ Earthquake Survival allows you to see all the earthquakes around the world and n
 ![Screnshots of current state](materials/earthquake_survival.png)
 
 ## Project Schema
-* [Detailed overview of the proposed application](materials/Capstone_Stage1.pdf)
+* [Detailed overview of the proposed application](materials/earthquake_survival_schema.pdf)
 
 ## Required Components
 * [Third Party Libraries](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/34f24be78184e83985284d44d99b91444b41257d/app/build.gradle#L62)
@@ -28,7 +28,6 @@ Earthquake Survival allows you to see all the earthquakes around the world and n
 * Design improvements
 * Collection widget
 * Add more information to earthquakes
-* Sort by magnitude, time, distance
 * Add more earthquakes (up to 7 days info)
 
 ## Important information

@@ -25,9 +25,8 @@
 <resources>
 
     <string-array name="survival_before_title">
-
         <item>Drop, Cover, Hold On!</item>
-
+        <item>Source</item>
     </string-array>
 
     <string-array name="survival_before_text">
@@ -39,6 +38,7 @@
             Store critical supplies (e.g., water, medication) and documents.
             Plan how you will communicate with family members, including multiple methods by making a <a href="http://www.ready.gov/make-a-plan">family emergency communication plan.</a>
             When choosing your home or business, check if the building is earthquake resistant per local building codes.</item>
+        <item><![CDATA[<a href="https://www.ready.gov/earthquakes">https://www.ready.gov/earthquakes</a>]]></item>
     </string-array>
 
     <string-array name="survival_during_title">
@@ -47,7 +47,7 @@
         <item>If you are in bed when you feel the shaking:</item>
         <item>If you are outside when you feel the shaking:</item>
         <item>If you are in a moving vehicle when you feel the shaking:</item>
-
+        <item>Source</item>
     </string-array>
 
     <string-array name="survival_during_text">
@@ -70,10 +70,12 @@
         “Drop, Cover, and Hold On.” Stay there until the shaking stops. This might not be possible in a city, so you may need to duck inside a building to avoid falling debris.</item>
         <item>If you are in a moving vehicle, stop as quickly and safely as possible and stay in the vehicle. Avoid stopping near or under
         buildings, trees, overpasses, and utility wires. Proceed cautiously once the earthquake has stopped. Avoid roads, bridges, or ramps that the earthquake may have damaged.</item>
+        <item><![CDATA[<a href="https://www.ready.gov/earthquakes">https://www.ready.gov/earthquakes</a>]]></item>
     </string-array>
 
     <string-array name="survival_after_title">
         <item>Listen to Local Officials</item>
+        <item>Source</item>
     </string-array>
     <string-array name="survival_after_text">
         <item><![CDATA[When the shaking stops, look around. If there is a clear path to safety, leave the building and go to an open space away from damaged areas.
@@ -86,11 +88,13 @@
 
             Learn about the emergency plans that have been established in your area by your <a href="http://www.ready.gov/community-state-info">state and local government.</a>
             In any emergency, always listen to the instructions given by local emergency management officials.]]></item>
+        <item><![CDATA[<a href="https://www.ready.gov/earthquakes">https://www.ready.gov/earthquakes</a>]]></item>
     </string-array>
 
     <string-array name="survival_resources_title">
         <item>Find additional information on how to plan and prepare for an earthquake and learn about available resources by visiting the following websites:</item>
         <item>Publications</item>
+        <item>Source</item>
     </string-array>
     <string-array name="survival_resources_text">
         <item><![CDATA[<br> &#149; <a href="http://www.ready.gov/prepare">America’s PrepareAthon!</a><br>
@@ -104,6 +108,7 @@
         <item><![CDATA[&#149; <a href="http://www.community.fema.gov/connect.ti/AmericasPrepareathon/view?objectId=3229456">America’s PrepareAthon! How to Prepare for Earthquakes</a><br>
             &#149; <a href="http://www.fema.gov/library/viewRecord.do?id=1520">Earthquake Preparedness: What Every Childcare Provider Should Know</a>.<br>
             &#149; <a href="http://www.fema.gov/library/viewRecord.do?id=3260">How to Guides to Protect Your Property or Business from Earthquakes.</a>]]></item>
+        <item><![CDATA[<a href="https://www.ready.gov/earthquakes">https://www.ready.gov/earthquakes</a>]]></item>
     </string-array>
 
     <string-array name="survival_kit_title">
@@ -116,6 +121,7 @@
         <item>Items for safety and comfort</item>
         <item>Survival Kit for Your Automobile</item>
         <item>Survival Kit for Your Workplace</item>
+        <item>Source</item>
     </string-array>
 
     <string-array name="survival_kit_text">
@@ -131,6 +137,7 @@
         <item><![CDATA[&#149; sturdy shoes that can provide protection from broken glass, nails, and other debris<br> &#149; gloves (heavy and durable for cleaning up debris)<br> &#149; candles<br> &#149; waterproof matches<br> &#149; change of clothing<br> &#149; knife<br> &#149; garden hose (for siphoning and firefighting)<br> &#149; tent<br> &#149; recreational supplies for children and adults<br> &#149; blankets or sleeping bags<br> &#149; portable radio, flashlight, and extra batteries<br> &#149; essential medications and eyeglasses<br> &#149; fire extinguisher - multipurpose, dry chemical type<br> &#149; food and water for pets<br> &#149; toilet tissue<br> &#149; cash]]></item>
         <item><![CDATA[&#149; Blankets<br> &#149; Bottled water<br> &#149; Change of clothes<br> &#149; Coins for telephone calls<br> &#149; Fire extinguisher - multipurpose, dry chemical type<br> &#149; First aid kit and manual<br> &#149; Emergency signal device (light sticks, battery-type flasher, reflector, etc.)<br> &#149; Flashlight with fresh batteries<br> &#149; Food (nonperishable - nutrition bars, trail mix, etc.)<br> &#149; Gloves<br> &#149; Local map and compass<br> &#149; Rope for towing, rescue, etc.<br> &#149; Paper and pencils<br> &#149; Premoistened towelettes<br> &#149; Prescription medicines<br> &#149; Battery-operated radio with fresh batteries<br> &#149; Small mirror for signaling<br> &#149; Toilet tissue<br> &#149; Tools (pliers, adjustable wrench, screwdriver, etc.)<br> &#149; Whistle for signaling<br> &#149; Jumper cables<br> &#149; Duct tape]]></item>
         <item><![CDATA[&#149; Food (nonperishable - nutrition bars, trail mix, etc.)<br> &#149; Bottled water<br> &#149; Jacket or sweatshirt<br> &#149; Pair of sturdy shoes<br> &#149; Flashlight with fresh batteries<br> &#149; Battery-operated radio with fresh batteries<br> &#149; Essential medications<br> &#149; Blanket<br> &#149; Small first aid kit<br> &#149; Extra pair of eyeglasses and/or contact lens solution<br> &#149; Whistle or other signaling device]]></item>
+        <item><![CDATA[<a href="http://emergency.cdc.gov/disasters/earthquakes/supplies.asp">http://emergency.cdc.gov/disasters/earthquakes/supplies.asp</a>]]></item>
     </string-array>
 
 </resources>
