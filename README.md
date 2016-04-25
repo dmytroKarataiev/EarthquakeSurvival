@@ -1,15 +1,16 @@
 # Earthquake Survival
 <a href="https://play.google.com/store/apps/details?id=com.adkdevelopment.earthquakesurvival"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" width="185" height="60"/></a><br>
+
+![Animation of current state](materials/earthquake_animation.gif)
+
 Earthquake Survival allows you to see all the earthquakes around the world and notifies about closest to you (you can set the notifying threshold for strength and distance from you). You can find the latest news about earthquakes, share info and statistics with your friends. Earthquake Survival also has a lot of useful information about what to do in case of emergency, who to call, what to buy and how to survive.
 
-## Current state
-![Screnshots of current state](materials/earthquake_survival.png)
-
-## Project Schema
+## Project Schema and Screenshots of the current state
 * [Detailed overview of the proposed application](materials/earthquake_survival_schema.pdf)
+* [Screenshots for a phone, tablets](materials/)
 
-## Required Components
-* [Third Party Libraries](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/34f24be78184e83985284d44d99b91444b41257d/app/build.gradle#L62)
+## Used techniques and technologies
+* [Third Party Libraries](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/34f24be78184e83985284d44d99b91444b41257d/app/build.gradle#L62): RxJava, Retrolambda, Retrofit.
 * [Widget with meaningful information](app/src/main/java/com/adkdevelopment/earthquakesurvival/widget)
 * Google Services:
   * [Locations](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/34f24be78184e83985284d44d99b91444b41257d/app/src/main/java/com/adkdevelopment/earthquakesurvival/PagerActivity.java#L117)
@@ -19,7 +20,7 @@ Earthquake Survival allows you to see all the earthquakes around the world and n
 * [SyncAdapter](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/34f24be78184e83985284d44d99b91444b41257d/app/src/main/java/com/adkdevelopment/earthquakesurvival/syncadapter/SyncAdapter.java#L63)
 * [Loader to move data to views](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/34f24be78184e83985284d44d99b91444b41257d/app/src/main/java/com/adkdevelopment/earthquakesurvival/RecentFragment.java#L88)
 * [SharedTransitions](app/src/main/java/com/adkdevelopment/earthquakesurvival/RecentAdapter.java)
-* [Notifications](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/b7d081d0fafe7db03648ba55b8dd22326ddfca5a/app/src/main/java/com/adkdevelopment/earthquakesurvival/geofence/GeofenceService.java#L97)
+* [Notifications](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/b7d081d0fafe7db03648ba55b8dd22326ddfca5a/app/src/main/java/com/adkdevelopment/earthquakesurvival/geofence/GeofenceService.java#L97): on entering or exiting earthquakes geofences and with the biggest earthquake for the day.
 * [ShareActionProvider](app/src/main/java/com/adkdevelopment/earthquakesurvival/DetailFragment.java)
 * [Broadcast Events](https://github.com/dmytroKarataiev/EarthquakeSurvival/blob/d70d8f53387c5aac9ad0d7df337542722549e9d9/app/src/main/AndroidManifest.xml#L120)
 * [Parallax Scroll](app/src/main/java/com/adkdevelopment/earthquakesurvival/SurvivalFragment.java)
@@ -32,8 +33,8 @@ Earthquake Survival allows you to see all the earthquakes around the world and n
 * Add more earthquakes (up to 7 days info)
 
 ## Important information
-* For the app to work you need to add Google Maps Api key to the apikeys.xml file in values folder <br>
-String should look like this: \<string name="google.maps.api.key">YOUR API KEY\</string>
+* For the app to work you need to add Google Maps Api key as a String. <br>
+It should look like this: \<string name="google.maps.api.key">YOUR API KEY\</string>
 
 ## Used materials
 * Safety picture: http://emergency.cdc.gov/disasters/earthquakes/during.asp
@@ -42,6 +43,7 @@ String should look like this: \<string name="google.maps.api.key">YOUR API KEY\<
 * Earthquake photo 3: https://upload.wikimedia.org/wikipedia/commons/a/ae/Good_Friday_Earthquake_at_Turnagain_Arm.jpg
 * Survival information: https://www.ready.gov/earthquakes
 * Emergency Supplies: http://emergency.cdc.gov/disasters/earthquakes/supplies.asp
+* Background for animation: https://fs01.androidpit.info/userfiles/6727621/image/2nd_YEAR/Nexus-6P/androidpit-Nexus-6P.jpg
 
 License
 -------
