@@ -212,6 +212,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
             int magn = mCursor.getColumnIndex(EarthquakeColumns.MAG);
             int date = mCursor.getColumnIndex(EarthquakeColumns.TIME);
             int link = mCursor.getColumnIndex(EarthquakeColumns.URL);
+            int depth = mCursor.getColumnIndex(EarthquakeColumns.DEPTH);
 
             while (mCursor.moveToNext()) {
 
@@ -222,6 +223,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
                 String linkDetails = mCursor.getString(link);
 
                 Double magnitude = mCursor.getDouble(magn);
+                double depthEarthquake = mCursor.getDouble(depth) / 1.6;
 
                 LatLng latLng = new LatLng(latitude, longitude);
 
@@ -242,6 +244,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
                 intent.putExtra(Feature.LINK, linkDetails);
                 intent.putExtra(Feature.LATLNG, latLng);
                 intent.putExtra(Feature.DISTANCE, distance);
+                intent.putExtra(Feature.DEPTH, depthEarthquake);
 
                 mMarkers.put(mGoogleMap.addMarker(markerOptions).getId(), intent);
             }

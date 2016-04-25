@@ -27,17 +27,15 @@ apply plugin: 'me.tatarka.retrolambda'
 
 
 android {
-
     compileSdkVersion 23
     buildToolsVersion '23.0.3'
-
     defaultConfig {
         multiDexEnabled true
         applicationId "com.adkdevelopment.earthquakesurvival"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.02"
     }
     buildTypes {
         release {
@@ -49,7 +47,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {

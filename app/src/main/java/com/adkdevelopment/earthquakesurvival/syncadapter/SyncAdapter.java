@@ -397,7 +397,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Raises a notification with a biggest earthquake with each sync
-     *
      * @param notifyValues data with the biggest recent earthquake
      */
     public void sendNotification(ContentValues notifyValues) {
@@ -424,12 +423,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 String magnitude = context.getString(R.string.earthquake_magnitude, notifyValues.getAsDouble(EarthquakeColumns.MAG));
                 String date = Utilities.getNiceDate(notifyValues.getAsLong(EarthquakeColumns.TIME));
 
+                double depth = notifyValues.getAsDouble(EarthquakeColumns.DEPTH);
+
                 intent.putExtra(Feature.MAGNITUDE, notifyValues.getAsDouble(EarthquakeColumns.MAG));
                 intent.putExtra(Feature.PLACE, notifyValues.getAsString(EarthquakeColumns.PLACE));
                 intent.putExtra(Feature.DATE, date);
                 intent.putExtra(Feature.LINK, notifyValues.getAsString(EarthquakeColumns.URL));
                 intent.putExtra(Feature.LATLNG, latLng);
                 intent.putExtra(Feature.DISTANCE, distance);
+                intent.putExtra(Feature.DEPTH, depth);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
                 PendingIntent pendingIntent = PendingIntent.getActivity(context,

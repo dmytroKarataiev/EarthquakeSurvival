@@ -54,4 +54,5 @@ captures/
 out/
 
 # api key
-app/src/main/res/values/apikeys.xml
+apikeys.xml
+gradle.properties

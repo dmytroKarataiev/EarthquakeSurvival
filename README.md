@@ -1,4 +1,5 @@
 # Earthquake Survival
+<a href="https://play.google.com/store/apps/details?id=com.adkdevelopment.earthquakesurvival"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" width="185" height="60"/></a><br>
 Earthquake Survival allows you to see all the earthquakes around the world and notifies about closest to you (you can set the notifying threshold for strength and distance from you). You can find the latest news about earthquakes, share info and statistics with your friends. Earthquake Survival also has a lot of useful information about what to do in case of emergency, who to call, what to buy and how to survive.
 
 ## Current state
@@ -32,7 +33,7 @@ Earthquake Survival allows you to see all the earthquakes around the world and n
 
 ## Important information
 * For the app to work you need to add Google Maps Api key to the apikeys.xml file in values folder <br>
-String should look like this: \<string name="google.maps.api.key.release">YOUR API KEY\</string>
+String should look like this: \<string name="google.maps.api.key">YOUR API KEY\</string>
 
 ## Used materials
 * Safety picture: http://emergency.cdc.gov/disasters/earthquakes/during.asp

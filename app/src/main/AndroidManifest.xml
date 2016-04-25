@@ -128,7 +128,7 @@
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google.maps.api.key.debug" />
+            android:value="@string/google.maps.api.key" />
 
         <!-- Widget Provider -->
         <receiver android:name=".widget.EarthquakeWidgetProvider" >
