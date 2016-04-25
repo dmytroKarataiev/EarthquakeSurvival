@@ -86,31 +86,31 @@ public class InfoFragment extends Fragment {
             int drawable = -1;
 
             switch (section) {
-                case R.id.survive_card_before:
+                case 1:
                     titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_before_title)));
                     text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_before_text)));
                     drawable = R.drawable.earth1;
                     title = getString(R.string.survival_before);
                     break;
-                case R.id.survive_card_during:
+                case 2:
                     titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_during_title)));
                     text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_during_text)));
                     drawable = R.drawable.earth2;
                     title = getString(R.string.survival_during);
                     break;
-                case R.id.survive_card_after:
+                case 3:
                     titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_after_title)));
                     text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_after_text)));
                     drawable = R.drawable.earth3;
                     title = getString(R.string.survival_after);
                     break;
-                case R.id.survive_card_more:
+                case 4:
                     title = getString(R.string.survival_resources);
                     titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_resources_title)));
                     text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_resources_text)));
                     drawable = R.drawable.earth3;
                     break;
-                case R.id.survive_card_kit:
+                case 5:
                     title = getString(R.string.survival_kit);
                     titles.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_kit_title)));
                     text.addAll(Arrays.asList(getResources().getStringArray(R.array.survival_kit_text)));
@@ -154,4 +154,6 @@ public class InfoFragment extends Fragment {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
+
+
 }

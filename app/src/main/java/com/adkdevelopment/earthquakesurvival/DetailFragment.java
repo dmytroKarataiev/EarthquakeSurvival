@@ -69,6 +69,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Bind(R.id.earthquake_place) TextView mEarthquakePlace;
     @Bind(R.id.earthquake_magnitude) TextView mEarthquakeMagnitude;
     @Bind(R.id.earthquake_date) TextView mEarthquakeDate;
+    @Bind(R.id.earthquake_depth) TextView mEarthquakeDepth;
     @Bind(R.id.earthquake_link) TextView mEarthquakeLink;
     @BindDrawable(R.drawable.marker) Drawable mOval;
     @Bind(R.id.earthquake_distance) TextView mEarthquakeDistance;
@@ -79,11 +80,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     // Earthquake event
     private LatLng mPosition;
-    private Double mMagnitude;
+    private double mMagnitude;
     private String mLink;
     private String mDescription;
     private String mDate;
     private String mDistance;
+    private double mDepth;
 
     // ShareActionProvider - sharing info with others
     ShareActionProvider mShareActionProvider;
@@ -104,9 +106,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mDate = input.getStringExtra(Feature.DATE);
             mDescription = input.getStringExtra(Feature.PLACE);
             mLink = input.getStringExtra(Feature.LINK);
-            mMagnitude = input.getDoubleExtra(Feature.MAGNITUDE, 1.0);
+            mMagnitude = input.getDoubleExtra(Feature.MAGNITUDE, 0.0);
             mPosition = input.getParcelableExtra(Feature.LATLNG);
             mDistance = input.getStringExtra(Feature.DISTANCE);
+            mDepth = input.getDoubleExtra(Feature.DEPTH, 0.0);
 
             mEarthquakeLink.setText(Html.fromHtml(getString(R.string.earthquake_link, mLink)));
             mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
@@ -115,6 +118,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mEarthquakeDate.setText(mDate);
             mEarthquakePlace.setText(mDescription);
             mEarthquakeMagnitude.setText(getString(R.string.earthquake_magnitude, mMagnitude));
+            mEarthquakeDepth.setText(getString(R.string.earthquake_depth, mDepth));
 
             if (mPosition == null) {
                 mPosition = LocationUtils.getLocation(getContext());
@@ -196,15 +200,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 latLng = mPosition;
             }
 
-            Double magnitude = 1.0;
-            if (mMagnitude != null) {
-                magnitude = mMagnitude;
-            }
-
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .icon(BitmapDescriptorFactory
-                            .fromBitmap(Utilities.getEarthquakeMarker(getContext(), magnitude)));
+                            .fromBitmap(Utilities.getEarthquakeMarker(getContext(), mMagnitude)));
 
             mGoogleMap.addMarker(markerOptions);
         }

@@ -26,18 +26,16 @@
     style="@style/SurvivalCard"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:transitionName="@string/transition.card" >
+    android:transitionName="@string/transition.card">
 
     <RelativeLayout
         android:id="@+id/earthquake_item_click"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
+        android:layout_height="wrap_content">
 
         <TextView
-            style="@style/CardText"
             android:id="@+id/earthquake_item_magnitude"
+            style="@style/CardText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/padding"
@@ -49,7 +47,7 @@
             android:transitionName="@string/transition.magnitude" />
 
         <TextView
-            android:id="@+id/earthquake_item_place"
+            android:id="@+id/earthquake_item_depth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -59,13 +57,34 @@
             android:layout_toStartOf="@id/earthquake_item_distance"
             android:ellipsize="end"
             android:maxLines="1"
-            android:padding="@dimen/padding"
+            android:paddingEnd="@dimen/padding"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:paddingStart="@dimen/padding"
+            android:text="@string/earthquake_depth" />
+
+        <TextView
+            android:id="@+id/earthquake_item_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/earthquake_item_depth"
+            android:layout_toLeftOf="@+id/earthquake_item_distance"
+            android:layout_toStartOf="@id/earthquake_item_distance"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/padding"
+            android:paddingEnd="@dimen/padding"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:paddingStart="@dimen/padding"
             android:text="@string/app.name"
             android:transitionName="@string/transition.place" />
 
         <TextView
-            style="@style/CardText"
             android:id="@+id/earthquake_item_date"
+            style="@style/CardText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -84,8 +103,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/earthquake_item_magnitude"
-            android:padding="@dimen/padding"
+            android:layout_below="@id/earthquake_item_depth"
+            android:paddingBottom="@dimen/padding"
+            android:paddingEnd="@dimen/padding"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding"
+            android:paddingStart="@dimen/padding"
             android:text="@string/earthquake.distance"
             android:transitionName="@string/transition.distance" />
 

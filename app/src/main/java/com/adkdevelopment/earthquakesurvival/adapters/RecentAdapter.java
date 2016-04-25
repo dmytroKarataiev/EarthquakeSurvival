@@ -24,17 +24,14 @@
 
 package com.adkdevelopment.earthquakesurvival.adapters;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,14 +54,11 @@ import butterknife.ButterKnife;
  * Creates RecyclerView adapter which populates task items in MainFragment
  * Each element has an onClickListener
  */
-public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewHolder> {
+public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
 
     private RxBus _rxBus;
-
-    static int green;
-    static int white;
 
     // Provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,24 +67,32 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
         @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
         @Bind(R.id.earthquake_item_date) TextView mEarthquakeDate;
         @Bind(R.id.earthquake_item_distance) TextView mEarthquakeDistance;
+        @Bind(R.id.earthquake_item_depth) TextView mEarthquakeDepth;
         @Bind(R.id.earthquake_item_click) RelativeLayout mEarthquakeClick;
 
         public ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
-
-            if (green == 0) {
-                green = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
-            }
-            if (white == 0) {
-                white = ContextCompat.getColor(itemView.getContext(), R.color.white);
-            }
         }
+    }
 
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public RecentAdapter(Context context, Cursor c) {
+        super(c);
+        mContext = context;
+        _rxBus = App.getRxBusSingleton();
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recent_earthquake_item, parent, false);
+
+        return new ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
 
         String link = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
         String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
@@ -98,18 +100,20 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
         double magnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
         double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
         double longitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+        double depth = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.DEPTH)) / 1.6;
 
         LatLng latLng = new LatLng(latitude, longitude);
 
         String distance = mContext.getString(R.string.earthquake_distance,
                 LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
 
-        viewHolder.mEarthquakePlace.setText(place);
-        viewHolder.mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
-        viewHolder.mEarthquakeMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
-        viewHolder.mEarthquakeDistance.setText(distance);
+        ((ViewHolder) viewHolder).mEarthquakePlace.setText(place);
+        ((ViewHolder) viewHolder).mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
+        ((ViewHolder) viewHolder).mEarthquakeMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
+        ((ViewHolder) viewHolder).mEarthquakeDistance.setText(distance);
+        ((ViewHolder) viewHolder).mEarthquakeDepth.setText(mContext.getString(R.string.earthquake_depth, depth));
 
-        viewHolder.mEarthquakeClick.setOnClickListener(click -> {
+        ((ViewHolder) viewHolder).mEarthquakeClick.setOnClickListener(click -> {
             Intent intent = new Intent(mContext, DetailActivity.class);
             intent.putExtra(Feature.MAGNITUDE, magnitude);
             intent.putExtra(Feature.PLACE, place);
@@ -117,40 +121,13 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
             intent.putExtra(Feature.LINK, link);
             intent.putExtra(Feature.LATLNG, latLng);
             intent.putExtra(Feature.DISTANCE, distance);
-
-            int finalRadius = (int) Math.hypot(viewHolder.itemView.getWidth() / 2, viewHolder.itemView.getHeight() / 2);
+            intent.putExtra(Feature.DEPTH, depth);
 
             if (_rxBus.hasObservers()) {
                 // Check if a phone supports shared transitions
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                    Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
-                            viewHolder.itemView.getWidth() / 2,
-                            viewHolder.itemView.getHeight() / 2, 0, finalRadius);
-
-                    viewHolder.mEarthquakeClick.setBackgroundColor(green);
-                    anim.start();
-                    anim.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            viewHolder.mEarthquakeClick.setBackgroundColor(white);
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
+                    Utilities.animationCard(viewHolder);
 
                     Pair pair = Pair.create(viewHolder.itemView.findViewById(R.id.survive_card_image),
                             viewHolder.itemView.findViewById(R.id.survive_card_image).getTransitionName());
@@ -161,21 +138,6 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecentAdapter.ViewH
 
             }
         });
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recent_earthquake_item, parent, false);
-
-        return new ViewHolder(v);
-    }
-
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public RecentAdapter(Context context, Cursor c) {
-        super(c);
-        mContext = context;
-        _rxBus = App.getRxBusSingleton();
     }
 
     // Return the size of your dataset (invoked by the layout manager)

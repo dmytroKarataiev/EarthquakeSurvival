@@ -92,10 +92,16 @@
                     android:transitionName="@string/transition.distance" />
 
                 <TextView
-                    android:id="@+id/earthquake_link"
+                    android:id="@+id/earthquake_depth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/earthquake_distance" />
+
+                <TextView
+                    android:id="@+id/earthquake_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/earthquake_depth" />
 
             </RelativeLayout>
 

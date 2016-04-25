@@ -51,6 +51,9 @@ public class EarthquakeObject {
     public static final int NOTIFICATION_ID_1 = 2001;
     public static final int NOTIFICATION_ID_2 = 2000;
 
+    public static final int SORT_TIME = 1;
+    public static final int SORT_MAGNITUDE = 2;
+
     public static final String NOTIFICATION_GROUP = "earthquake_group";
 
     /**

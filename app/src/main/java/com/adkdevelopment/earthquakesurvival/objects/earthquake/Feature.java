@@ -54,6 +54,7 @@ public class Feature implements Parcelable {
     public static final String LINK = "link";
     public static final String LATLNG = "latlng";
     public static final String DISTANCE = "distance";
+    public static final String DEPTH = "depth";
 
     /**
      *

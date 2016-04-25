@@ -24,22 +24,23 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
+import com.adkdevelopment.earthquakesurvival.adapters.SurvivalAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+
+import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -53,22 +54,7 @@ public class SurvivalFragment extends Fragment {
     public static final String SECTION = "section";
 
     @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
-    @Bind(R.id.nested_scroll) NestedScrollView mNestedScroll;
-    View mRootView;
-    private RxBus _rxBus;
-
-    @OnClick({ R.id.survive_card_before,
-            R.id.survive_card_during,
-            R.id.survive_card_after,
-            R.id.survive_card_more,
-            R.id.survive_card_kit })
-    public void startActivity(View view) {
-        if (_rxBus.hasObservers()) {
-            Intent intent = new Intent(getContext(), InfoActivity.class);
-            intent.putExtra(SECTION, view.getId());
-            _rxBus.send(intent);
-        }
-    }
+    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
 
     public SurvivalFragment() {
     }
@@ -76,7 +62,6 @@ public class SurvivalFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        _rxBus = App.getRxBusSingleton();
     }
 
     /**
@@ -94,39 +79,41 @@ public class SurvivalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.survival_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.survival_fragment, container, false);
 
-        ButterKnife.bind(this, mRootView);
+        ButterKnife.bind(this, rootView);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        SurvivalAdapter survivalAdapter = new SurvivalAdapter(getContext(), Arrays.asList(getResources().getStringArray(R.array.survival_array)));
+
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(survivalAdapter);
 
         // only in landscape mode
         if (mParallaxBar != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                mNestedScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    int max = mParallaxBar.getHeight();
-                    // scroll change
-                    int dy = scrollY - oldScrollY;
-                    if (dy > 0) {
-                        mParallaxBar.setTranslationY(Math.max(-max, mParallaxBar.getTranslationY() - dy / 2));
-                    } else {
-                        mParallaxBar.setTranslationY(Math.min(0, mParallaxBar.getTranslationY() - dy / 2));
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        int max = mParallaxBar.getHeight();
+                        if (dy > 0) {
+                            mParallaxBar.setTranslationY(Math.max(-max, mParallaxBar.getTranslationY() - dy / 2));
+                        } else {
+                            mParallaxBar.setTranslationY(Math.min(0, mParallaxBar.getTranslationY() - dy / 2));
+                        }
                     }
                 });
             }
         }
 
-        return mRootView;
+        animateViewsIn();
+
+        return rootView;
     }
 
     public void animateViewsIn() {
-        if (mRootView != null) {
-            ViewGroup root = (ViewGroup) mRootView.findViewById(R.id.root);
-            Utilities.animateViewsIn(getContext(), root);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        animateViewsIn();
+        Utilities.animateViewsIn(getContext(), mRecyclerView);
     }
 }

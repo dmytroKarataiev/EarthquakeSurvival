@@ -24,6 +24,7 @@
 
 package com.adkdevelopment.earthquakesurvival.utils;
 
+import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -36,14 +37,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -56,6 +61,9 @@ import java.util.Date;
 public class Utilities {
 
     private final static String TAG = Utilities.class.getSimpleName();
+
+    public static int mBlueColor;
+    public static int mWhiteColor;
 
     /**
      * Method to check if device is connected to the internet
@@ -226,5 +234,72 @@ public class Utilities {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Sets sorting preferences in SharedPreferences
+     * @param context from which call is being made
+     * @param sort preference according to the database schema
+     */
+    public static void setSortingPreference(Context context, int sort) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(context.getString(R.string.sharedprefs_key_sort), sort);
+        editor.apply();
+    }
+
+    /**
+     * Returns sorting preference
+     * @param context from which call is being made
+     * @return int preference according to the database schema
+     */
+    public static int getSortingPreference(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(context.getString(R.string.sharedprefs_key_sort), EarthquakeObject.SORT_TIME);
+    }
+
+    /**
+     * Animates RecyclerView card on click with revealing effect
+     * @param viewHolder to make animation on
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void animationCard(RecyclerView.ViewHolder viewHolder) {
+
+        if (mBlueColor == 0) {
+            mBlueColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorPrimary);
+        }
+        if (mWhiteColor == 0) {
+            mWhiteColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
+        }
+
+        int finalRadius = (int) Math.hypot(viewHolder.itemView.getWidth() / 2, viewHolder.itemView.getHeight() / 2);
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
+                viewHolder.itemView.getWidth() / 2,
+                viewHolder.itemView.getHeight() / 2, 0, finalRadius);
+
+        viewHolder.itemView.setBackgroundColor(mBlueColor);
+        anim.start();
+        anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                viewHolder.itemView.setBackgroundColor(mWhiteColor);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 }

@@ -27,14 +27,6 @@ apply plugin: 'me.tatarka.retrolambda'
 
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'udacity_key'
-            keyPassword '270188'
-            storeFile file('keystore/earthquake.jks')
-            storePassword '270188'
-        }
-    }
 
     compileSdkVersion 23
     buildToolsVersion '23.0.3'
@@ -51,7 +43,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
     compileOptions {

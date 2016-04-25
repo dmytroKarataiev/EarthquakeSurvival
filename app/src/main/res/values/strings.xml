@@ -33,6 +33,9 @@
     <string name="menu.button.refresh">Refresh</string>
     <string name="menu.button.share">Share</string>
     <string name="menu_button_survive">Survive</string>
+    <string name="menu_button_sort">Sort</string>
+    <string name="sort_time">Time</string>
+    <string name="sort_magnitude">Magnitude</string>
 
     <!-- Strings related to Settings -->
     <string name="settings.title">Settings</string>
@@ -76,6 +79,7 @@
     <string name="sharedprefs.key.notifications" translatable="false">notif</string>
     <string name="sharedprefs_key_lastnotification" translatable="false">last_notification</string>
     <string name="sharedprefs_key_last_countupdate" translatable="false">last_countupdate</string>
+    <string name="sharedprefs_key_sort" translatable="false">sort</string>
 
 
     <!-- Fragments titles -->
@@ -100,6 +104,7 @@
     <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
     <string name="earthquake.longitude">Longitude: <xliff:g id="longitude">%1$.4f</xliff:g></string>
     <string name="earthquake.magnitude">Magnitude: <xliff:g id="magn">%1$.1f</xliff:g></string>
+    <string name="earthquake_depth">Depth: <xliff:g id="depth">%1$.1f</xliff:g> miles</string>
     <string name="earthquake.statistics.day">Earthquakes today: <xliff:g id="day">%1$d</xliff:g></string>
     <string name="earthquake.statistics.week">This week: <xliff:g id="week">%1$d</xliff:g></string>
     <string name="earthquake.statistics.month">Last 30 days: <xliff:g id="month">%1$d</xliff:g></string>
@@ -138,11 +143,21 @@
     <string name="transition.card" translatable="false">card</string>
 
     <!-- Survival Strings -->
+    <string-array name="survival_array">
+        <item name="survival_header">Image</item>
+        <item name="survival_before">Before An Earthquake</item>
+        <item name="survival_during">During An Earthquake</item>
+        <item name="survival_after">After An Earthquake</item>
+        <item name="survival_resources">Resources</item>
+        <item name="survival_kit">Emergency supplies</item>
+    </string-array>
+
     <string name="survival_before">Before An Earthquake</string>
     <string name="survival_during">During An Earthquake</string>
     <string name="survival_after">After An Earthquake</string>
     <string name="survival_resources">Resources</string>
     <string name="survival_kit">Emergency supplies</string>
+
 
     <string name="title_activity_info">How to survive</string>
     <string name="action_settings">Settings</string>

@@ -60,11 +60,11 @@ import android.widget.Toast;
 import com.adkdevelopment.earthquakesurvival.adapters.PagerAdapter;
 import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.geofence.GeofenceService;
-import com.adkdevelopment.earthquakesurvival.ui.ZoomOutPageTransformer;
-import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
+import com.adkdevelopment.earthquakesurvival.ui.ZoomOutPageTransformer;
+import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -84,9 +84,13 @@ import butterknife.BindColor;
 import butterknife.ButterKnife;
 import rx.subscriptions.CompositeSubscription;
 
+/**
+ * Main phone activity
+ */
 public class PagerActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener, ResultCallback<Status>, SharedPreferences.OnSharedPreferenceChangeListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener,
+        ResultCallback<Status>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -243,7 +247,6 @@ public class PagerActivity extends AppCompatActivity
                 SyncAdapter.syncImmediately(getBaseContext());
                 return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }

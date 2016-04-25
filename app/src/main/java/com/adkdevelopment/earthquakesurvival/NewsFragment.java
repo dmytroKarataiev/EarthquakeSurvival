@@ -25,7 +25,9 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -65,6 +67,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.list_empty_text) TextView mListEmpty;
+    @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
 
     public NewsFragment() {
     }
@@ -105,6 +108,21 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
 
         // Prevent Swipe to refresh if recyclerview isn't in top position
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // only in landscape mode
+                if (mParallaxBar != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        int max = mParallaxBar.getHeight();
+                        if (dy > 0) {
+                            mParallaxBar.setTranslationY(Math.max(-max, mParallaxBar.getTranslationY() - dy / 2));
+                        } else {
+                            mParallaxBar.setTranslationY(Math.min(0, mParallaxBar.getTranslationY() - dy / 2));
+                        }
+                    }
+                }
+            }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

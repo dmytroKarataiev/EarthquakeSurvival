@@ -26,21 +26,28 @@ package com.adkdevelopment.earthquakesurvival;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.adapters.RecentAdapter;
+import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
@@ -51,7 +58,9 @@ import butterknife.ButterKnife;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RecentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
+public class RecentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        SharedPreferences.OnSharedPreferenceChangeListener,
+        PopupMenu.OnMenuItemClickListener {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -67,6 +76,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
     @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.list_empty_text) TextView mListEmpty;
+    @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
 
     public RecentFragment() {
     }
@@ -96,6 +106,9 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
 
         ButterKnife.bind(this, rootView);
 
+        // to inflate menu in this fragment
+        setHasOptionsMenu(true);
+
         mListEmpty.setVisibility(View.INVISIBLE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
@@ -105,8 +118,24 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mRecentAdapter);
 
+        // TODO: 4/24/16 Create a separate class 
         // Prevent Swipe to refresh if recyclerview isn't in top position
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // only in landscape mode
+                if (mParallaxBar != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        int max = mParallaxBar.getHeight();
+                        if (dy > 0) {
+                            mParallaxBar.setTranslationY(Math.max(-max, mParallaxBar.getTranslationY() - dy / 2));
+                        } else {
+                            mParallaxBar.setTranslationY(Math.min(0, mParallaxBar.getTranslationY() - dy / 2));
+                        }
+                    }
+                }
+            }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -147,12 +176,25 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     // run when loader is initialized
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args){
+
+        int sort = Utilities.getSortingPreference(getContext());
+        String sortingPreference = EarthquakeColumns.TIME;
+
+        switch (sort) {
+            case EarthquakeObject.SORT_MAGNITUDE:
+                sortingPreference = EarthquakeColumns.MAG;
+                break;
+            case EarthquakeObject.SORT_TIME:
+                sortingPreference = EarthquakeColumns.TIME;
+                break;
+        }
+
         return new CursorLoader(getActivity(),
                 EarthquakeColumns.CONTENT_URI,
                 null,
                 EarthquakeColumns.MAG + " >= ?",
                 new String[] {String.valueOf(Utilities.getMagnitudePrefs(getContext()))},
-                EarthquakeColumns.TIME + " DESC");
+                sortingPreference + " DESC");
     }
 
     // Set the cursor in our CursorAdapter once the Cursor is loaded
@@ -195,12 +237,57 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.sharedprefs_key_magnitude))) {
+        if (key.equals(getString(R.string.sharedprefs_key_magnitude)) ||
+                key.equals(getString(R.string.sharedprefs_key_sort))) {
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
         }
     }
 
     public void animateViewsIn() {
         Utilities.animateViewsIn(getContext(), mRecyclerView);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_recent, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_sort:
+                showSortMenu(getActivity().findViewById(R.id.action_sort));
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Shows PopupMenu on Filter button click in ActionBar
+     * @param view of the button itself
+     */
+    public void showSortMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_sort_popup, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menu_item_sort_magnitude:
+                Utilities.setSortingPreference(getContext(), EarthquakeObject.SORT_MAGNITUDE);
+                return true;
+            case R.id.menu_item_sort_time:
+                Utilities.setSortingPreference(getContext(), EarthquakeObject.SORT_TIME);
+                return true;
+            default:
+                return false;
+        }
     }
 }

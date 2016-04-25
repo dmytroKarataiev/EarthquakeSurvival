@@ -89,7 +89,7 @@ public class InfoActivity extends AppCompatActivity {
         // copy the behavior of the hardware back button
         switch (id) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);

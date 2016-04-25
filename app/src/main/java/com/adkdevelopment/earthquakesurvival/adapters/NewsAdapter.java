@@ -66,7 +66,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     private RxBus _rxBus;
 
     // Provide a reference to the views for each data item
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.news_item_title) TextView mTitle;
         @Bind(R.id.news_item_date) TextView mDate;
@@ -78,7 +78,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         }
     }
 
-    public class ViewHolderStats extends RecyclerView.ViewHolder {
+    public static class ViewHolderStats extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.stat_item_year) TextView mStatYear;
         @Bind(R.id.stat_item_month) TextView mStatMonth;
@@ -91,13 +91,14 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         }
     }
 
-    public class ViewHolderLargest extends RecyclerView.ViewHolder {
+    public static class ViewHolderLargest extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.stat_item_largest) TextView mStatLargest;
         @Bind(R.id.stat_item_magnitude) TextView mStatMagnitude;
         @Bind(R.id.stat_item_description) TextView mStatDescription;
         @Bind(R.id.stat_item_date) TextView mStatDate;
         @Bind(R.id.stat_item_distance) TextView mStatDistance;
+        @Bind(R.id.stat_item_depth) TextView mStatDepth;
         @Bind(R.id.earthquake_item_click) CardView mEarthquakeClick;
 
         public ViewHolderLargest(View v) {
@@ -277,6 +278,9 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
         ((ViewHolderLargest) holder).mStatDistance.setText(distance);
 
+        double depth = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.DEPTH)) / 1.6;
+        ((ViewHolderLargest) holder).mStatDepth.setText(mContext.getString(R.string.earthquake_depth, depth));
+
         tempCursor.close();
 
         ((ViewHolderLargest) holder).mEarthquakeClick.setOnClickListener(click -> {
@@ -288,9 +292,12 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             intent.putExtra(Feature.LINK, link);
             intent.putExtra(Feature.LATLNG, latLng);
             intent.putExtra(Feature.DISTANCE, distance);
+            intent.putExtra(Feature.DEPTH, depth);
 
             if (_rxBus.hasObservers()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    Utilities.animationCard(holder);
                     //noinspection unchecked always true
                     Pair pair = Pair.create(((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click),
                             ((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click).getTransitionName());
@@ -302,4 +309,6 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
         });
 
     }
+
+
 }

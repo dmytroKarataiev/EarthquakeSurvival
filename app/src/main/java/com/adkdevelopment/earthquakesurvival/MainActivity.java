@@ -24,19 +24,25 @@
 
 package com.adkdevelopment.earthquakesurvival;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by karataev on 4/19/16.
@@ -44,18 +50,28 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     @Nullable @Bind(R.id.toolbar) Toolbar mToolbar;
-    NewsFragment mNewsFragment;
-    MapviewFragment mMapviewFragment;
-    SurvivalFragment mSurvivalFragment;
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private NewsFragment mNewsFragment;
+    private MapviewFragment mMapviewFragment;
+    private SurvivalFragment mSurvivalFragment;
+
     public static final String NEWS = "news";
     public static final String MAP = "maps";
     public static final String SURVIVE = "survive";
+
+    // RxJava eventbus
+    private RxBus _rxBus;
+    private CompositeSubscription _subscription;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.tablet_activity);
+
+        _rxBus = App.getRxBusSingleton();
 
         ButterKnife.bind(this);
 
@@ -82,6 +98,29 @@ public class MainActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, PagerActivity.class));
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onStart() {
+        super.onStart();
+        _subscription = new CompositeSubscription();
+        _subscription.add(_rxBus.toObservable().subscribe(o -> {
+            if (o instanceof Pair) {
+                Pair pair = (Pair) o;
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, (Pair) pair.second)
+                        .toBundle();
+                startActivity((Intent) pair.first, bundle);
+            } else if (o instanceof Intent) {
+                startActivity((Intent) o);
+            }
+        }));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        _subscription.clear();
     }
 
     @Override
