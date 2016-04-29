@@ -77,7 +77,6 @@ public class InfoFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         if (getActivity().getIntent() != null) {
-
             int section = getActivity().getIntent().getIntExtra(SurvivalFragment.SECTION, -1);
             List<String> titles = new ArrayList<>();
             List<String> text = new ArrayList<>();

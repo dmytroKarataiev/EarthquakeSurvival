@@ -141,7 +141,7 @@ public class Utilities {
         }
 
         GradientDrawable oval;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             oval = (GradientDrawable) context.getResources().getDrawable(R.drawable.marker, context.getTheme());
         } else {
             //noinspection deprecation

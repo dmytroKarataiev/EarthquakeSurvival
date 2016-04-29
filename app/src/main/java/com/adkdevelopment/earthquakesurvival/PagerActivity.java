@@ -474,7 +474,7 @@ public class PagerActivity extends AppCompatActivity
      * Add Geofences to look for and send notifications on enter or exit
      */
     public void observeGeofences() {
-        if (!mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient != null && !mGoogleApiClient.isConnected()) {
             //Toast.makeText(this, getString(R.string.googleapiclient_notconnected), Toast.LENGTH_SHORT).show();
             return;
         }
