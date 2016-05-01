@@ -43,11 +43,11 @@ import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
+import com.adkdevelopment.earthquakesurvival.ui.ScrollableMapView;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -65,7 +65,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = DetailFragment.class.getSimpleName();
 
-    @Bind(R.id.map) MapView mMapView;
+    @Bind(R.id.map) ScrollableMapView mMapView;
     @Bind(R.id.earthquake_place) TextView mEarthquakePlace;
     @Bind(R.id.earthquake_magnitude) TextView mEarthquakeMagnitude;
     @Bind(R.id.earthquake_date) TextView mEarthquakeDate;
