@@ -357,6 +357,8 @@ public class PagerActivity extends AppCompatActivity
             loadPermissions(perm, REQUEST_FINE_LOCATION);
         } else {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            LocationUtils.setLocation(this, location);
         }
     }
 

@@ -209,7 +209,7 @@ public class Utilities {
                         .translationY(0f)
                         .alpha(1f)
                         .setInterpolator(interpolator)
-                        .setDuration(1000L)
+                        .setDuration(300L)
                         .start();
                 // increase the offset distance for the next view
                 offset *= 1.5f;

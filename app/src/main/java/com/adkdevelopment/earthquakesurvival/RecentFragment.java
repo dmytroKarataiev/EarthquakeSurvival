@@ -201,6 +201,11 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data == null || data.getCount() < 1) {
+            if (Utilities.isOnline(getContext())) {
+                mListEmpty.setText(getString(R.string.recyclerview_empty_online));
+            } else {
+                mListEmpty.setText(getString(R.string.recyclerview_empty_text));
+            }
             mListEmpty.setVisibility(View.VISIBLE);
         } else {
             mListEmpty.setVisibility(View.INVISIBLE);

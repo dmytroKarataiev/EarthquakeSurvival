@@ -195,7 +195,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     // Student: call bulkInsert to add the weatherEntries to the database here
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
                     cVVector.toArray(cvArray);
-
                     inserted = resolver.bulkInsert(NewsColumns.CONTENT_URI, cvArray);
                 }
 
@@ -204,8 +203,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS * 2);
 
                 int deleted = resolver.delete(NewsColumns.CONTENT_URI, NewsColumns.DATE + " <= ?", new String[]{String.valueOf(date.getTime())});
-                Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
-
+                // Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
             }
 
             @Override
@@ -410,6 +408,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
             long lastSync = prefs.getLong(lastNotificationKey, 0);
 
+            /*
+            Log.d(TAG, "(System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS):"
+                    + (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) + " "
+                    + System.currentTimeMillis() + " " + lastSync + " " + (System.currentTimeMillis() - lastSync));
+            */
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
                 Intent intent = new Intent(context, DetailActivity.class);
 
@@ -452,10 +455,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         // .setLargeIcon(largeIcon)
                         .setTicker(context.getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(notifyValues.get(EarthquakeColumns.PLACE).toString()
-                                        + "\n" + magnitude
+                                .bigText(magnitude
+                                        + "\n" + notifyValues.get(EarthquakeColumns.PLACE).toString()
                                         + "\n" + date
-                                        + "\n" + distance))
+                                        + "\n" + distance
+                                        + "\n" + context.getString(R.string.earthquake_depth, depth)))
                         .setGroup(EarthquakeObject.NOTIFICATION_GROUP)
                         .setGroupSummary(true);
 

@@ -59,9 +59,11 @@ import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Fragment with a map which monitors location changes and updates the view
  */
-public class MapviewFragment extends Fragment implements OnMapReadyCallback, LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
+public class MapviewFragment extends Fragment implements OnMapReadyCallback, 
+        LoaderManager.LoaderCallbacks<Cursor>, 
+        SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -257,6 +259,18 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Loa
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sharedprefs_key_magnitude))) {
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+        } else if (key.equals(getString(R.string.sharedprefs_key_latitude)) || 
+                key.equals(getString(R.string.sharedprefs_key_longitude))) {
+
+            if (mGoogleMap != null) {
+                mCameraPosition = CameraPosition.builder()
+                        .target(LocationUtils.getLocation(getContext()))
+                        .zoom(LocationUtils.CAMERA_DEFAULT_ZOOM)
+                        .build();
+                
+                mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
+            }
+            
         }
     }
 }

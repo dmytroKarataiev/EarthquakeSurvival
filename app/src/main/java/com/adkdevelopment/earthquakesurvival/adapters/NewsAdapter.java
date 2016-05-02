@@ -257,57 +257,58 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
      */
     private void populateView(RecyclerView.ViewHolder holder, Cursor tempCursor, int position) {
 
-        tempCursor.moveToPosition(position);
+        if (tempCursor.getCount() > 0) {
+            tempCursor.moveToPosition(position);
 
-        double latitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LATITUDE));
-        double longitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
-        LatLng latLng = new LatLng(latitude, longitude);
+            double latitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+            double longitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+            LatLng latLng = new LatLng(latitude, longitude);
 
-        String desc = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.PLACE));
-        ((ViewHolderLargest) holder).mStatDescription.setText(desc);
+            String desc = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.PLACE));
+            ((ViewHolderLargest) holder).mStatDescription.setText(desc);
 
-        double magnitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.MAG));
-        ((ViewHolderLargest) holder).mStatMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
+            double magnitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.MAG));
+            ((ViewHolderLargest) holder).mStatMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
 
-        long dateMillis = tempCursor.getLong(tempCursor.getColumnIndex(EarthquakeColumns.TIME));
-        ((ViewHolderLargest) holder).mStatDate.setText(Utilities.getNiceDate(dateMillis));
+            long dateMillis = tempCursor.getLong(tempCursor.getColumnIndex(EarthquakeColumns.TIME));
+            ((ViewHolderLargest) holder).mStatDate.setText(Utilities.getNiceDate(dateMillis));
 
-        String link = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.URL));
+            String link = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.URL));
 
-        String distance = mContext.getString(R.string.earthquake_distance,
-                LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
-        ((ViewHolderLargest) holder).mStatDistance.setText(distance);
+            String distance = mContext.getString(R.string.earthquake_distance,
+                    LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
+            ((ViewHolderLargest) holder).mStatDistance.setText(distance);
 
-        double depth = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.DEPTH)) / 1.6;
-        ((ViewHolderLargest) holder).mStatDepth.setText(mContext.getString(R.string.earthquake_depth, depth));
+            double depth = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.DEPTH)) / 1.6;
+            ((ViewHolderLargest) holder).mStatDepth.setText(mContext.getString(R.string.earthquake_depth, depth));
 
-        tempCursor.close();
+            tempCursor.close();
 
-        ((ViewHolderLargest) holder).mEarthquakeClick.setOnClickListener(click -> {
+            ((ViewHolderLargest) holder).mEarthquakeClick.setOnClickListener(click -> {
 
-            Intent intent = new Intent(mContext, DetailActivity.class);
-            intent.putExtra(Feature.MAGNITUDE, magnitude);
-            intent.putExtra(Feature.PLACE, desc);
-            intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
-            intent.putExtra(Feature.LINK, link);
-            intent.putExtra(Feature.LATLNG, latLng);
-            intent.putExtra(Feature.DISTANCE, distance);
-            intent.putExtra(Feature.DEPTH, depth);
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra(Feature.MAGNITUDE, magnitude);
+                intent.putExtra(Feature.PLACE, desc);
+                intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
+                intent.putExtra(Feature.LINK, link);
+                intent.putExtra(Feature.LATLNG, latLng);
+                intent.putExtra(Feature.DISTANCE, distance);
+                intent.putExtra(Feature.DEPTH, depth);
 
-            if (_rxBus.hasObservers()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (_rxBus.hasObservers()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                    Utilities.animationCard(holder);
-                    //noinspection unchecked always true
-                    Pair pair = Pair.create(((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click),
-                            ((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click).getTransitionName());
-                    _rxBus.send(Pair.create(intent, pair));
-                } else {
-                    _rxBus.send(intent);
+                        Utilities.animationCard(holder);
+                        //noinspection unchecked always true
+                        Pair pair = Pair.create(((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click),
+                                ((ViewHolderLargest) holder).itemView.findViewById(R.id.earthquake_item_click).getTransitionName());
+                        _rxBus.send(Pair.create(intent, pair));
+                    } else {
+                        _rxBus.send(intent);
+                    }
                 }
-            }
-        });
-
+            });
+        }
     }
 
 

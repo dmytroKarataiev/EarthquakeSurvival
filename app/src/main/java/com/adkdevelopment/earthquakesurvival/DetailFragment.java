@@ -242,7 +242,9 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                     getString(R.string.earthquake_magnitude, mMagnitude) + "\n"
                             + mDate + "\n"
                             + mDescription + "\n"
-                            + getString(R.string.earthquake_link, mLink));
+                            + mDistance + "\n"
+                            + getString(R.string.earthquake_depth, mDepth) + "\n"
+                            + mLink);
             mShareActionProvider.setShareIntent(intent);
         } else {
             Log.e(TAG, "ShareActionProvider is null");

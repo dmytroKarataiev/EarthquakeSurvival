@@ -37,6 +37,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.adkdevelopment.earthquakesurvival.R;
@@ -59,12 +60,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
         String stringValue = value.toString();
+        Log.d("SettingsActivity", "preference:" + preference + " value: " + value);
 
         if (preference instanceof ListPreference) {
             // For list preferences, look up the correct display value in
             // the preference's 'entries' list.
             ListPreference listPreference = (ListPreference) preference;
             int index = listPreference.findIndexOfValue(stringValue);
+
+            Log.d("SettingsActivity", "index:" + index + " summary: " + stringValue);
+
             // Set the summary to reflect the new value.
             preference.setSummary(
                     index >= 0

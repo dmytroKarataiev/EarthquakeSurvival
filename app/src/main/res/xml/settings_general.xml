@@ -35,7 +35,7 @@
         android:title="@string/settings.title.magnitude"
         android:summary="@string/settings.summary.magnitude"
         android:enabled="true"
-        android:defaultValue="1"
+        android:defaultValue="2"
         sample:msbp_minValue="-1"
         sample:msbp_maxValue="10"
         sample:msbp_interval="1"
@@ -54,7 +54,7 @@
 
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:defaultValue="10800"
+        android:defaultValue="14400"
         android:entries="@array/settings_sync_titles"
         android:entryValues="@array/settings_sync_values"
         android:key="@string/sharedprefs.key.syncfrequency"

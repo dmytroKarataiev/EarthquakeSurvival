@@ -26,6 +26,8 @@
 
     <string name="app.name">Earthquake Survival</string>
     <string name="recyclerview.empty.text">Oops! Something is wrong. Please check your internet connection and try again.</string>
+    <string name="recyclerview.empty.online">Probably you should check your settings as you are online, but there are no earthquakes matching your request.</string>
+
     <string name="temp.string">Hello World from section: %1$d</string>
 
     <!-- Strings related to Menu -->
