@@ -25,7 +25,6 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -184,7 +183,6 @@ public class PagerActivity extends AppCompatActivity
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onStart() {
         super.onStart();
@@ -195,7 +193,7 @@ public class PagerActivity extends AppCompatActivity
 
         _subscription = new CompositeSubscription();
         _subscription.add(_rxBus.toObservable().subscribe(o -> {
-            if (o instanceof Pair) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && o instanceof Pair) {
                 Pair pair = (Pair) o;
                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, (Pair) pair.second)
                         .toBundle();
