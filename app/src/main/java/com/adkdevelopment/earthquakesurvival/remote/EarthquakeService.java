@@ -37,20 +37,20 @@ import retrofit2.http.Query;
  */
 public interface EarthquakeService {
 
-    String sEarthquakeLink = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
+    String sEarthquakeCount = "http://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson";
 
-    @GET(sEarthquakeLink + "all_day.geojson")
+    @GET("all_day.geojson")
     Call<EarthquakeObject> getData();
 
     @GET("https://news.google.com/news?q=earthquake&output=rss")
     Call<Rss> getNews();
 
-    @GET("http://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson")
+    @GET(sEarthquakeCount)
     Call<CountEarthquakes> getEarthquakeStats(@Query("starttime") String starttime,
                                               @Query("endtime") String endtime,
                                               @Query("minmagnitude") String magnitude);
 
-    @GET("http://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson")
+    @GET(sEarthquakeCount)
     Call<CountEarthquakes> getEarthquakeStats(@Query("starttime") String starttime,
                                               @Query("endtime") String endtime);
 }

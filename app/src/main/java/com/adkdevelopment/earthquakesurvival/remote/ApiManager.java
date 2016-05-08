@@ -46,10 +46,8 @@ public class ApiManager {
         return EARTHQUAKE_SERVICE;
     }
 
-    private final String NEWS_BASE_URL = "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/";
-
     private final Retrofit NEWS_ADAPTER = new Retrofit.Builder()
-            .baseUrl(NEWS_BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build();
 

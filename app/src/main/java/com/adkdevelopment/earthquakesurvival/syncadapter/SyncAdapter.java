@@ -216,9 +216,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         //checking the last update and notify if it' the first of the day
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String lastNotificationKey = context.getString(R.string.sharedprefs_key_last_countupdate);
-        long lastSync = prefs.getLong(lastNotificationKey, 0);
+        long lastSync = prefs.getLong(lastNotificationKey, DateUtils.DAY_IN_MILLIS);
 
-        if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
+        if (System.currentTimeMillis() - lastSync >= Utilities.getSyncIntervalPrefs(context) * DateUtils.SECOND_IN_MILLIS) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date(System.currentTimeMillis());
 
@@ -240,7 +240,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     public void onResponse(Call<CountEarthquakes> call, Response<CountEarthquakes> response) {
                         ContentValues count = new ContentValues();
                         count.put(CountColumns.ALL_COLUMNS[round], response.body().getCount());
-
+                        Log.d(TAG, "response.body().getCount():" + response.body().getCount());
                         ContentResolver contentResolver = context.getContentResolver();
 
                         Cursor cursor = contentResolver.query(CountColumns.CONTENT_URI, null, null, null, null);
@@ -406,13 +406,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             //checking the last update and notify if it' the first of the day
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
-            long lastSync = prefs.getLong(lastNotificationKey, 0);
+            long lastSync = prefs.getLong(lastNotificationKey, DateUtils.DAY_IN_MILLIS);
 
-            /*
             Log.d(TAG, "(System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS):"
                     + (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) + " "
-                    + System.currentTimeMillis() + " " + lastSync + " " + (System.currentTimeMillis() - lastSync));
-            */
+                    + System.currentTimeMillis() + " " + lastSync + " " + (System.currentTimeMillis() - lastSync) + " day: " + DateUtils.DAY_IN_MILLIS);
+
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
                 Intent intent = new Intent(context, DetailActivity.class);
 

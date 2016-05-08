@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.R;
 import com.google.android.gms.location.Geofence;
@@ -42,6 +43,8 @@ import java.util.List;
  * Additional class with helper functions for Geofence and Maps functionality
  */
 public class LocationUtils {
+
+    private static final String TAG = LocationUtils.class.getSimpleName();
 
     /**
      * Returns the error string for a geofencing error code.
@@ -134,17 +137,21 @@ public class LocationUtils {
      */
     public static void setLocation(Context context, Location location) {
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (location != null) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        // save the precision of Double by converting it to raw long bits
-        editor.putLong(context.getString(R.string.sharedprefs_key_latitude),
-                Double.doubleToRawLongBits(location.getLatitude()));
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            // save the precision of Double by converting it to raw long bits
+            editor.putLong(context.getString(R.string.sharedprefs_key_latitude),
+                    Double.doubleToRawLongBits(location.getLatitude()));
 
-        editor.putLong(context.getString(R.string.sharedprefs_key_longitude),
-                Double.doubleToRawLongBits(location.getLongitude()));
+            editor.putLong(context.getString(R.string.sharedprefs_key_longitude),
+                    Double.doubleToRawLongBits(location.getLongitude()));
 
-        editor.apply();
+            editor.apply();
+        } else {
+            Log.e(TAG, "Location is null");
+        }
     }
 
     /**
