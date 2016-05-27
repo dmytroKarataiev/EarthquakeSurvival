@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp">
 
-            <com.google.android.gms.maps.MapView
+            <com.adkdevelopment.earthquakesurvival.ui.ScrollableMapView
                 android:id="@+id/map"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -57,7 +57,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:transitionName="@string/transition.card" >
+            android:transitionName="@string/transition.card"
+            tools:targetApi="lollipop">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
