@@ -45,7 +45,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -68,7 +68,7 @@ public class SurvivalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.survival_item) TextView mTitle;
+        @BindView(R.id.survival_item) TextView mTitle;
 
         public ViewHolder(View v)  {
             super(v);
@@ -78,7 +78,7 @@ public class SurvivalAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public static class ViewHolderImage extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.survive_card_image) ImageView mImage;
+        @BindView(R.id.survive_card_image) ImageView mImage;
 
         public ViewHolderImage(View v)  {
             super(v);

@@ -37,7 +37,7 @@ import com.adkdevelopment.earthquakesurvival.R;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -57,9 +57,9 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.info_title) TextView mTitle;
-        @Bind(R.id.info_text) TextView mText;
-        @Bind(R.id.info_card) CardView mInfoCard;
+        @BindView(R.id.info_title) TextView mTitle;
+        @BindView(R.id.info_text) TextView mText;
+        @BindView(R.id.info_card) CardView mInfoCard;
 
         public ViewHolder(View v)  {
             super(v);

@@ -24,18 +24,18 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-
+apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion '23.0.3'
     defaultConfig {
         multiDexEnabled true
         applicationId "com.adkdevelopment.earthquakesurvival"
         minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 5
-        versionName "1.04"
+        targetSdkVersion 24
+        versionCode 6
+        versionName "1.05"
     }
     buildTypes {
         release {
@@ -50,8 +50,10 @@ android {
 }
 
 ext {
-    compatVersion = "23.4.0"
-    playVersion = "9.0.0"
+    compatVersion = "24.0.0"
+    playVersion = "9.0.2"
+    retrofitVersion = "2.1.0"
+    butterknifeVersion = "8.1.0"
 }
 
 dependencies {
@@ -67,16 +69,17 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$compatVersion"
 
     // life simplifiers
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile "com.jakewharton:butterknife:$butterknifeVersion"
+    apt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     // seek bar preference
     //compile 'com.pavelsikun:material-seekbar-preference:0.12.1'
 
     // data fetching and converting to objects
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile('com.squareup.retrofit2:converter-simplexml:2.0.0-beta4') {
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile("com.squareup.retrofit2:converter-simplexml:$retrofitVersion") {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'

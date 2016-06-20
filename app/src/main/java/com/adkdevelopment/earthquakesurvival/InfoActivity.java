@@ -32,13 +32,13 @@ import android.view.MenuItem;
 
 import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.subscriptions.CompositeSubscription;
 
 public class InfoActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
     // RxJava eventbus
     private RxBus _rxBus;

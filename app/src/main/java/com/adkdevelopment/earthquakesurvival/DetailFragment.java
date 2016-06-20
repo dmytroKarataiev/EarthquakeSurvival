@@ -54,9 +54,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import butterknife.Bind;
 import butterknife.BindDrawable;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -65,14 +66,15 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = DetailFragment.class.getSimpleName();
 
-    @Bind(R.id.map) ScrollableMapView mMapView;
-    @Bind(R.id.earthquake_place) TextView mEarthquakePlace;
-    @Bind(R.id.earthquake_magnitude) TextView mEarthquakeMagnitude;
-    @Bind(R.id.earthquake_date) TextView mEarthquakeDate;
-    @Bind(R.id.earthquake_depth) TextView mEarthquakeDepth;
-    @Bind(R.id.earthquake_link) TextView mEarthquakeLink;
+    @BindView(R.id.map) ScrollableMapView mMapView;
+    @BindView(R.id.earthquake_place) TextView mEarthquakePlace;
+    @BindView(R.id.earthquake_magnitude) TextView mEarthquakeMagnitude;
+    @BindView(R.id.earthquake_date) TextView mEarthquakeDate;
+    @BindView(R.id.earthquake_depth) TextView mEarthquakeDepth;
+    @BindView(R.id.earthquake_link) TextView mEarthquakeLink;
     @BindDrawable(R.drawable.marker) Drawable mOval;
-    @Bind(R.id.earthquake_distance) TextView mEarthquakeDistance;
+    @BindView(R.id.earthquake_distance) TextView mEarthquakeDistance;
+    private Unbinder mUnbinder;
 
     private GoogleMap mGoogleMap;
     private CameraPosition mCameraPosition;
@@ -99,7 +101,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         View rootView = inflater.inflate(R.layout.detailed_fragment, container, false);
         setHasOptionsMenu(true);
 
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         if (getActivity().getIntent() != null) {
             Intent input = getActivity().getIntent();
@@ -175,7 +177,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     @Override

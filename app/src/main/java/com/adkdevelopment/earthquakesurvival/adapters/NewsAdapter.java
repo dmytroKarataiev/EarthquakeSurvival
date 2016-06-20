@@ -52,7 +52,7 @@ import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -68,9 +68,9 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     // Provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        @Bind(R.id.news_item_title) TextView mTitle;
-        @Bind(R.id.news_item_date) TextView mDate;
-        @Bind(R.id.news_item_description) TextView mDescription;
+        @BindView(R.id.news_item_title) TextView mTitle;
+        @BindView(R.id.news_item_date) TextView mDate;
+        @BindView(R.id.news_item_description) TextView mDescription;
 
         public ViewHolder(View v) {
             super(v);
@@ -80,10 +80,10 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
     public static class ViewHolderStats extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        @Bind(R.id.stat_item_year) TextView mStatYear;
-        @Bind(R.id.stat_item_month) TextView mStatMonth;
-        @Bind(R.id.stat_item_week) TextView mStatWeek;
-        @Bind(R.id.stat_item_day) TextView mStatDay;
+        @BindView(R.id.stat_item_year) TextView mStatYear;
+        @BindView(R.id.stat_item_month) TextView mStatMonth;
+        @BindView(R.id.stat_item_week) TextView mStatWeek;
+        @BindView(R.id.stat_item_day) TextView mStatDay;
 
         public ViewHolderStats(View v) {
             super(v);
@@ -93,13 +93,13 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
     public static class ViewHolderLargest extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        @Bind(R.id.stat_item_largest) TextView mStatLargest;
-        @Bind(R.id.stat_item_magnitude) TextView mStatMagnitude;
-        @Bind(R.id.stat_item_description) TextView mStatDescription;
-        @Bind(R.id.stat_item_date) TextView mStatDate;
-        @Bind(R.id.stat_item_distance) TextView mStatDistance;
-        @Bind(R.id.stat_item_depth) TextView mStatDepth;
-        @Bind(R.id.earthquake_item_click) CardView mEarthquakeClick;
+        @BindView(R.id.stat_item_largest) TextView mStatLargest;
+        @BindView(R.id.stat_item_magnitude) TextView mStatMagnitude;
+        @BindView(R.id.stat_item_description) TextView mStatDescription;
+        @BindView(R.id.stat_item_date) TextView mStatDate;
+        @BindView(R.id.stat_item_distance) TextView mStatDistance;
+        @BindView(R.id.stat_item_depth) TextView mStatDepth;
+        @BindView(R.id.earthquake_item_click) CardView mEarthquakeClick;
 
         public ViewHolderLargest(View v) {
             super(v);

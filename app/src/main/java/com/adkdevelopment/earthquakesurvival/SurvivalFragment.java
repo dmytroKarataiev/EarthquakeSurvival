@@ -39,8 +39,9 @@ import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -53,8 +54,9 @@ public class SurvivalFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     public static final String SECTION = "section";
 
-    @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
-    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
+    @Nullable @BindView(R.id.parallax_bar) View mParallaxBar;
+    @BindView(R.id.recyclerview) RecyclerView mRecyclerView;
+    private Unbinder mUnbinder;
 
     public SurvivalFragment() {
     }
@@ -81,7 +83,7 @@ public class SurvivalFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.survival_fragment, container, false);
 
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         SurvivalAdapter survivalAdapter = new SurvivalAdapter(getContext(), Arrays.asList(getResources().getStringArray(R.array.survival_array)));
@@ -115,5 +117,11 @@ public class SurvivalFragment extends Fragment {
 
     public void animateViewsIn() {
         Utilities.animateViewsIn(getContext(), mRecyclerView);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 }

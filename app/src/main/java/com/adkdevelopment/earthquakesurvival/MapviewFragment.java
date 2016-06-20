@@ -54,9 +54,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
 
-import butterknife.Bind;
 import butterknife.BindDrawable;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Fragment with a map which monitors location changes and updates the view
@@ -77,8 +78,9 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     private Cursor mCursor;
     private static final int CURSOR_LOADER_ID = 20;
 
-    @Bind(R.id.map) MapView mMapView;
+    @BindView(R.id.map) MapView mMapView;
     @BindDrawable(R.drawable.marker) Drawable mOval;
+    private Unbinder mUnbinder;
 
     // data to start detail activity on info window click
     private HashMap<String, Intent> mMarkers = new HashMap<>();
@@ -103,7 +105,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
 
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         if (Utilities.checkPlayServices(getActivity())) {
             mMapView.onCreate(savedInstanceState);
@@ -159,7 +161,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
     }

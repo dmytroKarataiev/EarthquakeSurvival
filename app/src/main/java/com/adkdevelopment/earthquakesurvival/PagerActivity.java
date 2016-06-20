@@ -78,8 +78,8 @@ import com.google.android.gms.location.LocationServices;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.subscriptions.CompositeSubscription;
 
@@ -112,9 +112,9 @@ public class PagerActivity extends AppCompatActivity
     private List<Geofence> mGeofenceList;
     private ContentObserver mObserver;
 
-    @Bind(R.id.sliding_tabs) TabLayout mTab;
-    @Bind(R.id.container) ViewPager mViewPager;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.sliding_tabs) TabLayout mTab;
+    @BindView(R.id.container) ViewPager mViewPager;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindColor(R.color.tab_item_selected) int mColorSelected;
     @BindColor(R.color.tab_item_unselected) int mColorUnselected;
 

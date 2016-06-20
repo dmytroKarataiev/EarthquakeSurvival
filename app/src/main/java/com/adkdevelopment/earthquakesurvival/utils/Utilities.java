@@ -27,6 +27,7 @@ package com.adkdevelopment.earthquakesurvival.utils;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -53,6 +54,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Utilities class with helper functions
@@ -302,4 +304,29 @@ public class Utilities {
             }
         });
     }
+
+    /**
+     * Checks if the app is in foreground
+     * @param context from which call is made
+     * @return true if is in foreground, false - otherwise
+     */
+    public static boolean checkForeground(Context context) {
+
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                Log.i("Foreground App", appProcess.processName);
+
+                if (context.getPackageName().equalsIgnoreCase(appProcess.processName)) {
+                    Log.i(TAG, "foreground true:" + appProcess.processName);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
 }

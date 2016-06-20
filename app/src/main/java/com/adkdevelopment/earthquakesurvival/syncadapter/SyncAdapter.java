@@ -401,7 +401,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         Context context = getContext();
 
-        if (Utilities.getNotificationsPrefs(context)) {
+        if (Utilities.getNotificationsPrefs(context)
+                && !Utilities.checkForeground(context)) {
 
             //checking the last update and notify if it' the first of the day
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

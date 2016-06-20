@@ -45,8 +45,9 @@ import com.adkdevelopment.earthquakesurvival.provider.news.NewsColumns;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -64,10 +65,11 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     private NewsAdapter mNewsAdapter;
     private static final String TAG = NewsFragment.class.getSimpleName();
 
-    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
-    @Bind(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.list_empty_text) TextView mListEmpty;
-    @Nullable @Bind(R.id.parallax_bar) View mParallaxBar;
+    @BindView(R.id.recyclerview) RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.list_empty_text) TextView mListEmpty;
+    @Nullable @BindView(R.id.parallax_bar) View mParallaxBar;
+    private Unbinder mUnbinder;
 
     public NewsFragment() {
     }
@@ -95,7 +97,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.news_fragment, container, false);
 
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         mListEmpty.setVisibility(View.INVISIBLE);
 
@@ -154,7 +156,7 @@ public class NewsFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
     // Attach loader to our flavors database query

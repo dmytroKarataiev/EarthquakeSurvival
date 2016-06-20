@@ -40,7 +40,7 @@ import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.syncadapter.SyncAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.subscriptions.CompositeSubscription;
 
@@ -49,7 +49,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class MainActivity extends AppCompatActivity {
 
-    @Nullable @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Nullable @BindView(R.id.toolbar) Toolbar mToolbar;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 

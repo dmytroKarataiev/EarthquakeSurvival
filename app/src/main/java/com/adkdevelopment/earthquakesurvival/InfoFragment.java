@@ -46,15 +46,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class InfoFragment extends Fragment {
 
-    @Bind(R.id.recyclerview) RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerview) RecyclerView mRecyclerView;
+    private Unbinder mUnbinder;
     private RxBus _rxBus;
 
     public InfoFragment() {
@@ -74,7 +76,7 @@ public class InfoFragment extends Fragment {
         ImageView backdrop = ButterKnife.findById(getActivity(), R.id.backdrop);
         FloatingActionButton floatingActionButton = ButterKnife.findById(getActivity(), R.id.fab);
 
-        ButterKnife.bind(this, rootView);
+        mUnbinder = ButterKnife.bind(this, rootView);
 
         if (getActivity().getIntent() != null) {
             int section = getActivity().getIntent().getIntExtra(SurvivalFragment.SECTION, -1);
@@ -151,7 +153,7 @@ public class InfoFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        mUnbinder.unbind();
     }
 
 

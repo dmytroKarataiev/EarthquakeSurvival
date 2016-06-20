@@ -47,7 +47,7 @@ import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -63,12 +63,12 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
     // Provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        @Bind(R.id.earthquake_item_place) TextView mEarthquakePlace;
-        @Bind(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
-        @Bind(R.id.earthquake_item_date) TextView mEarthquakeDate;
-        @Bind(R.id.earthquake_item_distance) TextView mEarthquakeDistance;
-        @Bind(R.id.earthquake_item_depth) TextView mEarthquakeDepth;
-        @Bind(R.id.earthquake_item_click) RelativeLayout mEarthquakeClick;
+        @BindView(R.id.earthquake_item_place) TextView mEarthquakePlace;
+        @BindView(R.id.earthquake_item_magnitude) TextView mEarthquakeMagnitude;
+        @BindView(R.id.earthquake_item_date) TextView mEarthquakeDate;
+        @BindView(R.id.earthquake_item_distance) TextView mEarthquakeDistance;
+        @BindView(R.id.earthquake_item_depth) TextView mEarthquakeDepth;
+        @BindView(R.id.earthquake_item_click) RelativeLayout mEarthquakeClick;
 
         public ViewHolder(View v) {
             super(v);
