@@ -68,6 +68,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 
 import retrofit2.Call;
@@ -219,7 +220,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         long lastSync = prefs.getLong(lastNotificationKey, DateUtils.DAY_IN_MILLIS);
 
         if (System.currentTimeMillis() - lastSync >= Utilities.getSyncIntervalPrefs(context) * DateUtils.SECOND_IN_MILLIS) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = new Date(System.currentTimeMillis());
 
             String startTime[] = new String[] {
@@ -408,10 +409,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
             long lastSync = prefs.getLong(lastNotificationKey, DateUtils.DAY_IN_MILLIS);
-
-            Log.d(TAG, "(System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS):"
-                    + (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) + " "
-                    + System.currentTimeMillis() + " " + lastSync + " " + (System.currentTimeMillis() - lastSync) + " day: " + DateUtils.DAY_IN_MILLIS);
 
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
                 Intent intent = new Intent(context, DetailActivity.class);

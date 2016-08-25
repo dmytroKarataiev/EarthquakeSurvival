@@ -45,6 +45,7 @@
         android:required="true" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_database"
         android:icon="@mipmap/ic_launcher"
