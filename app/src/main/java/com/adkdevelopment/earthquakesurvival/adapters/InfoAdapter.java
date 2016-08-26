@@ -26,7 +26,6 @@ package com.adkdevelopment.earthquakesurvival.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 
 import java.util.List;
 
@@ -79,7 +79,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mTitle.setText(mTitles.get(position));
-        holder.mText.setText(Html.fromHtml(mTexts.get(position)));
+        holder.mText.setText(Utilities.getHtmlText(mTexts.get(position)));
         holder.mText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 

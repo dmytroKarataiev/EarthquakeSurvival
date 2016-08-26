@@ -30,7 +30,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,6 +78,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mGoogleMap;
     private CameraPosition mCameraPosition;
     public static final String CAMERA_POSITION = "camera";
+    public static final String MAP_STATE = "mapViewSaveState";
 
     // Earthquake event
     private LatLng mPosition;
@@ -113,7 +113,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mDistance = input.getStringExtra(Feature.DISTANCE);
             mDepth = input.getDoubleExtra(Feature.DEPTH, 0.0);
 
-            mEarthquakeLink.setText(Html.fromHtml(getString(R.string.earthquake_link, mLink)));
+            mEarthquakeLink.setText(Utilities.getHtmlText(getString(R.string.earthquake_link, mLink)));
             mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
 
             mEarthquakeDistance.setText(mDistance);
@@ -127,7 +127,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
-        final Bundle mapViewSavedInstanceState = savedInstanceState != null ? savedInstanceState.getBundle("mapViewSaveState") : null;
+        final Bundle mapViewSavedInstanceState = savedInstanceState != null ? savedInstanceState.getBundle(MAP_STATE) : null;
 
         if (Utilities.checkPlayServices(getActivity())) {
             mMapView.onCreate(mapViewSavedInstanceState);
@@ -184,10 +184,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         final Bundle mapViewSaveState = new Bundle(outState);
-        mMapView.onSaveInstanceState(mapViewSaveState);
-        outState.putBundle("mapViewSaveState", mapViewSaveState);
-        CameraPosition save = mGoogleMap.getCameraPosition();
-        outState.putParcelable(CAMERA_POSITION, save);
+
+        if (mMapView != null) {
+            mMapView.onSaveInstanceState(mapViewSaveState);
+            outState.putBundle(MAP_STATE, mapViewSaveState);
+        }
+
+        if (mGoogleMap != null) {
+            CameraPosition save = mGoogleMap.getCameraPosition();
+            outState.putParcelable(CAMERA_POSITION, save);
+        }
     }
 
     /**

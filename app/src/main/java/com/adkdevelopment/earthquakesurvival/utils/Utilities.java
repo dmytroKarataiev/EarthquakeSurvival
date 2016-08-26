@@ -40,6 +40,8 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -327,6 +329,25 @@ public class Utilities {
             }
         }
         return false;
+    }
+
+    /**
+     * Makes text version of an html string.
+     *
+     * @param input informatted html text.
+     * @return only formatted text from html input.
+     */
+    public static String getHtmlText(String input) {
+        Spanned result;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(input, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            //noinspection deprecation
+            result = Html.fromHtml(input);
+        }
+
+        return result.toString();
     }
 
 }

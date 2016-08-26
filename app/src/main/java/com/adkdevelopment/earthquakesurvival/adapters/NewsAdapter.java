@@ -30,7 +30,6 @@ import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -221,7 +220,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 String link = cursor.getString(cursor.getColumnIndex(NewsColumns.URL));
 
                 link = mContext.getString(R.string.earthquake_link, link);
-                ((ViewHolder) holder).mDescription.setText(Html.fromHtml(link));
+                ((ViewHolder) holder).mDescription.setText(Utilities.getHtmlText(link));
                 ((ViewHolder) holder).mDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
                 ((ViewHolder) holder).mTitle.setText(title);
