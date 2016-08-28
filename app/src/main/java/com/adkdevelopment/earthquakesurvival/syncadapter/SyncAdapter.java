@@ -50,6 +50,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.App;
+import com.adkdevelopment.earthquakesurvival.BuildConfig;
 import com.adkdevelopment.earthquakesurvival.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
@@ -268,9 +269,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             //refreshing last sync
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putLong(lastNotificationKey, System.currentTimeMillis());
-            editor.apply();
+            prefs.edit()
+                    .putLong(lastNotificationKey, System.currentTimeMillis())
+                    .apply();
         }
 
         // notify PagerActivity that data has been updated
@@ -408,7 +409,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             //checking the last update and notify if it' the first of the day
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
-            long lastSync = prefs.getLong(lastNotificationKey, DateUtils.DAY_IN_MILLIS);
+            long lastSync = prefs.getLong(lastNotificationKey, System.currentTimeMillis());
+
+            // TODO: 8/28/16 delete later 
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, Utilities.getNiceDate(lastSync));
+                Log.d(TAG, Utilities.getNiceDate(System.currentTimeMillis() - lastSync));
+                Log.d(TAG, Utilities.getNiceDate(DateUtils.DAY_IN_MILLIS));
+            }
 
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
                 Intent intent = new Intent(context, DetailActivity.class);
@@ -464,9 +472,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 managerCompat.notify(EarthquakeObject.NOTIFICATION_ID_1, builder.build());
 
                 //refreshing last sync
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putLong(lastNotificationKey, System.currentTimeMillis());
-                editor.apply();
+                prefs.edit()
+                        .putLong(lastNotificationKey, System.currentTimeMillis())
+                        .apply();
             }
 
         }

@@ -337,7 +337,7 @@ public class Utilities {
      * @param input informatted html text.
      * @return only formatted text from html input.
      */
-    public static String getHtmlText(String input) {
+    public static Spanned getHtmlText(String input) {
         Spanned result;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -347,7 +347,7 @@ public class Utilities {
             result = Html.fromHtml(input);
         }
 
-        return result.toString();
+        return result;
     }
 
 }

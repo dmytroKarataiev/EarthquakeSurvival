@@ -34,8 +34,8 @@ android {
         applicationId "com.adkdevelopment.earthquakesurvival"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 6
-        versionName "1.05"
+        versionCode 7
+        versionName "1.051"
     }
     buildTypes {
         release {
