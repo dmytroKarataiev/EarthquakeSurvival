@@ -22,7 +22,7 @@
   ~ SOFTWARE.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -43,7 +43,6 @@
 
     <style name="Survival.Text" parent="Base.TextAppearance.AppCompat.Headline">
         <item name="android:layout_margin">@dimen/padding</item>
-
     </style>
 
     <style name="SurvivalCard">
@@ -76,6 +75,14 @@
         <item name="android:shadowDx">4</item>
         <item name="android:shadowDy">4</item>
         <item name="android:shadowRadius">8</item>
+    </style>
+
+    <style name="WidgetApp">
+        <item name="android:paddingTop">@dimen/widget_padding</item>
+        <item name="android:paddingRight">@dimen/widget_padding</item>
+        <item name="android:paddingLeft">@dimen/widget_padding</item>
+        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">@dimen/widget_padding</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

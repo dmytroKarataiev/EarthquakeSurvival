@@ -165,4 +165,9 @@
     <string name="action_settings">Settings</string>
 
     <string name="send_email">Send email</string>
+    <string name="widget_earthquakes_today">Earthquakes today:</string>
+    <string name="widget_description">Description</string>
+    <string name="widget_magnitude">Magnitude</string>
+    <string name="widget_date">Date</string>
+    <string name="widget_distance">Distance</string>
 </resources>
