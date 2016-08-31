@@ -111,7 +111,7 @@ public class EarthquakeInfoService extends IntentService {
             remoteViews.setTextViewText(R.id.widget_text_total, getBaseContext().getString(R.string.earthquake_statistics_day, count));
             remoteViews.setTextViewText(R.id.widget_text_description, desc);
             remoteViews.setTextViewText(R.id.widget_text_magnitude, getBaseContext().getString(R.string.earthquake_magnitude, magnitude));
-            remoteViews.setTextViewText(R.id.widget_text_date, Utilities.getNiceDate(dateMillis));
+            remoteViews.setTextViewText(R.id.widget_text_date, Utilities.getFormattedDate(dateMillis));
             remoteViews.setTextViewText(R.id.widget_text_distance, distance);
 
             Intent launchIntent = new Intent(this, MainActivity.class);

@@ -214,7 +214,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 break;
             default:
                 Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));
-                ((ViewHolder) holder).mDate.setText(Utilities.getNiceDate(dateMillis));
+                ((ViewHolder) holder).mDate.setText(Utilities.getRelativeDate(dateMillis));
 
                 String title = cursor.getString(cursor.getColumnIndex(NewsColumns.TITLE));
                 String link = cursor.getString(cursor.getColumnIndex(NewsColumns.URL));
@@ -270,7 +270,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             ((ViewHolderLargest) holder).mStatMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
 
             long dateMillis = tempCursor.getLong(tempCursor.getColumnIndex(EarthquakeColumns.TIME));
-            ((ViewHolderLargest) holder).mStatDate.setText(Utilities.getNiceDate(dateMillis));
+            ((ViewHolderLargest) holder).mStatDate.setText(Utilities.getRelativeDate(dateMillis));
 
             String link = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.URL));
 
@@ -288,7 +288,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra(Feature.MAGNITUDE, magnitude);
                 intent.putExtra(Feature.PLACE, desc);
-                intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
+                intent.putExtra(Feature.DATE, Utilities.getRelativeDate(dateMillis));
                 intent.putExtra(Feature.LINK, link);
                 intent.putExtra(Feature.LATLNG, latLng);
                 intent.putExtra(Feature.DISTANCE, distance);

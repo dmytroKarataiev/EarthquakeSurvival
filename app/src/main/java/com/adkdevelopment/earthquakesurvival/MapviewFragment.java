@@ -237,14 +237,14 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(latLng)
                         .title(getString(R.string.earthquake_magnitude, magnitude) + ", "
-                                + Utilities.getNiceDate(dateMillis))
+                                + Utilities.getRelativeDate(dateMillis))
                         .snippet(description)
                         .icon(BitmapDescriptorFactory.fromBitmap(Utilities.getEarthquakeMarker(getContext(), magnitude)));
 
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra(Feature.MAGNITUDE, magnitude);
                 intent.putExtra(Feature.PLACE, description);
-                intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
+                intent.putExtra(Feature.DATE, Utilities.getRelativeDate(dateMillis));
                 intent.putExtra(Feature.LINK, linkDetails);
                 intent.putExtra(Feature.LATLNG, latLng);
                 intent.putExtra(Feature.DISTANCE, distance);

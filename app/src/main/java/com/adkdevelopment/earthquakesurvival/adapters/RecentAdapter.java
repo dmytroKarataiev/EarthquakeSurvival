@@ -108,7 +108,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
                 LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
 
         ((ViewHolder) viewHolder).mEarthquakePlace.setText(place);
-        ((ViewHolder) viewHolder).mEarthquakeDate.setText(Utilities.getNiceDate(dateMillis));
+        ((ViewHolder) viewHolder).mEarthquakeDate.setText(Utilities.getRelativeDate(dateMillis));
         ((ViewHolder) viewHolder).mEarthquakeMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
         ((ViewHolder) viewHolder).mEarthquakeDistance.setText(distance);
         ((ViewHolder) viewHolder).mEarthquakeDepth.setText(mContext.getString(R.string.earthquake_depth, depth));
@@ -117,7 +117,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
             Intent intent = new Intent(mContext, DetailActivity.class);
             intent.putExtra(Feature.MAGNITUDE, magnitude);
             intent.putExtra(Feature.PLACE, place);
-            intent.putExtra(Feature.DATE, Utilities.getNiceDate(dateMillis));
+            intent.putExtra(Feature.DATE, Utilities.getRelativeDate(dateMillis));
             intent.putExtra(Feature.LINK, link);
             intent.putExtra(Feature.LATLNG, latLng);
             intent.putExtra(Feature.DISTANCE, distance);

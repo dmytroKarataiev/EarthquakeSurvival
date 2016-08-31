@@ -55,8 +55,10 @@ import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Utilities class with helper functions
@@ -182,11 +184,35 @@ public class Utilities {
         }
     }
 
-    public static String getNiceDate(Long millis) {
+    /**
+     * Returns relative date from the input millis.
+     * @param millis of the event.
+     * @return textrual relative interpretation of the inputted millis.
+     */
+    public static String getRelativeDate(Long millis) {
         Date date = new Date(millis);
         return DateUtils.getRelativeTimeSpanString(date.getTime()).toString();
     }
 
+    /**
+     * Returns formatted date in a String.
+     * @param unformattedDate in millis.
+     * @return String formatted in "h:mm a", Locale aware.
+     */
+    public static String getFormattedDate(long unformattedDate) {
+
+        Date date = new Date(unformattedDate);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+
+        return simpleDateFormat.format(date);
+    }
+
+
+    /**
+     * Makes sliding from the bottom effect on elements in a RecyclerView.
+     * @param context from which call is made.
+     * @param viewGroup on which to perform the animation.
+     */
     public static void animateViewsIn(Context context, ViewGroup viewGroup) {
         if (viewGroup != null) {
             int count = viewGroup.getChildCount();

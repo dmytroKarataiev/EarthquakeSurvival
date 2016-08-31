@@ -413,9 +413,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             // TODO: 8/28/16 delete later 
             if (BuildConfig.DEBUG) {
-                Log.d(TAG, Utilities.getNiceDate(lastSync));
-                Log.d(TAG, Utilities.getNiceDate(System.currentTimeMillis() - lastSync));
-                Log.d(TAG, Utilities.getNiceDate(DateUtils.DAY_IN_MILLIS));
+                Log.d(TAG, Utilities.getRelativeDate(lastSync));
+                Log.d(TAG, Utilities.getRelativeDate(System.currentTimeMillis() - lastSync));
+                Log.d(TAG, Utilities.getRelativeDate(DateUtils.DAY_IN_MILLIS));
             }
 
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
@@ -429,7 +429,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         LocationUtils.getDistance(latLng, LocationUtils.getLocation(context)));
 
                 String magnitude = context.getString(R.string.earthquake_magnitude, notifyValues.getAsDouble(EarthquakeColumns.MAG));
-                String date = Utilities.getNiceDate(notifyValues.getAsLong(EarthquakeColumns.TIME));
+                String date = Utilities.getRelativeDate(notifyValues.getAsLong(EarthquakeColumns.TIME));
 
                 double depth = notifyValues.getAsDouble(EarthquakeColumns.DEPTH);
 
