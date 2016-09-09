@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2016. Dmytro Karataiev
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:padding="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/widget_text_total"
+        style="@style/WidgetApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/widget_earthquakes_today" />
+
+    <TextView
+        android:id="@+id/widget_text_description"
+        style="@style/WidgetApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/widget_text_total"
+        android:layout_toEndOf="@id/widget_text_total"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/widget_description" />
+
+    <TextView
+        android:id="@+id/widget_text_magnitude"
+        style="@style/WidgetApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/widget_text_total"
+        android:layout_toRightOf="@id/widget_text_distance"
+        android:layout_toEndOf="@id/widget_text_distance"
+        android:layout_toLeftOf="@id/widget_text_date"
+        android:layout_toStartOf="@id/widget_text_date"
+        android:gravity="center_horizontal"
+        android:ellipsize="start"
+        android:maxLines="1"
+        android:text="@string/widget_magnitude" />
+
+    <TextView
+        android:id="@+id/widget_text_date"
+        style="@style/WidgetApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/widget_text_description"
+        android:text="@string/widget_date" />
+
+    <TextView
+        android:id="@+id/widget_text_distance"
+        style="@style/WidgetApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/widget_text_description"
+        android:ellipsize="end"
+        android:text="@string/widget_distance" />
+
+</RelativeLayout>
