@@ -139,7 +139,6 @@ public class Utilities {
      * @param magnitude from 0 to 10 scale earthquake intensity
      * @return colorful oval of size depending on magnitude
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static Bitmap getEarthquakeMarker(Context context, Double magnitude) {
 
         if (magnitude < 1) {
@@ -147,12 +146,7 @@ public class Utilities {
         }
 
         GradientDrawable oval;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            oval = (GradientDrawable) context.getResources().getDrawable(R.drawable.marker, context.getTheme());
-        } else {
-            //noinspection deprecation
-            oval = (GradientDrawable) context.getResources().getDrawable(R.drawable.marker);
-        }
+        oval = (GradientDrawable) ContextCompat.getDrawable(context, R.drawable.marker);
 
         if (oval != null) {
             if (magnitude > 3 && magnitude < 5) {
@@ -164,7 +158,6 @@ public class Utilities {
             } else {
                 oval.setColor(Color.GREEN);
             }
-
 
             int diameter = (int) (oval.getIntrinsicWidth() * magnitude);
 

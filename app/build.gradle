@@ -50,8 +50,8 @@ android {
 }
 
 ext {
-    compatVersion = "24.2.0"
-    playVersion = "9.4.0"
+    compatVersion = "24.2.1"
+    playVersion = "9.6.1"
     retrofitVersion = "2.1.0"
     butterknifeVersion = "8.3.0"
 }
