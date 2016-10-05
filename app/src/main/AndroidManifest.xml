@@ -37,7 +37,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Notifications permissions -->
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <!-- Google Maps OpenGL requirements -->
     <uses-feature
@@ -59,16 +59,15 @@
             android:value="@integer/google_play_services_version" />
 
         <provider
-            android:name=".provider.EarthquakeProvider"
+            android:name=".data.provider.EarthquakeProvider"
             android:authorities="@string/sync.provider.authority"
             android:exported="false"
             android:syncable="true" />
 
         <activity
-            android:name=".PagerActivity"
+            android:name=".ui.PagerActivity"
             android:label="@string/app.name"
             android:theme="@style/AppTheme.NoActionBar">
-
 
             <!-- to be searchable by Google -->
             <intent-filter>
@@ -83,26 +82,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings.title"
-            android:parentActivityName=".PagerActivity">
+            android:parentActivityName=".ui.PagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
+                android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name=".ui.DetailActivity"
             android:label="@string/title.details"
-            android:parentActivityName=".PagerActivity"
+            android:parentActivityName=".ui.PagerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
+                android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
         </activity>
 
         <!-- Sync Adapter Declarations -->
         <service
-            android:name=".syncadapter.AuthenticatorService"
+            android:name=".data.syncadapter.AuthenticatorService"
             android:permission="android.permission.ACCOUNT_MANAGER">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -113,7 +112,7 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name=".syncadapter.SyncService"
+            android:name=".data.syncadapter.SyncService"
             android:exported="true"
             android:process=":sync">
             <intent-filter>
@@ -124,7 +123,7 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
-        <service android:name=".geofence.GeofenceService" />
+        <service android:name=".ui.geofence.GeofenceService" />
 
         <!-- Google Maps API Key -->
         <meta-data
@@ -132,40 +131,49 @@
             android:value="@string/google.maps.api.key" />
 
         <!-- Widget Provider -->
-        <receiver android:name=".widget.EarthquakeWidgetProvider" >
+        <receiver android:name=".ui.widget.EarthquakeWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <!-- Receives broadcast messages from SyncAdapter and updates data -->
                 <action android:name="com.adkdevelopment.earthquakesurvival.ACTION_DATA_UPDATED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
 
-        <service android:name=".widget.EarthquakeInfoService" />
+        <service android:name=".ui.widget.EarthquakeInfoService" />
 
         <activity
-            android:name=".InfoActivity"
+            android:name=".ui.InfoActivity"
             android:label="@string/title_activity_info"
-            android:parentActivityName=".PagerActivity"
+            android:parentActivityName=".ui.PagerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adkdevelopment.earthquakesurvival.PagerActivity" />
+                android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
         </activity>
 
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".ui.MainActivity"
             android:label="@string/app.name"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
+        <activity
+            android:name=".ui.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".ui.PagerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
+        </activity>
     </application>
 
 </manifest>

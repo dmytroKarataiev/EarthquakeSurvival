@@ -27,9 +27,11 @@ package com.adkdevelopment.earthquakesurvival;
 import android.app.Application;
 
 import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
-import com.adkdevelopment.earthquakesurvival.remote.ApiManager;
+import com.adkdevelopment.earthquakesurvival.data.remote.ApiManager;
 
 /**
+ * Main Application class, which keeps singletons for managers
+ * and for the eventbus.
  * Created by karataev on 3/24/16.
  */
 public class App extends Application {

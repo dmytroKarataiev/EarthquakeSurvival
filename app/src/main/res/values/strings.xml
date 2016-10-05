@@ -100,7 +100,7 @@
 
     <!-- Sync Adapter -->
     <string name="sync.account.type">com.adkdevelopment.earthquakesurvival</string>
-    <string name="sync.provider.authority">com.adkdevelopment.earthquakesurvival.provider</string>
+    <string name="sync.provider.authority">com.adkdevelopment.earthquakesurvival.data.provider</string>
 
     <!-- Placeholder Strings -->
     <string name="earthquake.latitude">Latitude: <xliff:g id="latitude">%1$.4f</xliff:g></string>
@@ -170,4 +170,13 @@
     <string name="widget_magnitude">Magnitude</string>
     <string name="widget_date">Date</string>
     <string name="widget_distance">Distance</string>
+    <string name="title_activity_about">About</string>
+
+    <!-- About Activity -->
+    <string name="about_email">dmytro.karataiev@gmail.com</string>
+    <string name="about_email_subject">Earthquake Survival Feedback and Proposals</string>
+    <string name="about_email_body">Please share your feedback with the developer or ask for a new feature</string>
+    <string name="about_text">Please share your feedback with the developer or ask for a new feature by pressing Floating Action Button</string>
+    <string name="about_send">Send Email</string>
+
 </resources>

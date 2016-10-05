@@ -26,7 +26,7 @@
 
     <!-- These settings headers are only used on tablets. -->
     <header
-        android:fragment="com.adkdevelopment.earthquakesurvival.settings.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.adkdevelopment.earthquakesurvival.ui.settings.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/settings.header.notifications" />
 

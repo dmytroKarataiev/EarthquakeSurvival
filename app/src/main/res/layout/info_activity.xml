@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.adkdevelopment.earthquakesurvival.InfoActivity"
+    tools:context="com.adkdevelopment.earthquakesurvival.ui.InfoActivity"
     android:transitionName="@string/transition.card">
 
     <android.support.design.widget.AppBarLayout

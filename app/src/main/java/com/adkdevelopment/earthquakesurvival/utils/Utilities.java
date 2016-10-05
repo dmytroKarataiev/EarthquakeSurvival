@@ -51,7 +51,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 import com.adkdevelopment.earthquakesurvival.R;
-import com.adkdevelopment.earthquakesurvival.objects.earthquake.EarthquakeObject;
+import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.EarthquakeObject;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
