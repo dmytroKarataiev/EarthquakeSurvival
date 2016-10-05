@@ -176,7 +176,14 @@
     <string name="about_email">dmytro.karataiev@gmail.com</string>
     <string name="about_email_subject">Earthquake Survival Feedback and Proposals</string>
     <string name="about_email_body">Please share your feedback with the developer or ask for a new feature</string>
-    <string name="about_text">Please share your feedback with the developer or ask for a new feature by pressing Floating Action Button</string>
+    <string name="about_text">Earthquake Survival allows you to see all the earthquakes around the world and notifies about closest to you
+        (you can set the notifying threshold for strength and distance from you).
+        \n\nYou can find the latest news about
+        earthquakes, share info and statistics with your friends. Earthquake Survival also has a lot of useful information
+        about what to do in case of emergency, who to call, what to buy and how to survive.
+        \n\nThe App is completely free, open source and is released under the <a href="http://choosealicense.com/licenses/mit/">MIT licence</a>, more details you can find on the
+        GitHub page: <a href="https://github.com/dmytroKarataiev/EarthquakeSurvival">Earthquake Survival</a>.
+        \n\nPlease share your feedback with the developer or ask for a new feature by pressing the message button below.</string>
     <string name="about_send">Send Email</string>
 
 </resources>

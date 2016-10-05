@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2016. Dmytro Karataiev
@@ -40,6 +39,7 @@
         android:id="@+id/about_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/about_text"/>
+        android:linksClickable="true"
+        android:text="@string/about_text" />
 
 </RelativeLayout>

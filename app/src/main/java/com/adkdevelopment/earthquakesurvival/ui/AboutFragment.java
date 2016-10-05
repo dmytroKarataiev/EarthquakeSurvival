@@ -27,6 +27,7 @@ package com.adkdevelopment.earthquakesurvival.ui;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class AboutFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_about, container, false);
 
         mUnbinder = ButterKnife.bind(this, rootView);
+        mTextAbout.setMovementMethod(LinkMovementMethod.getInstance());
 
         return rootView;
     }
