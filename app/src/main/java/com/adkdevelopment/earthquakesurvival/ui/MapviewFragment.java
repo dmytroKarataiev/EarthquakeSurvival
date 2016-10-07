@@ -25,12 +25,16 @@
 
 package com.adkdevelopment.earthquakesurvival.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -64,8 +68,8 @@ import butterknife.Unbinder;
 /**
  * Fragment with a map which monitors location changes and updates the view
  */
-public class MapviewFragment extends Fragment implements OnMapReadyCallback, 
-        LoaderManager.LoaderCallbacks<Cursor>, 
+public class MapviewFragment extends Fragment implements OnMapReadyCallback,
+        LoaderManager.LoaderCallbacks<Cursor>,
         SharedPreferences.OnSharedPreferenceChangeListener {
     /**
      * The fragment argument representing the section number for this
@@ -74,14 +78,17 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     private static final String TAG = MapviewFragment.class.getSimpleName();
     private static final String ARG_SECTION_NUMBER = "section_number";
     public static final String CAMERA_POSITION = "camera";
+    public static final int LOCATION_PERMISSION = 12223;
 
     private GoogleMap mGoogleMap;
     private CameraPosition mCameraPosition;
     private Cursor mCursor;
     private static final int CURSOR_LOADER_ID = 20;
 
-    @BindView(R.id.map) MapView mMapView;
-    @BindDrawable(R.drawable.marker) Drawable mOval;
+    @BindView(R.id.map)
+    MapView mMapView;
+    @BindDrawable(R.drawable.marker)
+    Drawable mOval;
     private Unbinder mUnbinder;
 
     // data to start detail activity on info window click
@@ -132,11 +139,46 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
         mGoogleMap = googleMap;
         UiSettings uiSettings = mGoogleMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
+        addMyLocation();
+        uiSettings.setMyLocationButtonEnabled(true);
 
         if (mCameraPosition != null) {
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
         }
         addMarkers();
+    }
+
+    /**
+     * Adds my location button to the MapView.
+     */
+    private void addMyLocation() {
+        if (ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    LOCATION_PERMISSION);
+        } else {
+            mGoogleMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    addMyLocation();
+                }
+            }
+        }
     }
 
     @Override
@@ -189,7 +231,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                 EarthquakeColumns.CONTENT_URI,
                 null,
                 EarthquakeColumns.MAG + " >= ?",
-                new String[] {String.valueOf(Utilities.getMagnitudePrefs(getContext()))},
+                new String[]{String.valueOf(Utilities.getMagnitudePrefs(getContext()))},
                 null);
     }
 
@@ -263,7 +305,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getString(R.string.sharedprefs_key_magnitude))) {
             getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
-        } else if (key.equals(getString(R.string.sharedprefs_key_latitude)) || 
+        } else if (key.equals(getString(R.string.sharedprefs_key_latitude)) ||
                 key.equals(getString(R.string.sharedprefs_key_longitude))) {
 
             if (mGoogleMap != null) {
@@ -271,10 +313,10 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                         .target(LocationUtils.getLocation(getContext()))
                         .zoom(LocationUtils.CAMERA_DEFAULT_ZOOM)
                         .build();
-                
+
                 mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
             }
-            
+
         }
     }
 }
