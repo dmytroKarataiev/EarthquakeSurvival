@@ -77,6 +77,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
+ * SyncAdapter, which performs all network-realted work,
+ * sends notifications each day.
  * Created by karataev on 4/1/16.
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
@@ -149,7 +151,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS);
 
                 int deleted = resolver.delete(EarthquakeColumns.CONTENT_URI, EarthquakeColumns.TIME + " <= ?", new String[]{String.valueOf(date.getTime())});
-                //Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
+                Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
                 sendNotification(notifyValues);
             }
 
@@ -166,7 +168,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Vector<ContentValues> cVVector = new Vector<>(news.getItem().size());
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+                SimpleDateFormat simpleDateFormat =
+                        new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault());
                 Date date = new Date();
 
                 for (Item each : news.getItem()) {
@@ -294,7 +297,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      * @return a fake account.
      */
-    public static Account getSyncAccount(Context context) {
+    private static Account getSyncAccount(Context context) {
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -386,8 +389,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Broadcast Message to widgets to update data
      */
-    public void updateWidgets() {
-
+    private void updateWidgets() {
         // Send intent to the Widget to notify that the data was updated
         Intent dataUpdated = new Intent(ACTION_DATA_UPDATE)
                 // Ensures that only components in the app will receive the broadcast
@@ -399,9 +401,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * Raises a notification with a biggest earthquake with each sync
      * @param notifyValues data with the biggest recent earthquake
      */
-    public void sendNotification(ContentValues notifyValues) {
+    private void sendNotification(ContentValues notifyValues) {
 
         Context context = getContext();
+        Log.d(TAG, "sendNotification: " + Utilities.getNotificationsPrefs(context)
+                + " foreground: " + Utilities.checkForeground(context) );
 
         if (Utilities.getNotificationsPrefs(context)
                 && !Utilities.checkForeground(context)) {
@@ -409,13 +413,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             //checking the last update and notify if it' the first of the day
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
-            long lastSync = prefs.getLong(lastNotificationKey, System.currentTimeMillis());
+            long lastSync = prefs.getLong(lastNotificationKey, 0);
 
             // TODO: 8/28/16 delete later 
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, Utilities.getRelativeDate(lastSync));
-                Log.d(TAG, Utilities.getRelativeDate(System.currentTimeMillis() - lastSync));
-                Log.d(TAG, Utilities.getRelativeDate(DateUtils.DAY_IN_MILLIS));
+                Log.d(TAG, "" + (System.currentTimeMillis() - lastSync));
+                Log.d(TAG, "" + DateUtils.DAY_IN_MILLIS);
             }
 
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
@@ -472,11 +476,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 managerCompat.notify(EarthquakeObject.NOTIFICATION_ID_1, builder.build());
 
                 //refreshing last sync
-                prefs.edit()
+                boolean success = prefs.edit()
                         .putLong(lastNotificationKey, System.currentTimeMillis())
-                        .apply();
+                        .commit();
+                Log.d(TAG, "Value added isSuccess: " + success);
             }
-
         }
     }
 
