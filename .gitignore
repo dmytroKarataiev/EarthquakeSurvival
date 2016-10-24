@@ -56,3 +56,4 @@ out/
 # api key
 apikeys.xml
 gradle.properties
+fabric.properties

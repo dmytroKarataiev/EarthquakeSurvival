@@ -28,6 +28,8 @@ import android.app.Application;
 
 import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.data.remote.ApiManager;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Main Application class, which keeps singletons for managers
@@ -65,4 +67,9 @@ public class App extends Application {
         return _rxBus;
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Fabric.with(this, new Crashlytics());
+    }
 }

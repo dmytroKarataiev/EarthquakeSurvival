@@ -186,4 +186,10 @@
         \n\nPlease share your feedback with the developer or ask for a new feature by pressing the message button below.</string>
     <string name="about_send">Send Email</string>
 
+
+    <!-- App Shortcuts -->
+    <string name="static_shortcut_long_label">Detailed info about the app</string>
+    <string name="static_shortcut_short_label">About the app</string>
+    <string name="static_shortcut_disabled_message">Disabled</string>
+
 </resources>

@@ -163,6 +163,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <activity
@@ -174,6 +177,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ca849bf6cdd88797c30d095ddef12b71cc2ce64c" />
     </application>
 
 </manifest>
