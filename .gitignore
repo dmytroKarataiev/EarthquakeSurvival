@@ -55,5 +55,6 @@ out/
 
 # api key
 apikeys.xml
+!app/src/main/res/values/apikeys.xml
 gradle.properties
 fabric.properties

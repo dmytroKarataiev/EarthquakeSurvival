@@ -25,10 +25,8 @@
 
 package com.adkdevelopment.earthquakesurvival.ui;
 
-import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -39,9 +37,9 @@ import android.view.MenuItem;
 
 import com.adkdevelopment.earthquakesurvival.App;
 import com.adkdevelopment.earthquakesurvival.R;
+import com.adkdevelopment.earthquakesurvival.data.syncadapter.SyncAdapter;
 import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.ui.settings.SettingsActivity;
-import com.adkdevelopment.earthquakesurvival.data.syncadapter.SyncAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onStart() {
         super.onStart();
@@ -113,8 +110,11 @@ public class MainActivity extends AppCompatActivity {
         _subscription.add(_rxBus.toObservable().subscribe(o -> {
             if (o instanceof Pair) {
                 Pair pair = (Pair) o;
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this, (Pair) pair.second)
-                        .toBundle();
+                Bundle bundle = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    bundle = ActivityOptions.makeSceneTransitionAnimation(this, (Pair) pair.second)
+                            .toBundle();
+                }
                 startActivity((Intent) pair.first, bundle);
             } else if (o instanceof Intent) {
                 startActivity((Intent) o);
