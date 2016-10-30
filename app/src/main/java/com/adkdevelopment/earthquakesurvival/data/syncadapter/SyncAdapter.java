@@ -203,9 +203,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     inserted = resolver.bulkInsert(NewsColumns.CONTENT_URI, cvArray);
                 }
 
-                // Set the date to day minus one to delete old data from the database
+                // Set the date to day minus two to delete old data from the database
                 date = new Date();
-                date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS * 2);
+                date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS * 3);
 
                 int deleted = resolver.delete(NewsColumns.CONTENT_URI, NewsColumns.DATE + " <= ?", new String[]{String.valueOf(date.getTime())});
                 // Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");

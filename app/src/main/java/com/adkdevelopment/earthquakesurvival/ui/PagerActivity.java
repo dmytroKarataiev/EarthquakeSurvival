@@ -121,6 +121,11 @@ public class PagerActivity extends AppCompatActivity
     @BindColor(R.color.tab_item_selected) int mColorSelected;
     @BindColor(R.color.tab_item_unselected) int mColorUnselected;
 
+    public static final int FRAGMENT_RECENT = 0;
+    public static final int FRAGMENT_MAP = 1;
+    public static final int FRAGMENT_NEWS = 2;
+    public static final int FRAGMENT_INFO = 3;
+
     // RxJava eventbus
     private RxBus _rxBus;
     private CompositeSubscription _subscription;
@@ -510,16 +515,16 @@ public class PagerActivity extends AppCompatActivity
         if (mToolbar != null && mTab != null) {
 
             switch (mTab.getSelectedTabPosition()) {
-                case 0:
+                case FRAGMENT_RECENT:
                     mToolbar.setTitle(getString(R.string.title_recent));
                     break;
-                case 1:
+                case FRAGMENT_MAP:
                     mToolbar.setTitle(getString(R.string.title_maps));
                     break;
-                case 2:
+                case FRAGMENT_NEWS:
                     mToolbar.setTitle(getString(R.string.title_news));
                     break;
-                case 3:
+                case FRAGMENT_INFO:
                     mToolbar.setTitle(getString(R.string.title_info));
                     break;
                 default:

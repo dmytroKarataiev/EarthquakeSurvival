@@ -37,11 +37,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.App;
-import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
-import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.data.provider.earthquake.EarthquakeColumns;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
+import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
@@ -95,6 +95,9 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
 
         String link = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
         String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
+
+        final String formattedPlace = Utilities.formatEarthquakePlace(place);
+
         long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
         double magnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
         double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
@@ -106,7 +109,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
         String distance = mContext.getString(R.string.earthquake_distance,
                 LocationUtils.getDistance(latLng, LocationUtils.getLocation(mContext)));
 
-        ((ViewHolder) viewHolder).mEarthquakePlace.setText(place);
+        ((ViewHolder) viewHolder).mEarthquakePlace.setText(formattedPlace);
         ((ViewHolder) viewHolder).mEarthquakeDate.setText(Utilities.getRelativeDate(dateMillis));
         ((ViewHolder) viewHolder).mEarthquakeMagnitude.setText(mContext.getString(R.string.earthquake_magnitude, magnitude));
         ((ViewHolder) viewHolder).mEarthquakeDistance.setText(distance);
@@ -115,7 +118,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
         ((ViewHolder) viewHolder).mEarthquakeClick.setOnClickListener(click -> {
             Intent intent = new Intent(mContext, DetailActivity.class);
             intent.putExtra(Feature.MAGNITUDE, magnitude);
-            intent.putExtra(Feature.PLACE, place);
+            intent.putExtra(Feature.PLACE, formattedPlace);
             intent.putExtra(Feature.DATE, Utilities.getRelativeDate(dateMillis));
             intent.putExtra(Feature.LINK, link);
             intent.putExtra(Feature.LATLNG, latLng);

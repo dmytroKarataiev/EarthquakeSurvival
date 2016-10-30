@@ -27,6 +27,7 @@ package com.adkdevelopment.earthquakesurvival.ui.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -36,16 +37,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adkdevelopment.earthquakesurvival.App;
-import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
-import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.Feature;
 import com.adkdevelopment.earthquakesurvival.data.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.data.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.data.provider.news.NewsColumns;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
+import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
@@ -62,6 +62,11 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     private final Context mContext;
 
     private RxBus _rxBus;
+
+    private static final int VIEW_STAT = 0;
+    private static final int VIEW_LARGEST = 1;
+    private static final int VIEW_CLOSEST = 2;
+    private static final int VIEW_NEWS = 3;
 
     // Provide a reference to the views for each data item
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -118,21 +123,22 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
         View v;
         switch (viewType) {
-            case 0:
+            case VIEW_STAT:
                 v = LayoutInflater.from(mContext)
                         .inflate(R.layout.news_statistics, parent, false);
 
                 return new ViewHolderStats(v);
-            case 1:
+            case VIEW_LARGEST:
                 v = LayoutInflater.from(mContext)
                         .inflate(R.layout.news_largest, parent, false);
 
                 return new ViewHolderLargest(v);
-            case 2:
+            case VIEW_CLOSEST:
                 v = LayoutInflater.from(mContext)
                         .inflate(R.layout.news_largest, parent, false);
 
                 return new ViewHolderLargest(v);
+            case VIEW_NEWS:
             default:
                 v = LayoutInflater.from(mContext)
                         .inflate(R.layout.news_item, parent, false);
@@ -146,7 +152,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
 
         switch (holder.getItemViewType()) {
-            case 0:
+            case VIEW_STAT:
                 Cursor tempCursor = mContext.getContentResolver()
                         .query(CountColumns.CONTENT_URI,
                                 null,
@@ -170,7 +176,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                     tempCursor.close();
                 }
                 break;
-            case 1:
+            case VIEW_LARGEST:
                 tempCursor = mContext.getContentResolver().query(EarthquakeColumns.CONTENT_URI,
                             null,
                             null,
@@ -181,7 +187,7 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
                         populateView(holder, tempCursor, 0);
                     }
                 break;
-            case 2:
+            case VIEW_CLOSEST:
                 tempCursor = mContext.getContentResolver().query(EarthquakeColumns.CONTENT_URI,
                         null,
                         null,
@@ -211,20 +217,28 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
 
                 }
                 break;
+            case VIEW_NEWS:
             default:
                 Long dateMillis = cursor.getLong(cursor.getColumnIndex(NewsColumns.DATE));
                 ((ViewHolder) holder).mDate.setText(Utilities.getRelativeDate(dateMillis));
 
                 String title = cursor.getString(cursor.getColumnIndex(NewsColumns.TITLE));
                 String link = cursor.getString(cursor.getColumnIndex(NewsColumns.URL));
-
+                final Uri uriLink = Utilities.getProperUri(link);
                 link = mContext.getString(R.string.earthquake_link, link);
+
                 ((ViewHolder) holder).mDescription.setText(Utilities.getHtmlText(link));
                 ((ViewHolder) holder).mDescription.setMovementMethod(LinkMovementMethod.getInstance());
-
                 ((ViewHolder) holder).mTitle.setText(title);
 
-                ((ViewHolder) holder).mTitle.setOnClickListener(click -> Toast.makeText(mContext, title, Toast.LENGTH_SHORT).show());
+                ((ViewHolder) holder).itemView.setOnClickListener(click -> {
+                    if (uriLink != null) {
+                        Utilities.animationCard(holder);
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(uriLink.toString()));
+                        mContext.startActivity(intent);
+                    }
+                });
                 break;
         }
 

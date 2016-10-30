@@ -36,8 +36,11 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -55,6 +58,8 @@ import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.EarthquakeO
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -287,43 +292,45 @@ public class Utilities {
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void animationCard(RecyclerView.ViewHolder viewHolder) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-        if (mBlueColor == 0) {
-            mBlueColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorPrimary);
+            if (mBlueColor == 0) {
+                mBlueColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorPrimary);
+            }
+            if (mWhiteColor == 0) {
+                mWhiteColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
+            }
+
+            int finalRadius = (int) Math.hypot(viewHolder.itemView.getWidth() / 2, viewHolder.itemView.getHeight() / 2);
+
+            Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
+                    viewHolder.itemView.getWidth() / 2,
+                    viewHolder.itemView.getHeight() / 2, 0, finalRadius);
+
+            viewHolder.itemView.setBackgroundColor(mBlueColor);
+            anim.start();
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    viewHolder.itemView.setBackgroundColor(mWhiteColor);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
         }
-        if (mWhiteColor == 0) {
-            mWhiteColor = ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.white);
-        }
-
-        int finalRadius = (int) Math.hypot(viewHolder.itemView.getWidth() / 2, viewHolder.itemView.getHeight() / 2);
-
-        Animator anim = ViewAnimationUtils.createCircularReveal(viewHolder.itemView,
-                viewHolder.itemView.getWidth() / 2,
-                viewHolder.itemView.getHeight() / 2, 0, finalRadius);
-
-        viewHolder.itemView.setBackgroundColor(mBlueColor);
-        anim.start();
-        anim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                viewHolder.itemView.setBackgroundColor(mWhiteColor);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
     }
 
     /**
@@ -369,4 +376,38 @@ public class Utilities {
         return result;
     }
 
+    /**
+     * Creates a properly formatted Uri only if link is a correct URL
+     * @param link to parse
+     * @return Uri if a link was a correct URL, null otherwise.
+     */
+    @Nullable
+    public static Uri getProperUri(String link) {
+        URL finalLink;
+        try {
+            finalLink = new URL(link);
+            return Uri.parse(finalLink.toString());
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "MalformedURLException: " + e);
+        }
+        return null;
+    }
+
+    /**
+     * Formats an earthquake place, e.g. "100km from Osaka, Japan"
+     * becomes "Japan, 100km from Osaka"
+     * @param place String to move around a coma (if it has one)
+     * @return formatted String with changed places
+     */
+    @NonNull
+    public static String formatEarthquakePlace(String place) {
+        String comma = ", ";
+        if (place.contains(comma)) {
+            int divider = place.indexOf(comma);
+            place = place.substring(divider + comma.length())
+                    + comma
+                    + place.substring(0, divider);
+        }
+        return place;
+    }
 }

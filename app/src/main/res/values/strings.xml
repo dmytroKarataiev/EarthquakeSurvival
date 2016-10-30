@@ -117,7 +117,7 @@
     <string name="earthquake.statistics.largest">Largest earthquake in 24 hours</string>
     <string name="earthquake.widget.largest">Largest:</string>
     <string name="earthquake.survive.image">Drop! Cover! Hold on!</string>
-    <string name="earthquake.distance">Distance to: <xliff:g id="distance">%1$,.0f</xliff:g> miles</string>
+    <string name="earthquake.distance">From you: <xliff:g id="distance">%1$,.0f</xliff:g> miles</string>
 
     <string name="earthquake.link"><![CDATA[<a href="]]><xliff:g id="link">%1$s</xliff:g><![CDATA[">Learn more</a>]]></string>
 
