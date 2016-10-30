@@ -37,7 +37,8 @@
     <string name="menu_button_survive">Survive</string>
     <string name="menu_button_sort">Sort</string>
     <string name="sort_time">Time</string>
-    <string name="sort_magnitude">Magnitude</string>
+    <string name="menu_item_sort_magnitude">Magnitude</string>
+    <string name="menu_item_sort_distance">Distance</string>
 
     <!-- Strings related to Settings -->
     <string name="settings.title">Settings</string>

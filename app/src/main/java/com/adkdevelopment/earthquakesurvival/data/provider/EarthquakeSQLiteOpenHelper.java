@@ -16,7 +16,7 @@ public class EarthquakeSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = EarthquakeSQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "earthquake.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static EarthquakeSQLiteOpenHelper sInstance;
     private final Context mContext;
     private final EarthquakeSQLiteCallbacks mOpenHelperCallbacks;
@@ -44,7 +44,8 @@ public class EarthquakeSQLiteOpenHelper extends SQLiteOpenHelper {
             + EarthquakeColumns.DETAIL + " TEXT, "
             + EarthquakeColumns.DEPTH + " REAL, "
             + EarthquakeColumns.LONGITUDE + " REAL, "
-            + EarthquakeColumns.LATITUDE + " REAL "
+            + EarthquakeColumns.LATITUDE + " REAL, "
+            + EarthquakeColumns.DISTANCE + " REAL "
             + ", CONSTRAINT unique_id UNIQUE (id_earth) ON CONFLICT REPLACE"
             + " );";
 

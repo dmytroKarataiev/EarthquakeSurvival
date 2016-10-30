@@ -53,6 +53,7 @@ public class EarthquakeObject {
 
     public static final int SORT_TIME = 1;
     public static final int SORT_MAGNITUDE = 2;
+    public static final int SORT_DISTANCE = 3;
 
     public static final String NOTIFICATION_GROUP = "earthquake_group";
 

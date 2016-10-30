@@ -184,12 +184,17 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
         int sort = Utilities.getSortingPreference(getContext());
         String sortingPreference = EarthquakeColumns.TIME;
 
+        String sortOrder = " DESC";
         switch (sort) {
             case EarthquakeObject.SORT_MAGNITUDE:
                 sortingPreference = EarthquakeColumns.MAG;
                 break;
             case EarthquakeObject.SORT_TIME:
                 sortingPreference = EarthquakeColumns.TIME;
+                break;
+            case EarthquakeObject.SORT_DISTANCE:
+                sortingPreference = EarthquakeColumns.DISTANCE;
+                sortOrder = " ASC";
                 break;
         }
 
@@ -198,7 +203,7 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                 null,
                 EarthquakeColumns.MAG + " >= ?",
                 new String[] {String.valueOf(Utilities.getMagnitudePrefs(getContext()))},
-                sortingPreference + " DESC");
+                sortingPreference + sortOrder);
     }
 
     // Set the cursor in our CursorAdapter once the Cursor is loaded
@@ -294,6 +299,9 @@ public class RecentFragment extends Fragment implements LoaderManager.LoaderCall
                 return true;
             case R.id.menu_item_sort_time:
                 Utilities.setSortingPreference(getContext(), EarthquakeObject.SORT_TIME);
+                return true;
+            case R.id.menu_item_sort_distance:
+                Utilities.setSortingPreference(getContext(), EarthquakeObject.SORT_DISTANCE);
                 return true;
             default:
                 return false;

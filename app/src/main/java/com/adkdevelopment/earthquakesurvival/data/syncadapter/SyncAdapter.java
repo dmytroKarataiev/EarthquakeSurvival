@@ -127,6 +127,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     earthquakeValues.put(EarthquakeColumns.LONGITUDE, each.getGeometry().getCoordinates().get(0));
                     earthquakeValues.put(EarthquakeColumns.LATITUDE, each.getGeometry().getCoordinates().get(1));
 
+                    LatLng latLng = new LatLng(each.getGeometry().getCoordinates().get(1),
+                            each.getGeometry().getCoordinates().get(0));
+                    LatLng location = LocationUtils.getLocation(context);
+                    earthquakeValues.put(EarthquakeColumns.DISTANCE,
+                            LocationUtils.getDistance(latLng, location));
+
                     cVVector.add(earthquakeValues);
 
                     if (each.getProperties().getMag() != null &&

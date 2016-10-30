@@ -13,7 +13,6 @@ import com.adkdevelopment.earthquakesurvival.data.provider.news.NewsColumns;
  * This file will not be overwritten if you re-run the content provider generator.
  */
 public class EarthquakeSQLiteCallbacks {
-    private static final String TAG = EarthquakeSQLiteCallbacks.class.getSimpleName();
 
     public void onOpen(final Context context, final SQLiteDatabase db) {
         //if (BuildConfig.DEBUG) Log.d(TAG, "onOpen");
@@ -41,6 +40,5 @@ public class EarthquakeSQLiteCallbacks {
         db.execSQL(EarthquakeSQLiteOpenHelper.SQL_CREATE_TABLE_EARTHQUAKE);
         db.execSQL(EarthquakeSQLiteOpenHelper.SQL_CREATE_TABLE_NEWS);
         onPostCreate(context, db);
-
     }
 }

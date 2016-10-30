@@ -72,6 +72,11 @@ public class EarthquakeColumns implements BaseColumns {
      */
     public static final String LATITUDE = "latitude";
 
+    /**
+     * Latitude
+     */
+    public static final String DISTANCE = "distance";
+
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
@@ -88,7 +93,8 @@ public class EarthquakeColumns implements BaseColumns {
             DETAIL,
             DEPTH,
             LONGITUDE,
-            LATITUDE
+            LATITUDE,
+            DISTANCE
     };
     // @formatter:on
 
@@ -106,6 +112,7 @@ public class EarthquakeColumns implements BaseColumns {
             if (c.equals(DEPTH) || c.contains("." + DEPTH)) return true;
             if (c.equals(LONGITUDE) || c.contains("." + LONGITUDE)) return true;
             if (c.equals(LATITUDE) || c.contains("." + LATITUDE)) return true;
+            if (c.equals(DISTANCE) || c.contains("." + DISTANCE)) return true;
         }
         return false;
     }
