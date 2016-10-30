@@ -62,4 +62,9 @@
         android:positiveButtonText="@null"
         android:title="@string/settings.header.sync" />
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/sharedprefs.key.faultlines"
+        android:title="@string/settings.title.faultlines" />
+
 </PreferenceScreen>

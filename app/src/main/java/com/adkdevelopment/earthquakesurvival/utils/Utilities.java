@@ -103,6 +103,16 @@ public class Utilities {
     }
 
     /**
+     * Returns true if to show fault lines
+     * @param context from which call is being made
+     * @return true if to show fault lines
+     */
+    public static boolean getFaultlinesPrefs(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(context.getString(R.string.sharedprefs_key_faultlines), true);
+    }
+
+    /**
      * Method to get SyncInterval from SharedPreferences
      * @param context from which call is being made
      * @return interval in minutes
@@ -153,18 +163,28 @@ public class Utilities {
         GradientDrawable oval;
         oval = (GradientDrawable) ContextCompat.getDrawable(context, R.drawable.marker);
 
+
         if (oval != null) {
+
+            int STROKE_SIZE = 5;
+            float DASH_WIDTH = 9f;
+            float DASH_GAP = 3f;
+
             if (magnitude > 3 && magnitude < 5) {
-                oval.setColor(Color.BLUE);
+                oval.setColors(new int[]{Color.TRANSPARENT, Color.BLUE});
+                oval.setStroke(STROKE_SIZE, Color.BLUE, DASH_WIDTH, DASH_GAP);
             } else if (magnitude > 5 && magnitude < 7) {
-                oval.setColor(Color.YELLOW);
+                oval.setColors(new int[]{Color.TRANSPARENT, Color.YELLOW});
+                oval.setStroke(STROKE_SIZE, Color.YELLOW, DASH_WIDTH, DASH_GAP);
             } else if (magnitude > 7) {
-                oval.setColor(Color.RED);
+                oval.setColors(new int[]{Color.TRANSPARENT, Color.RED});
+                oval.setStroke(STROKE_SIZE, Color.RED, DASH_WIDTH, DASH_GAP);
             } else {
-                oval.setColor(Color.GREEN);
+                oval.setColors(new int[]{Color.TRANSPARENT, Color.GREEN});
+                oval.setStroke(STROKE_SIZE, Color.GREEN, DASH_WIDTH, DASH_GAP);
             }
 
-            int diameter = (int) (oval.getIntrinsicWidth() * magnitude);
+            int diameter = (int) (oval.getIntrinsicWidth() * magnitude / 4);
 
             Canvas canvas = new Canvas();
             Bitmap icon = Bitmap.createBitmap(

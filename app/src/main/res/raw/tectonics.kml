@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Plate Tectonics</name>
+	<open>1</open>
+	<description>Traces major plates.  Currently a work in progress.  Note that due to Google Map&apos;s projection, polygons/plate boundaries will wrap.</description>
+	<Style id="sn_ylw-pushpin">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffc0c0c0</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73c0c0c0</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff993399</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73993399</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin0">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ff0000</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin0">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff009900</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73009900</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin5</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin7</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ylw-pushpin0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin6</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin6</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin1">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffc0c0c0</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73c0c0c0</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin1">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff99ff66</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7399ff66</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin2">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ff0000</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin2</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin2">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff6666ff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>736666ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="line-0000FF-5-nodesc">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#line-0000FF-5-nodesc-normal</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#line-0000FF-5-nodesc-highlight</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="icon-503-DB4436-nodesc-normal">
+		<IconStyle>
+			<color>ff3644db</color>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+			</Icon>
+			<hotSpot x="16" y="31" xunits="pixels" yunits="insetPixels"/>
+		</IconStyle>
+		<LabelStyle>
+			<scale>0</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="line-0000FF-5-nodesc-highlight">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>8</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin2">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin3</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin4</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin3">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff99ff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ff99ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin4">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff33ffff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7333ffff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin5">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff0066ff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>730066ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="line-0000FF-5-nodesc-normal">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>5</width>
+		</LineStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin3">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffffcccc</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ffcccc</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin4">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff99ff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ff99ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin6">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff66ffff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7366ffff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="icon-503-DB4436-nodesc-highlight">
+		<IconStyle>
+			<color>ff3644db</color>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+			</Icon>
+			<hotSpot x="16" y="31" xunits="pixels" yunits="insetPixels"/>
+		</IconStyle>
+		<LabelStyle>
+			<scale>1.1</scale>
+		</LabelStyle>
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin5">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff33ffff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7333ffff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="icon-503-DB4436-nodesc">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#icon-503-DB4436-nodesc-normal</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#icon-503-DB4436-nodesc-highlight</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="line-0000FF-2-nodesc-highlight">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>3</width>
+		</LineStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin7">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff009900</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73009900</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin3">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin2</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin10</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin6">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff66ffff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7366ffff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin7">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff0066ff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>730066ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="poly-FFFF66-3-115-nodesc">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#poly-FFFF66-3-115-nodesc-normal</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#poly-FFFF66-3-115-nodesc-highlight</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="poly-FFFF66-3-115-nodesc-highlight">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff66ffff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>0066ffff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="poly-FFFF66-3-115-nodesc-normal">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff66ffff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>0066ffff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin8">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff99ff66</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>7399ff66</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin4">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin7</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ylw-pushpin5">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin1</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin8</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin8">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff99ff</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ff99ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin6">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ylw-pushpin7">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin4</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin5</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sn_ylw-pushpin9">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffffcccc</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ffcccc</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin9">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff99ff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73ff99ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin10">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff993399</color>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>73993399</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin8">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin9</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin3</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ylw-pushpin9">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin10</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin10">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ff6666ff</color>
+			<width>5</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>736666ff</color>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin10">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin8</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin9</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="line-0000FF-2-nodesc">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#line-0000FF-2-nodesc-normal</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#line-0000FF-2-nodesc-highlight</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="line-0000FF-2-nodesc-normal">
+		<BalloonStyle>
+			<text><![CDATA[<h3>$[name]</h3>]]></text>
+		</BalloonStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Folder>
+		<name>Untitled layer</name>
+		<open>1</open>
+		<Placemark>
+			<name>Pacific Plate</name>
+			<styleUrl>#msn_ylw-pushpin1</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							135,7.97219,0 131.13281,0.7909800000000001,0 133.15429,-0.6152190000000001,0 135,-1.081168184071601,0 152.84179,-5.441018999999999,0 161.63085,-11.264609,0 165.146479,-10.314909,0 167.958979,-18.979019,0 169.628899,-21.861489,0 174.375,-22.26876,0 -176.220699,-14.093949,0 -172.353509,-14.774879,0 -176.220699,-28.69058,0 178.417959,-39.50404,0 175.473633,-41.574361,0 172.26562,-42.68242900000001,0 169.9573258980288,-44.55768136734899,0 166.46484,-47.100039,0 164.179679,-50.12057,0 158.730459,-55.32914,0 159.08203,-58.81373999999999,0 173.14453,-64.586179,0 -177.36328,-65.94647000000001,0 -169.013669,-63.62673900000001,0 -163.82812,-63.07486000000001,0 -157.763669,-62.30879000000001,0 -152.22656,-59.534309,0 -149.941399,-59.800629,0 -148.447259,-57.46858000000002,0 -146.513669,-57.65715000000001,0 -144.931639,-56.07202900000001,0 -139.306639,-57.1839,0 -137.900389,-54.05937899999999,0 -135.615229,-54.62297,0 -134.12109,-53.90433,0 -121.552729,-56.022939,0 -121.28906,-54.52107899999999,0 -118.30078,-54.67383,0 -118.652339,-52.69635900000001,0 -117.158199,-49.26780000000001,0 -113.90625,-49.724469,0 -111.9050094104455,-42.85527196194054,0 -111.35742,-40.6473,0 -109.77539,-32.39851,0 -111.97265,-32.249969,0 -111.533199,-30.145119,0 -112.58789,-29.91685,0 -112.324209,-28.22697000000001,0 -114.25781,-27.21555,0 -114.08203,-22.1874,0 -113.027339,-13.75272,0 -110.917959,-13.9234,0 -110.03906,-9.015299000000001,0 -108.105459,-9.535739999999999,0 -107.22656,-6.83917,0 -103.53515,-4.82826,0 -102.30468,-1.933219,0 -103.183589,0.9228099999999999,0 -102.172849,3.206329,0 -103.40331,8.146240000000001,0 -104.01855,8.36369,0 -104.10644,8.971890000000002,0 -104.32617,10.57422,0 -103.974599,13.36824,0 -107.05078,18.104079,0 -108.45703,22.26876,0 -110.65429,26.509899,0 -112.412099,28.61345,0 -113.90625,30.67570900000002,0 -115.66406,32.62086,0 -118.828119,34.45221000000001,0 -122.34375,36.38591,0 -124.1627064747393,39.60592882361389,0 -125.24414,41.3768,0 -124.541009,44.653019,0 -125.859369,48.10743000000001,0 -128.93554,50.4575,0 -133.417959,53.22576,0 -134.033199,55.17886000000001,0 -136.31835,57.61010000000001,0 -141.240229,58.85922,0 -145.19531,59.26588000000001,0 -146.77734,58.30947999999999,0 -153.369139,55.128639,0 -165.23437,52.58969999999999,0 -178.59375,50.40151,0 175.78125,51.23439999999999,0 168.837889,53.383319,0 163.82812,56.121049,0 161.103509,52.106499,0 154.775389,46.619259,0 145.19531,42.228509,0 143.78906,39.095959,0 143.6636867542873,38.85328244594195,0 141.76757,34.95799000000001,0 143.085929,24.76678,0 146.1621,22.59372,0 147.919919,17.056779,0 144.58007,12.46875,0 138.427729,11.350789,0 137.460929,7.710988999999999,0 135,7.97219,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Philippine Plate</name>
+			<styleUrl>#msn_ylw-pushpin3</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							134.824218,7.885146000000001,0 135,7.885622428684987,0 137.285156,7.885146000000001,0 138.691406,11.350797,0 144.84375,12.21118,0 147.832031,16.97274,0 146.425781,22.75592100000001,0 143.613281,24.527135,0 141.855468,35.46067,0 137.8125,33.578015,0 135,32.19785457491255,0 132.539062,30.902225,0 127.089843,25.005973,0 122.167968,24.046464,0 121.289062,22.593726,0 122.34375,15.792253,0 125.683593,13.239945,0 126.738281,7.013668,0 128.144531,3.162456,0 131.835937,0.527336,0 134.824218,7.885146000000001,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Nazca Plate</name>
+			<styleUrl>#msn_ylw-pushpin0</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-82.529296,8.276726,0 -82.265625,4.828260000000001,0 -83.62793000000001,2.81137,0 -84.46289,1.186439,0 -91.84570300000001,1.801460000000001,0 -103.139647,1.054627,0 -102.172852,-1.977146,0 -103.359375,-4.784468,0 -107.182616,-7.013668,0 -107.885741,-9.535748000000002,0 -109.907227,-9.102097000000001,0 -110.830078,-14.093956,0 -112.939453,-13.966053,0 -114.125977,-23.28171799999999,0 -114.345703,-27.254629,0 -112.192383,-28.22697000000001,0 -112.368163,-29.916851,0 -111.313477,-30.183122,0 -111.796875,-32.175612,0 -109.731444,-32.28713200000001,0 -110.083008,-34.633208,0 -104.238281,-35.532226,0 -104.018555,-36.208823,0 -102.348633,-36.208823,0 -102.084961,-37.055177,0 -94.042968,-37.160316,0 -94.17480500000001,-38.169114,0 -92.680663,-38.09998300000001,0 -92.72460900000002,-38.754083,0 -91.36230500000001,-39.232253,0 -91.713866,-40.913513,0 -84.111328,-41.47565900000001,0 -83.408203,-43.03677600000001,0 -82.705078,-42.94033900000001,0 -82.529296,-44.715513,0 -78.57700039425562,-44.42687815930582,0 -78.310546,-44.402391,0 -78.17871100000002,-45.61403700000001,0 -76.464843,-45.614037,0 -76.24511600000001,-46.407564,0 -75.77391207507684,-44.10786275499165,0 -74.92675800000001,-39.470125,0 -74.79492100000002,-36.597889,0 -73.08105500000001,-33.68778099999999,0 -72.55371100000001,-29.649868,0 -71.630859,-26.352498,0 -71.323241,-20.879342,0 -72.64160200000001,-18.020527,0 -75.410156,-15.919074,0 -79.365234,-11.22151,0 -81.69433600000001,-7.057281,0 -82.045897,-4.258767000000001,0 -81.342772,-0.9228110000000003,0 -80.24414,1.450039,0 -78.70605500000002,4.127284,0 -78.486328,7.188100000000001,0 -81.430663,7.188100000000001,0 -82.529296,8.276726,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Cocos Plate</name>
+			<styleUrl>#msn_ylw-pushpin6</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-82.48535200000001,8.015715,0 -84.287109,8.581020000000001,0 -86.04492100000002,9.925565000000001,0 -87.27539,10.617418,0 -87.539062,11.393879,0 -94.526366,14.647368,0 -97.25097699999999,15.368949,0 -102.568359,17.392579,0 -105.249022,18.937463,0 -106.303711,21.289373,0 -107.402343,23.362428,0 -110.258788,25.918525,0 -108.149413,21.698264,0 -107.182616,18.271086,0 -103.886718,13.282719,0 -104.238281,10.833306,0 -104.018555,8.320210999999999,0 -103.271484,8.102738,0 -102.041015,3.250208000000001,0 -103.007812,1.098565,0 -92.02148400000002,1.801460000000001,0 -84.418944,1.186439,0 -82.22168000000001,4.82826,0 -82.48535200000001,8.015715,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Caribbean Plate</name>
+			<styleUrl>#msn_ylw-pushpin5</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-87.451171,11.393879,0 -87.20947300000002,10.595821,0 -86.00097700000001,9.968851000000001,0 -84.375,8.646194999999999,0 -82.573241,8.254982,0 -81.430663,7.253495999999999,0 -78.046875,7.100892999999999,0 -77.080078,8.689638,0 -76.02539,10.35815,0 -74.355468,11.630715,0 -71.520995,12.87607,0 -68.752441,11.738301,0 -65.742187,10.725381,0 -62.95165900000001,10.876464,0 -60.64453099999999,13.410994,0 -62.40234299999999,17.811455,0 -66.621093,20.468188,0 -74.003906,20.632784,0 -80.15625000000001,20.632784,0 -84.199218,20.303418,0 -85.253906,19.476949,0 -86.484375,19.580493,0 -87.802734,15.834535,0 -92.043457,13.496472,0 -87.451171,11.393879,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>North American Plate</name>
+			<styleUrl>#msn_ylw-pushpin2</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-45,26.82353794021239,0 -43.76953,28.57487,0 -43.37402,29.152139,0 -43.41796,29.64986,0 -42.93457,29.87875,0 -42.80272,30.334929,0 -42.05566000000001,30.29701,0 -39.6826,33.06392,0 -38.80371000000001,33.2111,0 -38.36424,33.94335,0 -37.79296000000001,33.90688,0 -37.74902,34.23451,0 -37.26561,34.16181,0 -37.17772,34.6332,0 -36.60643,34.59702,0 -36.51854000000001,35.46067000000001,0 -34.98046,35.46067000000001,0 -34.89256000000001,35.92463,0 -34.27734,35.92463,0 -31.86035,38.34165,0 -30.67379899999999,38.58252,0 -29.61914,39.63953,0 -29.66308,40.78054000000001,0 -29.63067718914315,40.99815939629914,0 -29.44332899999999,42.22849,0 -29.31152,43.06888,0 -29.22362,43.51668000000001,0 -29.17968,43.80281,0 -28.652319,43.92954,0 -27.59765,46.46813,0 -28.916,50.06419,0 -30.23434900000001,50.79204,0 -30.27832000000001,52.24124999999999,0 -32.47558,52.32191,0 -32.47558,52.64305000000001,0 -35.72753,52.69635,0 -35.15625,56.04749,0 -34.40917,56.12104000000001,0 -34.10155000000001,57.08850000000001,0 -32.95897,57.56298000000001,0 -23.42285,63.17419,0 -20.45654,63.70472000000001,0 -19.819335,64.052977,0 -19.423828,64.339907,0 -17.841796,64.463323,0 -17.995605,65.339347,0 -18.105468,65.775744,0 -18.588867,66.196009,0 -17.49023,69.02141,0 -16.04003,69.19379000000001,0 -14.19433,70.91664,0 -7.646480000000001,70.199969,0 -6.0205,71.18774000000001,0 3.559550000000001,72.64646,0 8.52538,73.75118000000001,0 8.70115,74.23587000000001,0 6.591770000000001,76.32075,0 6.591770000000001,78.59529000000001,0 3.03222,81.12716,0 18.984349,81.5635,0 30.9375,81.62135000000001,0 60.86424,82.82599,0 64.072239,82.36163000000001,0 75.80566,82.51774,0 76.68456,82.11235000000001,0 96.76757000000001,82.34408000000001,0 119.35545,82.05789,0 120.234375,79.432371,0 117.421875,76.184995,0 118.828125,74.211983,0 119.88281,72.23551,0 130.07812,70.90224000000001,0 128.8916,66.10715,0 138.69139,63.29292,0 137.50488,58.60833000000001,0 138.99902,37.89218000000001,0 139.6774029551,37.32237482530405,0 142.03125,35.2456,0 143.473317789262,38.78465446983365,0 145.1074,42.39099,0 154.73142,46.52861,0 159.916969,51.20687,0 163.78416,56.19447000000001,0 168.79392,53.54030000000002,0 175.6494,51.20687,0 -178.68163,50.48546,0 -164.83886,52.80275000000001,0 -156.09375,54.6484,0 -153.01757,55.25406,0 -145.41503,59.33317,0 -141.19628,58.90464,0 -136.18652,57.5394,0 -134.34082,55.60316000000001,0 -133.4619,53.3046,0 -129.02341,50.59718,0 -125.72753,48.04868999999999,0 -124.40918,44.84029,0 -124.89257,41.27779000000001,0 -124.233369,39.97711,0 -123.9913580855175,39.66287103714141,0 -121.90429,36.80928,0 -119.17968,34.74161,0 -116.63084,34.19815999999999,0 -114.47753,31.42865999999999,0 -110.170869,26.11598,0 -107.53418,23.443059,0 -105.24902,18.978999,0 -98.34959000000002,15.91905,0 -94.87793000000001,14.732359,0 -92.10935000000001,13.45373,0 -87.80271000000002,15.87678,0 -86.52831,19.683939,0 -85.2539,19.55977,0 -84.24316,20.344599,0 -66.26953,20.46818,0 -53.3496,18.77111,0 -53.21777000000001,17.22475,0 -46.62597,16.383369,0 -46.93359,18.6046,0 -45.96679,20.50935,0 -46.01073,21.90227,0 -45.39549,22.105969,0 -45.08789,23.72501,0 -46.7578,23.84562,0 -46.36229,24.80668,0 -45,26.82353794021239,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Eurasian Plate</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-29.46087434250536,41.04582071764762,0 -29.487304,40.78054000000001,0 -29.487304,39.707186,0 -30.629882,38.47939400000001,0 -31.81640599999999,38.169114,0 -25.927734,36.809285,0 -24.21386699999999,37.40507299999999,0 -14.414061,36.633161,0 -6.591796,36.066862,0 -3.339843000000001,35.960222,0 1.186522,37.405073,0 7.338865999999999,38.65119800000001,0 11.118164,38.169114,0 15.512695,36.5626,0 19.379882,39.673369,0 23.422851,35.245618,0 25.971679,34.813803,0 30.234375,35.96022199999999,0 30.761718,34.88593,0 35.99121,35.065972,0 42.59295192341977,36.3597700978239,0 45.043945,36.738883,0 45.83656306912233,35.65396818225035,0 48.82324200000001,31.240984,0 53.52539,26.980828,0 60.60058500000001,26.58852600000001,0 66.31347700000001,26.980828,0 67.280272,32.10119,0 69.653319,33.979809,0 72.55371100000001,35.101933,0 74.838866,34.92197,0 77.871093,32.546813,0 79.804687,31.802893,0 89.208984,29.496988,0 95.888671,29.420459,0 96.06445300000001,27.722435,0 93.64746100000001,24.64701700000001,0 93.164062,10.790141,0 94.17480500000001,3.337953,0 97.998046,-0.395504,0 102.392578,-6.970048999999999,0 107.709961,-9.622413,0 117.509765,-11.049037,0 124.848633,-10.27168,0 131.132812,-8.363692,0 134.956054,-3.074695,0 133.110352,-0.7470480000000002,0 131.264647,0.7470480000000002,0 127.96875,3.250208000000001,0 126.5625,7.057281,0 125.595703,13.197165,0 122.211913,15.919074,0 121.157227,22.715389,0 122.080078,24.166802,0 126.958008,25.125392,0 129.067383,27.527757,0 132.319335,30.977609,0 135,32.36985591270518,0 141.767577,35.46067000000001,0 139.6740939857131,37.32102065496747,0 139.042968,37.85750599999999,0 138.032227,51.20688200000001,0 137.329102,58.7682,0 138.603516,63.253411,0 128.71582,66.107169,0 129.990233,70.887884,0 119.707031,72.30243,0 117.202147,76.237365,0 120.19043,79.46456000000001,0 119.135741,82.063963,0 96.76757800000001,82.349952,0 76.552734,82.130426,0 75.673828,82.517748,0 64.028319,82.367482,0 60.73242100000001,82.825993,0 30.893554,81.621352,0 18.852539,81.576408,0 2.988281,81.140715,0 6.591796,78.647319,0 6.459959999999999,76.299953,0 8.569335000000001,74.259737,0 8.525391000000001,73.726595,0 3.603514999999999,72.633374,0 -6.108398,71.145195,0 -7.602539000000001,70.185102,0 -14.194335,70.887884,0 -15.996093,69.178184,0 -17.314453,69.021413,0 -18.588867,66.213739,0 -17.885742,65.622022,0 -17.797851,64.41592,0 -19.555664,64.320871,0 -20.346679,63.72418200000001,0 -23.422851,63.194017,0 -33.046875,57.53941700000001,0 -34.233398,57.06463000000001,0 -34.321289,56.096555,0 -35.24414,56.096555,0 -35.639648,52.696361,0 -32.51953099999999,52.669719,0 -32.43164,52.321911,0 -30.190429,52.26815700000002,0 -30.190429,50.87531099999999,0 -28.784179,50.007739,0 -27.509765,46.43785699999999,0 -28.432617,43.99281500000001,0 -29.179687,43.73935100000001,0 -29.46087434250536,41.04582071764762,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Australian Plate</name>
+			<styleUrl>#msn_ylw-pushpin4</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							135,-3.452294717351377,0 131.220702,-8.320211,0 124.980468,-10.314918,0 118.652343,-11.178402,0 108.36914,-9.709056000000002,0 104.677734,-8.407168,0 101.425781,-5.790897,0 98.52539,-0.7031070000000001,0 94.21875,3.162456,0 93.339843,9.882274000000001,0 93.515625,15.876808,0 93.515625,18.145852,0 91.40625000000001,21.534846,0 89.384765,3.951941,0 89.69238300000002,-20.591651,0 75.89355500000001,-20.014645,0 68.466796,-19.808053,0 69.521484,-25.958044,0 71.542968,-31.72816600000001,0 82.089843,-43.325178,0 85.80061176496973,-44.9229845032375,0 94.746093,-47.989921,0 130.78125,-50.62507300000001,0 149.589843,-55.973798,0 158.554687,-58.90464500000001,0 159.082031,-54.87660600000001,0 166.640625,-46.920254,0 170.0465852644246,-44.56554829445304,0 172.96875,-42.293564,0 178.417968,-39.63953799999999,0 -175.957031,-28.14950199999999,0 -172.089843,-14.944784,0 -176.484375,-14.43468,0 166.113281,-14.43468,0 165.585937,-10.141932,0 162.246093,-11.86735,0 152.929687,-5.615986000000001,0 135,-1.275619309360438,0 133.417968,-0.8788709999999998,0 135,-3.20880674685916,0 135.087891,-3.337953,0 135,-3.452294717351377,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Indian Plate</name>
+			<styleUrl>#msn_ylw-pushpin8</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							89.560546,4.390228,0 91.31835900000002,21.207459,0 93.779296,24.766784,0 96.24023400000002,27.605671,0 95.888671,29.228889,0 89.736328,29.228889,0 77.43164,32.768799,0 74.970703,34.741612,0 72.597656,35.02999499999999,0 69.609375,33.651207,0 67.412109,32.398516,0 66.445312,27.05912500000001,0 63.28125,21.698264,0 57.39257799999999,9.449061,0 63.720703,2.372368,0 67.412109,-5.35352,0 68.378906,-19.559789,0 89.560546,-20.468188,0 89.560546,4.390228,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Arabian Plate</name>
+			<styleUrl>#msn_ylw-pushpin7</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							36.035156,34.95799399999999,0 34.013671,30.069093,0 35.15625,26.509904,0 42.890625,12.983147,0 45.00000000000001,11.47771994685036,0 45.175781,11.350797,0 53.52539,13.154375,0 57.39257799999999,9.535748000000002,0 63.017578,21.61657900000001,0 66.269531,27.059125,0 52.822265,27.37176600000001,0 48.691406,31.203405,0 45.73352350568926,35.60649848091123,0 44.912109,36.738883,0 42.61826820138533,36.34865422228987,0 36.035156,34.95799399999999,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>African Plate</name>
+			<styleUrl>#msn_ylw-pushpin9</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							45,11.33104660019423,0 42.84667900000001,12.940322,0 35.068359,26.784846,0 34.057617,30.183122,0 35.99121,34.99400299999999,0 30.673828,35.029995,0 30.146484,35.960222,0 25.927734,34.81380300000001,0 23.24707,35.2815,0 19.423828,39.57182099999999,0 15.424804,36.527295,0 11.293945,38.030785,0 7.294921,38.582526,0 1.098632,37.300274,0 -3.208006999999999,35.889049,0 -24.21386699999999,37.33522299999999,0 -25.927734,36.774092,0 -31.992187,38.203654,0 -34.189453,35.889049,0 -34.892578,35.924644,0 -34.936523,35.389049,0 -36.5625,35.424867,0 -36.694335,34.488447,0 -37.089843,34.560859,0 -37.133789,34.016241,0 -37.705078,34.234512,0 -37.79296799999999,33.87041500000001,0 -38.408203,33.90689600000001,0 -38.58398399999999,33.137551,0 -39.902343,32.916485,0 -41.923828,30.259067,0 -42.802734,30.334953,0 -42.93457,29.802517,0 -43.286132,29.688053,0 -43.19824199999999,29.190532,0 -43.637695,28.652031,0 -45,26.6895781498085,0 -46.801757,23.966176,0 -45,23.66727094603641,0 -44.86816400000001,23.644524,0 -45.00000000000001,23.09556473904055,0 -45.26367100000001,21.9838,0 -45.922851,21.861498,0 -45.878906,20.385825,0 -46.93359299999999,18.562947,0 -46.582031,16.467694,0 -46.801757,15.580711,0 -45.175781,15.49603100000001,0 -45.131835,12.854649,0 -45,12.82425159038834,0 -44.208984,12.640337,0 -43.98925700000001,11.049037,0 -41.660156,10.876464,0 -41.52832,8.928487000000002,0 -38.759765,9.015302,0 -38.496093,7.667441000000002,0 -34.057617,7.667441000000002,0 -33.793945,6.315299,0 -32.739257,6.402648,0 -32.783203,3.995781,0 -30.93750000000001,4.171115,0 -30.410156,0.9228110000000003,0 -25.224609,1.318243,0 -24.477539,-1.054627,0 -20.083007,0,0 -18.896484,-2.284549999999999,0 -15.908203,-1.362176,0 -13.315429,-0.6591649999999999,0 -11.206054,-6.664608000000001,0 -13.798828,-7.536763,0 -12.744141,-13.282719,0 -15.117186,-14.05133,0 -14.0625,-17.811455,0 -12.348632,-17.560247,0 -11.293945,-21.94304500000001,0 -13.886718,-22.268764,0 -13.095703,-28.343064,0 -12.919921,-32.063955,0 -14.370117,-32.2128,0 -14.633789,-34.88593,0 -18.017578,-35.28150000000001,0 -17.182617,-37.370156,0 -16.523437,-42.195968,0 -15.60377918724354,-43.92448187608211,0 -13.623046,-47.309033,0 -10.415039,-47.010226,0 -7.338865999999999,-56.41390100000001,0 0.7910160000000002,-54.82600800000001,0 12.172852,-52.669719,0 18.149414,-51.97134500000001,0 27.509765,-52.64306200000001,0 32.827148,-46.55886000000001,0 39.902343,-43.516688,0 47.06542900000002,-38.788344,0 49.84709739110317,-37.39163217527986,0 55.986328,-33.87041500000001,0 62.57812500000001,-28.14950199999999,0 69.389647,-25.76032,0 68.291015,-19.435514,0 67.412109,-5.397273,0 63.720703,2.372368,0 53.569335,13.154375,0 45.08789000000001,11.264611,0 45,11.33104660019423,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>South American Plate</name>
+			<styleUrl>#poly-FFFF66-3-115-nodesc</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-15.76975422079109,-43.90119258039663,0 -16.61131,-42.35853,0 -17.31445,-37.16031,0 -17.84178,-35.31736,0 -14.76562,-34.88593,0 -14.50195,-32.02669,0 -13.0957,-31.95215,0 -13.79881,-22.43132,0 -11.25,-21.7799,0 -12.39256,-17.64402,0 -13.88671,-17.81145,0 -14.94139,-14.34953,0 -12.65625,-13.32548,0 -13.79881,-7.53676,0 -11.1621,-6.75189,0 -13.27148,-1.05461,0 -18.80858,-2.37236,0 -20.03905,0,0 -24.52148,-0.8788699999999999,0 -25.22459,1.23036,0 -30.41015,0.6152100000000001,0 -31.20117000000001,4.12727,0 -32.6953,4.0396,0 -32.60741,6.31529,0 -33.83789000000001,6.227919999999999,0 -34.01366000000001,7.53676,0 -38.3203,7.710980000000001,0 -38.93554,8.92848,0 -41.39647,9.10209,0 -41.92381,10.6606,0 -44.38475,11.2646,0 -44.38474999999999,12.38292,0 -45,12.8502094337455,0 -45.17578,12.98314,0 -45.26365999999999,15.36894,0 -46.66991000000001,15.36894,0 -46.58203,16.38338,0 -53.4375,17.22475,0 -53.4375,18.72950000000001,0 -66.18164,20.38581,0 -62.13865999999999,17.81145,0 -60.55664000000001,13.32548,0 -63.01756000000001,10.91961,0 -66.00584000000001,10.83329,0 -71.63084000000001,12.46875,0 -76.11328,10.3149,0 -78.31054,7.188100000000001,0 -78.5742,3.86425,0 -81.03515,-0.9667399999999997,0 -81.91406000000001,-4.214940000000001,0 -81.47459000000001,-7.013649999999999,0 -78.66209000000001,-11.69527,0 -75.58593,-15.96132,0 -72.42186,-17.8951,0 -71.1914,-21.12548,0 -71.45507000000001,-26.58851,0 -72.33396999999999,-29.84064,0 -72.9492,-33.578,0 -75.05858000000001,-36.45662000000001,0 -74.70703,-38.89103,0 -75.86039562113929,-44.11878559988937,0 -76.37694,-46.19503000000001,0 -76.37694,-50.34546,0 -75.41015,-54.05937000000002,0 -71.89453,-55.97379,0 -67.93944,-57.13622000000001,0 -61.87500000000001,-55.07836,0 -56.60155,-54.9776,0 -49.48240999999999,-54.05937000000002,0 -40.51756000000001,-54.21385,0 -36.5625,-55.12863,0 -33.13475,-55.22901,0 -27.15820000000001,-55.47885,0 -24.08202,-58.53958000000001,0 -24.87303,-60.10866,0 -27.77343,-60.93042999999999,0 -18.98436,-60.63009000000001,0 -15.29296,-58.67692,0 -7.38281,-56.36525,0 -10.37109,-47.21956,0 -13.71092,-47.33881,0 -15.76975422079109,-43.90119258039663,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Soctia Plate</name>
+			<styleUrl>#msn_ylw-pushpin10</styleUrl>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<tessellate>1</tessellate>
+						<coordinates>
+							-24.785156,-60.02095200000001,0 -24.257812,-58.493693,0 -27.158203,-55.478853,0 -36.826171,-55.229022,0 -40.429687,-54.41893000000001,0 -49.658203,-54.110942,0 -56.33789000000001,-55.07836699999999,0 -61.96289,-55.128649,0 -67.675781,-57.136239,0 -55.634765,-60.802064,0 -46.23046799999999,-59.84481399999999,0 -36.298828,-60.88770000000001,0 -27.949218,-60.88770000000001,0 -24.785156,-60.02095200000001,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Antartica Plate</name>
+			<visibility>0</visibility>
+			<styleUrl>#icon-503-DB4436-nodesc</styleUrl>
+			<Point>
+				<coordinates>-160.3125,-80.415706,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>Line 1</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					-173.671875,46.80005800000001,0 -172.265625,49.38237299999999,0 -168.398437,44.840291,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 4</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					125.15625,17.308688,0 123.75,19.808053,0 129.902343,19.476949,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 5</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					-79.804687,-24.20689,0 -75.761718,-23.241346,0 -79.453125,-27.371766,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 4</name>
+			<styleUrl>#line-0000FF-5-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					-105.996093,17.140789,0 -102.480468,17.140789,0 -104.589843,14.264383,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 7</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					-170.683593,-30.448674,0 -173.847656,-27.839075,0 -165.234375,-30.145126,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 8</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					77.34375,25.165172,0 81.5625,28.30438,0 80.15625000000001,18.646245,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 9</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					159.609375,-27.059125,0 174.375,-31.35363600000001,0 166.640625,-34.307144,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>Line 10</name>
+			<styleUrl>#line-0000FF-2-nodesc</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					17.578125,35.46067,0 22.5,37.160316,0 22.5,30.751277,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>

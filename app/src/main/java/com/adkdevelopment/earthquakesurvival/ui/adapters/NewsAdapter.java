@@ -276,7 +276,8 @@ public class NewsAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHold
             double longitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
             LatLng latLng = new LatLng(latitude, longitude);
 
-            String desc = tempCursor.getString(tempCursor.getColumnIndex(EarthquakeColumns.PLACE));
+            final String desc = Utilities.formatEarthquakePlace(tempCursor
+                    .getString(tempCursor.getColumnIndex(EarthquakeColumns.PLACE)));
             ((ViewHolderLargest) holder).mStatDescription.setText(desc);
 
             double magnitude = tempCursor.getDouble(tempCursor.getColumnIndex(EarthquakeColumns.MAG));

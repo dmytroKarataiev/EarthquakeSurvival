@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2016. Dmytro Karataiev
@@ -26,9 +25,20 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <solid android:color="@android:color/holo_green_light" />
-
-    <size android:width="@dimen/marker.size"
+    <size
+        android:width="@dimen/marker.size"
         android:height="@dimen/marker.size" />
+
+    <gradient
+        android:endColor="#66ff00"
+        android:gradientRadius="100%"
+        android:startColor="@android:color/transparent"
+        android:type="radial" />
+
+    <stroke
+        android:width="1dp"
+        android:color="#66ff00"
+        android:dashGap="3dp"
+        android:dashWidth="5dp" />
 
 </shape>

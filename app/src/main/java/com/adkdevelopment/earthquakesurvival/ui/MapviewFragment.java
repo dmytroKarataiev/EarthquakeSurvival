@@ -39,6 +39,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.kml.KmlLayer;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.HashMap;
 
 import butterknife.BindDrawable;
@@ -93,6 +98,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
 
     // data to start detail activity on info window click
     private HashMap<String, Intent> mMarkers = new HashMap<>();
+    private KmlLayer mFaults;
 
     public MapviewFragment() {
     }
@@ -137,6 +143,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        
         UiSettings uiSettings = mGoogleMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         addMyLocation();
@@ -267,6 +274,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                 Double latitude = mCursor.getDouble(lat);
                 Double longitude = mCursor.getDouble(lng);
                 String description = mCursor.getString(desc);
+                description = Utilities.formatEarthquakePlace(description);
+
                 Long dateMillis = mCursor.getLong(date);
                 String linkDetails = mCursor.getString(link);
 
@@ -298,6 +307,24 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
             }
 
             mGoogleMap.setOnInfoWindowClickListener(l -> startActivity(mMarkers.get(l.getId())));
+            showFaultlines();
+        }
+    }
+
+    /**
+     * Shows or hides fault lines on the map.
+     */
+    private void showFaultlines() {
+        // if fault lines are enabled - show them on the map
+        if (Utilities.getFaultlinesPrefs(getContext())) {
+            try {
+                mFaults = new KmlLayer(mGoogleMap, R.raw.tectonics, getContext());
+                mFaults.addLayerToMap();
+            } catch (IOException | XmlPullParserException e) {
+                Log.e(TAG, "e:" + e);
+            }
+        } else if (mGoogleMap != null && mFaults != null) {
+            mFaults.removeLayerFromMap();
         }
     }
 
@@ -316,7 +343,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
 
                 mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
             }
-
+        } else if (key.equals(getString(R.string.sharedprefs_key_faultlines))) {
+            showFaultlines();
         }
     }
 }

@@ -44,6 +44,7 @@
     <string name="settings.title">Settings</string>
     <string name="settings.title.sync">System sync settings</string>
     <string name="settings.title.notifications">Notifications</string>
+    <string name="settings.title.faultlines">Fault lines</string>
     <string name="settings.header.sync">Sync frequency</string>
     <string name="settings.header.notifications">Notifications</string>
 
@@ -80,6 +81,7 @@
     <string name="sharedprefs.key.magnitude" translatable="false">magn</string>
     <string name="sharedprefs.key.distance" translatable="false">dist</string>
     <string name="sharedprefs.key.notifications" translatable="false">notif</string>
+    <string name="sharedprefs.key.faultlines" translatable="false">faults</string>
     <string name="sharedprefs_key_lastnotification" translatable="false">last_notification</string>
     <string name="sharedprefs_key_last_countupdate" translatable="false">last_countupdate</string>
     <string name="sharedprefs_key_sort" translatable="false">sort</string>

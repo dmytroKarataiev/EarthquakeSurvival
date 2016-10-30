@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2016. Dmytro Karataiev
@@ -28,12 +27,11 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
-    <color name="grey">#a8a8a8</color>
+    <color name="gray">#a8a8a8</color>
 
     <!-- Tab Layout -->
     <color name="tab.light.grey">#fefefe</color>
     <color name="tab.item.selected">#3F51B5</color>
     <color name="tab.item.unselected">#a8a8a8</color>
-
 
 </resources>
