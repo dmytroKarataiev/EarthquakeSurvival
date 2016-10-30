@@ -26,6 +26,7 @@
 package com.adkdevelopment.earthquakesurvival.ui;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,7 @@ import android.widget.TextView;
 
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.Feature;
+import com.adkdevelopment.earthquakesurvival.data.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.ui.behaviour.ScrollableMapView;
 import com.adkdevelopment.earthquakesurvival.ui.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
@@ -106,7 +108,42 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        if (getActivity().getIntent() != null) {
+        if (getActivity().getIntent().hasExtra(Feature.GEOFENCE)) {
+
+            String place = getActivity().getIntent().getStringExtra(Feature.GEOFENCE);
+            Log.v(TAG, place);
+
+            Cursor cursor = getActivity().getContentResolver()
+                    .query(EarthquakeColumns.CONTENT_URI,
+                            null,
+                            EarthquakeColumns.PLACE + "= ?",
+                            new String[]{place},
+                            null);
+            Log.v(TAG, "(cursor != null):" + (cursor != null));
+
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+
+                // TODO(Dmytro Karataiev): 10/29/16 create a method to extract earthquake details from a cursor
+                long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
+                double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+                double longitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+
+                LatLng latLng = new LatLng(latitude, longitude);
+
+                mDistance = getString(R.string.earthquake_distance,
+                        LocationUtils.getDistance(latLng, LocationUtils.getLocation(getContext())));
+                mDate = Utilities.getRelativeDate(dateMillis);
+                mDescription = Utilities.formatEarthquakePlace(place);
+                mLink = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
+                mMagnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
+                mDepth = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.DEPTH)) / 1.6;
+                cursor.close();
+
+                setDataToViews();
+            }
+
+        } else if (getActivity().getIntent() != null){
             Intent input = getActivity().getIntent();
             mDate = input.getStringExtra(Feature.DATE);
             mDescription = input.getStringExtra(Feature.PLACE);
@@ -116,18 +153,11 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             mDistance = input.getStringExtra(Feature.DISTANCE);
             mDepth = input.getDoubleExtra(Feature.DEPTH, 0.0);
 
-            mEarthquakeLink.setText(Utilities.getHtmlText(getString(R.string.earthquake_link, mLink)));
-            mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
+            setDataToViews();
+        }
 
-            mEarthquakeDistance.setText(mDistance);
-            mEarthquakeDate.setText(mDate);
-            mEarthquakePlace.setText(mDescription);
-            mEarthquakeMagnitude.setText(getString(R.string.earthquake_magnitude, mMagnitude));
-            mEarthquakeDepth.setText(getString(R.string.earthquake_depth, mDepth));
-
-            if (mPosition == null) {
-                mPosition = LocationUtils.getLocation(getContext());
-            }
+        if (mPosition == null) {
+            mPosition = LocationUtils.getLocation(getContext());
         }
 
         final Bundle mapViewSavedInstanceState = savedInstanceState != null ? savedInstanceState.getBundle(MAP_STATE) : null;
@@ -147,6 +177,20 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         }
 
         return rootView;
+    }
+
+    /**
+     * Sets data to views
+     */
+    public void setDataToViews() {
+        mEarthquakeLink.setText(Utilities.getHtmlText(getString(R.string.earthquake_link, mLink)));
+        mEarthquakeLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        mEarthquakeDistance.setText(mDistance);
+        mEarthquakeDate.setText(mDate);
+        mEarthquakePlace.setText(mDescription);
+        mEarthquakeMagnitude.setText(getString(R.string.earthquake_magnitude, mMagnitude));
+        mEarthquakeDepth.setText(getString(R.string.earthquake_depth, mDepth));
     }
 
     @Override

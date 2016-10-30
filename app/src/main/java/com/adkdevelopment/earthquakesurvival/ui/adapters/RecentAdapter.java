@@ -93,6 +93,7 @@ public class RecentAdapter extends CursorRecyclerViewAdapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, Cursor cursor) {
 
+        // TODO(Dmytro Karataiev): 10/29/16 create a method to extract earthquake details from a cursor
         String link = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
         String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
 

@@ -99,7 +99,7 @@ public class LocationUtils {
         }
         String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
 
-        return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
+        return triggeringGeofencesIdsString;
     }
 
     /**

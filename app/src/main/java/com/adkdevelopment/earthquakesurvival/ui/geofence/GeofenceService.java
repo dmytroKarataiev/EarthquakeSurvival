@@ -36,6 +36,8 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.Feature;
+import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.ui.PagerActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.EarthquakeObject;
@@ -101,7 +103,8 @@ public class GeofenceService extends IntentService {
         Context context = getBaseContext();
 
         // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(context, PagerActivity.class);
+        Intent notificationIntent = new Intent(context, DetailActivity.class);
+        notificationIntent.putExtra(Feature.GEOFENCE, notificationDetails);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
