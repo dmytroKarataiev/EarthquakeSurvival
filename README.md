@@ -1,4 +1,4 @@
-# Earthquake Survival
+# Earthquake Survival [![Travis CI](https://travis-ci.org/dmytroKarataiev/EarthquakeSurvival.svg?branch=master)](https://travis-ci.org/dmytroKarataiev/EarthquakeSurvival)
 <a href="https://play.google.com/store/apps/details?id=com.adkdevelopment.earthquakesurvival"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" width="185" height="60"/></a><br>
 
 ![Animation of current state](materials/earthquake_animation.gif)
