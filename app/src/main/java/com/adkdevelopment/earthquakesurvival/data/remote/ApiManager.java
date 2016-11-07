@@ -24,6 +24,28 @@
 
 package com.adkdevelopment.earthquakesurvival.data.remote;
 
+import android.content.Context;
+
+import com.adkdevelopment.earthquakesurvival.App;
+import com.adkdevelopment.earthquakesurvival.R;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
@@ -37,10 +59,16 @@ public class ApiManager {
 
     private final Retrofit EARTHQUAKE_ADAPTER = new Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(new ToStringConverterFactory())
+            .client(new OkHttpClient.Builder()
+                    .sslSocketFactory(getSSLConfig(App.getContext()).getSocketFactory()).build())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     private final EarthquakeService EARTHQUAKE_SERVICE = EARTHQUAKE_ADAPTER.create(EarthquakeService.class);
+
+    public ApiManager() throws Exception {
+    }
 
     public EarthquakeService getEarthquakeService() {
         return EARTHQUAKE_SERVICE;
@@ -57,4 +85,57 @@ public class ApiManager {
         return NEWS_SERVICE;
     }
 
+    private static SSLContext getSSLConfig(Context context) throws CertificateException, IOException,
+            KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+
+        // Loading CAs from an InputStream
+        CertificateFactory cf = null;
+        cf = CertificateFactory.getInstance("X.509");
+
+        Certificate ca;
+        // I'm using Java7. If you used Java6 close it manually with finally.
+        InputStream cert = context.getResources().openRawResource(R.raw.usgs);
+        ca = cf.generateCertificate(cert);
+
+        // Creating a KeyStore containing our trusted CAs
+        String keyStoreType = KeyStore.getDefaultType();
+        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", ca);
+
+        // Creating a TrustManager that trusts the CAs in our KeyStore.
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        TrustManager[] trustManagers = tmf.getTrustManagers();
+        final X509TrustManager origTrustmanager = (X509TrustManager) trustManagers[0];
+
+        TrustManager[] wrappedTrustManagers = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                        origTrustmanager.checkClientTrusted(x509Certificates, s);
+                    }
+
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return origTrustmanager.getAcceptedIssuers();
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        try {
+                            origTrustmanager.checkServerTrusted(certs, authType);
+                        } catch (CertificateException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        };
+
+        // Creating an SSLSocketFactory that uses our TrustManager
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, wrappedTrustManagers, null);
+
+        return sslContext;
+    }
 }

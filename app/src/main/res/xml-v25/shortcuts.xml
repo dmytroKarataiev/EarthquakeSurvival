@@ -27,10 +27,10 @@
     <shortcut
         android:enabled="true"
         android:icon="@drawable/ic_info_black"
-        android:shortcutDisabledMessage="@string/static_shortcut_disabled_message"
-        android:shortcutId="static"
-        android:shortcutLongLabel="@string/static_shortcut_long_label"
-        android:shortcutShortLabel="@string/static_shortcut_short_label">
+        android:shortcutDisabledMessage="@string/shortcut_disabled"
+        android:shortcutId="shortcut_info"
+        android:shortcutLongLabel="@string/shortcut_long_info"
+        android:shortcutShortLabel="@string/shortcut_short_info">
         <intent
             android:action="android.intent.action.MAIN"
             android:targetClass="com.adkdevelopment.earthquakesurvival.ui.PagerActivity"
@@ -38,6 +38,22 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="com.adkdevelopment.earthquakesurvival.ui.AboutActivity"
+            android:targetPackage="com.adkdevelopment.earthquakesurvival" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_send_black"
+        android:shortcutDisabledMessage="@string/shortcut_disabled"
+        android:shortcutId="shortcut_report"
+        android:shortcutLongLabel="@string/shortcut_long_report"
+        android:shortcutShortLabel="@string/shortcut_short_report">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="com.adkdevelopment.earthquakesurvival.ui.PagerActivity"
+            android:targetPackage="com.adkdevelopment.earthquakesurvival" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.adkdevelopment.earthquakesurvival.ui.report_earthquake.ReportActivity"
             android:targetPackage="com.adkdevelopment.earthquakesurvival" />
     </shortcut>
 

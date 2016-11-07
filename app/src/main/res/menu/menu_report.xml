@@ -20,32 +20,17 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.PagerActivity">
+    tools:context=".ui.report_earthquake.ReportActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_send"
+        android:icon="@drawable/ic_send"
         android:orderInCategory="100"
-        android:title="@string/menu.button.settings"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_refresh"
-        android:title="@string/menu.button.refresh"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_about"
-        android:title="@string/title_activity_about"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_report"
-        android:icon="@drawable/ic_error_outline"
-        android:orderInCategory="1"
         android:title="@string/title_activity_report"
         app:showAsAction="ifRoom" />
 </menu>

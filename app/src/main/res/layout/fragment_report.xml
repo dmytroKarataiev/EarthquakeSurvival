@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2016. Dmytro Karataiev
@@ -20,32 +20,35 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.PagerActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/menu.button.settings"
-        app:showAsAction="never" />
+    android:id="@+id/content_report"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ui.report_earthquake.ReportFragment"
+    tools:showIn="@layout/activity_report">
 
-    <item
-        android:id="@+id/action_refresh"
-        android:title="@string/menu.button.refresh"
-        app:showAsAction="never" />
+    <TextView
+        android:id="@+id/report_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report it Here - Tell Us!"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-    <item
-        android:id="@+id/action_about"
-        android:title="@string/title_activity_about"
-        app:showAsAction="never" />
+    <TextView
+        android:id="@+id/report_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/report_title"
+        android:text="Felt the earthquake - tell us where it occured."
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-    <item
-        android:id="@+id/action_report"
-        android:icon="@drawable/ic_error_outline"
-        android:orderInCategory="1"
-        android:title="@string/title_activity_report"
-        app:showAsAction="ifRoom" />
-</menu>
+</RelativeLayout>

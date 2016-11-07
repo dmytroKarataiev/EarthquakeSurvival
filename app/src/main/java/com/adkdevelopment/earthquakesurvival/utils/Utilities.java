@@ -170,13 +170,13 @@ public class Utilities {
             float DASH_WIDTH = 9f;
             float DASH_GAP = 3f;
 
-            if (magnitude > 3 && magnitude < 5) {
+            if (magnitude >= 3 && magnitude <= 5) {
                 oval.setColors(new int[]{Color.TRANSPARENT, Color.BLUE});
                 oval.setStroke(STROKE_SIZE, Color.BLUE, DASH_WIDTH, DASH_GAP);
             } else if (magnitude > 5 && magnitude < 7) {
                 oval.setColors(new int[]{Color.TRANSPARENT, Color.YELLOW});
                 oval.setStroke(STROKE_SIZE, Color.YELLOW, DASH_WIDTH, DASH_GAP);
-            } else if (magnitude > 7) {
+            } else if (magnitude >= 7) {
                 oval.setColors(new int[]{Color.TRANSPARENT, Color.RED});
                 oval.setStroke(STROKE_SIZE, Color.RED, DASH_WIDTH, DASH_GAP);
             } else {

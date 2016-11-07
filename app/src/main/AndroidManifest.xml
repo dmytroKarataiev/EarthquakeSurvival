@@ -154,20 +154,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
         </activity>
-
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app.name"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
-
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/title_activity_about"
@@ -181,6 +181,16 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ca849bf6cdd88797c30d095ddef12b71cc2ce64c" />
+
+        <activity
+            android:name=".ui.report_earthquake.ReportActivity"
+            android:label="@string/title_activity_report"
+            android:parentActivityName=".ui.PagerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adkdevelopment.earthquakesurvival.ui.PagerActivity" />
+        </activity>
     </application>
 
 </manifest>

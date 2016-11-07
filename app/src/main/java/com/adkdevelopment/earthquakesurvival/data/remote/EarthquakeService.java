@@ -29,7 +29,10 @@ import com.adkdevelopment.earthquakesurvival.data.objects.info.CountEarthquakes;
 import com.adkdevelopment.earthquakesurvival.data.objects.news.Rss;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -53,4 +56,16 @@ public interface EarthquakeService {
     @GET(sEarthquakeCount)
     Call<CountEarthquakes> getEarthquakeStats(@Query("starttime") String starttime,
                                               @Query("endtime") String endtime);
+
+    @FormUrlEncoded
+    @POST("https://sslearthquake.usgs.gov/dyfi/response.php")
+    Call<String> submitEarthquake(@Field("eventid") String eventId,
+                                  @Field("form_version") String formVersion,
+                                  @Field("ciim_report") String ciimReport,
+                                  @Field("eventTime") String eventTime,
+                                  @Field("language") String language,
+                                  @Field("ciim_time") String ciimTime,
+                                  @Field("fldSituation_felt") int fldSituationFelt,
+                                  @Field("ciim_mapLat") double latitude,
+                                  @Field("ciim_mapLon") double longitude);
 }

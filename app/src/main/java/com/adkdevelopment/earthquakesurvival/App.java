@@ -25,10 +25,12 @@
 package com.adkdevelopment.earthquakesurvival;
 
 import android.app.Application;
+import android.content.Context;
 
-import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.adkdevelopment.earthquakesurvival.data.remote.ApiManager;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -39,6 +41,7 @@ import io.fabric.sdk.android.Fabric;
 public class App extends Application {
 
     private static ApiManager sApiManager, sNewsManager;
+    private static Context sContext;
 
     // event bus from RxJava
     private static RxBus _rxBus;
@@ -46,7 +49,11 @@ public class App extends Application {
     // Singleton Retrofit for Earthquakes
     public static ApiManager getApiManager() {
         if (sApiManager == null) {
-            sApiManager = new ApiManager();
+            try {
+                sApiManager = new ApiManager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return sApiManager;
     }
@@ -54,7 +61,11 @@ public class App extends Application {
     // Singleton Retrofit for News
     public static ApiManager getNewsManager() {
         if (sNewsManager == null) {
-            sNewsManager = new ApiManager();
+            try {
+                sNewsManager = new ApiManager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return sNewsManager;
     }
@@ -71,5 +82,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+        sContext = getApplicationContext();
+    }
+
+    public static Context getContext() {
+        return sContext;
     }
 }

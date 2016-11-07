@@ -59,13 +59,14 @@ import android.widget.Toast;
 
 import com.adkdevelopment.earthquakesurvival.App;
 import com.adkdevelopment.earthquakesurvival.R;
-import com.adkdevelopment.earthquakesurvival.ui.adapters.PagerAdapter;
-import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
-import com.adkdevelopment.earthquakesurvival.ui.geofence.GeofenceService;
 import com.adkdevelopment.earthquakesurvival.data.provider.earthquake.EarthquakeColumns;
-import com.adkdevelopment.earthquakesurvival.ui.behaviour.ZoomOutPageTransformer;
-import com.adkdevelopment.earthquakesurvival.ui.settings.SettingsActivity;
+import com.adkdevelopment.earthquakesurvival.ui.report_earthquake.ReportActivity;
 import com.adkdevelopment.earthquakesurvival.data.syncadapter.SyncAdapter;
+import com.adkdevelopment.earthquakesurvival.eventbus.RxBus;
+import com.adkdevelopment.earthquakesurvival.ui.adapters.PagerAdapter;
+import com.adkdevelopment.earthquakesurvival.ui.behaviour.ZoomOutPageTransformer;
+import com.adkdevelopment.earthquakesurvival.ui.geofence.GeofenceService;
+import com.adkdevelopment.earthquakesurvival.ui.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.common.ConnectionResult;
@@ -115,11 +116,16 @@ public class PagerActivity extends AppCompatActivity
     private List<Geofence> mGeofenceList;
     private ContentObserver mObserver;
 
-    @BindView(R.id.sliding_tabs) TabLayout mTab;
-    @BindView(R.id.container) ViewPager mViewPager;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindColor(R.color.tab_item_selected) int mColorSelected;
-    @BindColor(R.color.tab_item_unselected) int mColorUnselected;
+    @BindView(R.id.sliding_tabs)
+    TabLayout mTab;
+    @BindView(R.id.container)
+    ViewPager mViewPager;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindColor(R.color.tab_item_selected)
+    int mColorSelected;
+    @BindColor(R.color.tab_item_unselected)
+    int mColorUnselected;
 
     public static final int FRAGMENT_RECENT = 0;
     public static final int FRAGMENT_MAP = 1;
@@ -180,7 +186,6 @@ public class PagerActivity extends AppCompatActivity
             }
         };
         getContentResolver().registerContentObserver(EarthquakeColumns.CONTENT_URI, false, mObserver);
-
     }
 
     @Override
@@ -246,6 +251,9 @@ public class PagerActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         switch (id) {
+            case R.id.action_report:
+                startActivity(new Intent(this, ReportActivity.class));
+                return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
@@ -430,23 +438,27 @@ public class PagerActivity extends AppCompatActivity
         Cursor cursor = getContentResolver().query(EarthquakeColumns.CONTENT_URI,
                 null,
                 EarthquakeColumns.MAG + " >= ?",
-                new String[] {String.valueOf(Utilities.getMagnitudePrefs(getBaseContext()))},
+                new String[]{String.valueOf(Utilities.getMagnitudePrefs(getBaseContext()))},
                 null);
 
         if (cursor != null && cursor.getCount() > 0) {
             mGeofenceList = new ArrayList<>();
             int i = 0;
-            while (cursor.moveToNext() && i < 80) { // Geofence limit is around 80 per device
-                String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
-                double lat = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
-                double lng = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
-                mGeofenceList.add(new Geofence.Builder()
-                        .setRequestId(place)
-                        .setCircularRegion(lat, lng, Utilities.getDistancePrefs(getBaseContext()))
-                        .setExpirationDuration(LocationUtils.EXP_MILLIS)
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                        .build());
-                i++;
+
+            int radius = Utilities.getDistancePrefs(getBaseContext());
+            if (radius > 0) {
+                while (cursor.moveToNext() && i < 80) { // Geofence limit is around 80 per device
+                    String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
+                    double lat = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
+                    double lng = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
+                    mGeofenceList.add(new Geofence.Builder()
+                            .setRequestId(place)
+                            .setCircularRegion(lat, lng, radius)
+                            .setExpirationDuration(LocationUtils.EXP_MILLIS)
+                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                            .build());
+                    i++;
+                }
             }
             cursor.close();
         }
@@ -454,6 +466,7 @@ public class PagerActivity extends AppCompatActivity
 
     /**
      * Create Geofencing request
+     *
      * @return GeofencingRequest initialised with a list of Geofences
      */
     private GeofencingRequest getGeofencingRequest() {

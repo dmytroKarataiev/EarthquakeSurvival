@@ -20,32 +20,12 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.PagerActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/menu.button.settings"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_refresh"
-        android:title="@string/menu.button.refresh"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_about"
-        android:title="@string/title_activity_about"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_report"
-        android:icon="@drawable/ic_error_outline"
-        android:orderInCategory="1"
-        android:title="@string/title_activity_report"
-        app:showAsAction="ifRoom" />
-</menu>
+<resources>
+    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
+    <dimen name="activity_horizontal_margin">64dp</dimen>
+</resources>

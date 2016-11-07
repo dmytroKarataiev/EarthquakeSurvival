@@ -86,7 +86,6 @@
     <string name="sharedprefs_key_last_countupdate" translatable="false">last_countupdate</string>
     <string name="sharedprefs_key_sort" translatable="false">sort</string>
 
-
     <!-- Fragments titles -->
     <string name="title.details">Earthquake Details</string>
     <string name="title.news">Current News</string>
@@ -191,8 +190,11 @@
 
 
     <!-- App Shortcuts -->
-    <string name="static_shortcut_long_label">Detailed info about the app</string>
-    <string name="static_shortcut_short_label">About the app</string>
-    <string name="static_shortcut_disabled_message">Disabled</string>
+    <string name="shortcut_long_info">Detailed info about the app</string>
+    <string name="shortcut_short_info">About the app</string>
+    <string name="shortcut_disabled">Disabled</string>
+    <string name="shortcut_long_report">Report an earthquake</string>
+    <string name="shortcut_short_report">Felt it!</string>
+    <string name="title_activity_report">Report an earthquake</string>
 
 </resources>
