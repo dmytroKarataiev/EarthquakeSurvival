@@ -57,13 +57,16 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.kml.KmlLayer;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
@@ -97,7 +100,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     private Unbinder mUnbinder;
 
     // data to start detail activity on info window click
-    private HashMap<String, Intent> mMarkers = new HashMap<>();
+    private HashMap<String, Intent> mMarkersIntents = new HashMap<>();
+    private List<Marker> mMarkers;
     private KmlLayer mFaults;
 
     public MapviewFragment() {
@@ -121,6 +125,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
         View rootView = inflater.inflate(R.layout.map_fragment, container, false);
 
         mUnbinder = ButterKnife.bind(this, rootView);
+
+        mMarkers = new ArrayList<>();
 
         if (Utilities.checkPlayServices(getActivity())) {
             mMapView.onCreate(savedInstanceState);
@@ -153,6 +159,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
         }
         addMarkers();
+        showFaultlines();
     }
 
     /**
@@ -258,7 +265,13 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
      */
     private void addMarkers() {
         if (mGoogleMap != null && mCursor != null) {
-            mGoogleMap.clear();
+
+            //noinspection Convert2streamapi
+            for (Marker each : mMarkers) {
+                each.remove();
+            }
+            mMarkers.clear();
+
             mCursor.moveToFirst();
 
             int lat = mCursor.getColumnIndex(EarthquakeColumns.LATITUDE);
@@ -302,12 +315,12 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                 intent.putExtra(Feature.LATLNG, latLng);
                 intent.putExtra(Feature.DISTANCE, distance);
                 intent.putExtra(Feature.DEPTH, depthEarthquake);
-
-                mMarkers.put(mGoogleMap.addMarker(markerOptions).getId(), intent);
+                Marker marker = mGoogleMap.addMarker(markerOptions);
+                mMarkers.add(marker);
+                mMarkersIntents.put(marker.getId(), intent);
             }
 
-            mGoogleMap.setOnInfoWindowClickListener(l -> startActivity(mMarkers.get(l.getId())));
-            showFaultlines();
+            mGoogleMap.setOnInfoWindowClickListener(l -> startActivity(mMarkersIntents.get(l.getId())));
         }
     }
 
