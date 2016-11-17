@@ -23,32 +23,959 @@
   ~
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_report"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.report_earthquake.ReportFragment"
-    tools:showIn="@layout/activity_report">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/report_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Report it Here - Tell Us!"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/padding"
+        tools:context=".ui.report_earthquake.ReportFragment"
+        tools:showIn="@layout/activity_report">
 
-    <TextView
-        android:id="@+id/report_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/report_title"
-        android:text="Felt the earthquake - tell us where it occured."
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+        <TextView
+            android:id="@+id/report_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Report it Here - Tell Us!"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/report_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Felt the earthquake - tell us where it occured."
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:id="@+id/report_place_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Your location when the earthquake occurred"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/report_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:background="@drawable/shape_outline"
+            android:gravity="center_vertical"
+            android:hint="Enter your location..."
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords"
+            android:padding="@dimen/padding" />
+
+        <TextView
+            android:id="@+id/report_time_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Time of Earthquake Local time 1/31/2008 9:00 AM, or Relative time 5 minutes ago"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/report_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:background="@drawable/shape_outline"
+            android:gravity="center_vertical"
+            android:hint="Enter time..."
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords"
+            android:padding="@dimen/padding" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:background="@color/gray"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:id="@+id/report_optional_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The remainder of this form is optional."
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/report_optional"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Help make a shaking intensity map by telling us about the shaking at your location." />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/report_situation_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="What was your situation during the earthquake?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_situation_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_situation_build"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inside a building" />
+
+            <RadioButton
+                android:id="@+id/radio_situation_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_situation_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inside a building" />
+
+            <RadioButton
+                android:id="@+id/radio_situation_move"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inside a building" />
+
+            <RadioButton
+                android:id="@+id/radio_situation_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+
+            <EditText
+                android:id="@+id/radio_situation_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_outline"
+                android:gravity="center_vertical"
+                android:hint="Please describe"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="@dimen/padding" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_sleep_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Were you asleep?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_sleep_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_sleep_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_sleep_slept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Slept through it" />
+
+            <RadioButton
+                android:id="@+id/radio_woke"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Woke up" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_nearby_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Did others nearby feel it?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_nearby_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_nearby_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No others felt it" />
+
+            <RadioButton
+                android:id="@+id/radio_nearby_some"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Some felt it, most did not" />
+
+            <RadioButton
+                android:id="@+id/radio_nearby_felt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Most felt it" />
+
+            <RadioButton
+                android:id="@+id/radio_nearby_everyone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Everyone/almost everyone felt it" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_shaking_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="How would you describe the shaking?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_shaking_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_shaking_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not felt" />
+
+            <RadioButton
+                android:id="@+id/radio_shaking_weak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weak" />
+
+            <RadioButton
+                android:id="@+id/radio_shaking_mild"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mild" />
+
+            <RadioButton
+                android:id="@+id/radio_shaking_moderate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moderate" />
+
+            <RadioButton
+                android:id="@+id/radio_shaking_strong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Strong" />
+
+            <RadioButton
+                android:id="@+id/radio_shaking_violent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Violent" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_react_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="How did you react?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_react_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_react_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No reaction/not felt" />
+
+            <RadioButton
+                android:id="@+id/radio_react_little"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Very little reaction" />
+
+            <RadioButton
+                android:id="@+id/radio_react_excitement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Excitement" />
+
+            <RadioButton
+                android:id="@+id/radio_react_somewhat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Somewhat frightened" />
+
+            <RadioButton
+                android:id="@+id/radio_react_very"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Very frightened" />
+
+            <RadioButton
+                android:id="@+id/radio_react_extremely"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Extremely frightened" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_respond_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="How did you respond?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_respond_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_respond_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Took no action" />
+
+            <RadioButton
+                android:id="@+id/radio_respond_moved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moved to doorway" />
+
+            <RadioButton
+                android:id="@+id/radio_respond_drop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dropped and covered" />
+
+            <RadioButton
+                android:id="@+id/radio_respond_ran"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ran outside" />
+
+            <RadioButton
+                android:id="@+id/radio_respond_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+
+            <EditText
+                android:id="@+id/radio_respond_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_outline"
+                android:gravity="center_vertical"
+                android:hint="Please describe"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="@dimen/padding" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_difficult_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Was it difficult to stand and/or walk?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_difficult_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_difficult_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_difficult_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_swing_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Did you notice any swinging of doors or other free-hanging objects?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_swing_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_swing_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_swing_slight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, slight swinging" />
+
+            <RadioButton
+                android:id="@+id/radio_swing_violent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, violent swinging" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_creak_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Did you hear creaking or other noises?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_creak_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_creak_slight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, slight noise" />
+
+            <RadioButton
+                android:id="@+id/radio_creak_loud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, loud noise" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_rattle_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Did objects rattle, topple over, or fall off shelves?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_rattle_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_rattle_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_rattle_slight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rattled slightly" />
+
+            <RadioButton
+                android:id="@+id/radio_rattle_loud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rattled loudly" />
+
+            <RadioButton
+                android:id="@+id/radio_rattle_few"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A few toppled or fell off" />
+
+            <RadioButton
+                android:id="@+id/radio_rattle_many"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Many fell off" />
+
+            <RadioButton
+                android:id="@+id/radio_rattle_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nearly everything fell off" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_pictures_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Did pictures on walls move or get knocked askew?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_pictures_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_pictures_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_pictures_not"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, but did not fall" />
+
+            <RadioButton
+                android:id="@+id/radio_pictures_fell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, and some fell" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_furniture_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Did any furniture or appliances slide, topple over, or become displaced?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_furniture_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_furniture_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_furniture_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_appliance_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Was a heavy appliance (refrigerator or range) affected?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_appliance_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_appliance_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_appliance_some"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, some contents fell out" />
+
+            <RadioButton
+                android:id="@+id/radio_appliance_inch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, shifted by inches" />
+
+            <RadioButton
+                android:id="@+id/radio_appliance_foot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, shifted by a foot or more" />
+
+            <RadioButton
+                android:id="@+id/radio_appliance_over"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, overturned" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_wall_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Were free-standing walls or fences damaged?"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding">
+
+            <RadioButton
+                android:id="@+id/radio_wall_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not specified" />
+
+            <RadioButton
+                android:id="@+id/radio_wall_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radio_wall_crack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, some were cracked" />
+
+            <RadioButton
+                android:id="@+id/radio_wall_fell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, some partially fell" />
+
+            <RadioButton
+                android:id="@+id/radio_wall_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes, some fell completely" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/report_damage_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Was there any damage to the building?"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/check_damage_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Damage" />
+
+        <CheckBox
+            android:id="@+id/check_damage_hair"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hairline cracks in walls" />
+
+        <CheckBox
+            android:id="@+id/check_damage_few"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A few large cracks in walls" />
+
+        <CheckBox
+            android:id="@+id/check_damage_many"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Many large cracks in walls" />
+
+        <CheckBox
+            android:id="@+id/check_damage_fixt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ceiling tiles or lighting fixtures fell" />
+
+        <CheckBox
+            android:id="@+id/check_damage_crack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cracks in chimney" />
+
+        <CheckBox
+            android:id="@+id/check_damage_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="One or several cracked windows" />
+
+        <CheckBox
+            android:id="@+id/check_damage_window_many"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Many windows cracked or some broken out" />
+
+        <CheckBox
+            android:id="@+id/check_damage_fell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masonry fell from block or brick wall(s)" />
+
+        <CheckBox
+            android:id="@+id/check_damage_old"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Old chimney, major damage or fell down" />
+
+        <CheckBox
+            android:id="@+id/check_damage_modern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modern chimney, major damage or fell down" />
+
+        <CheckBox
+            android:id="@+id/check_damage_outside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Outside wall(s) tilted over or collapsed completely" />
+
+        <CheckBox
+            android:id="@+id/check_damage_separ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Separation of porch, balcony, or other addition from building" />
+
+        <CheckBox
+            android:id="@+id/check_damage_perm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:text="Building permanently shifted over foundation" />
+
+        <TextView
+            android:id="@+id/report_additional_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding"
+            android:text="Additional Comments"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/report_additional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:background="@drawable/shape_outline"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:imeOptions="actionDone"
+            android:inputType="textCapWords"
+            android:minLines="2"
+            android:padding="@dimen/padding" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding"
+            android:background="@color/gray"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:id="@+id/report_contact_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contact Information (optional)"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/report_contact_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name" />
+
+            <EditText
+                android:id="@+id/report_contact_name_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding"
+                android:background="@drawable/shape_outline"
+                android:gravity="center_vertical"
+                android:hint="Enter your name..."
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="@dimen/padding" />
+
+            <TextView
+                android:id="@+id/report_contact_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email" />
+
+            <EditText
+                android:id="@+id/report_contact_email_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding"
+                android:background="@drawable/shape_outline"
+                android:gravity="center_vertical"
+                android:hint="Enter your email..."
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/padding" />
+
+            <TextView
+                android:id="@+id/report_contact_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone" />
+
+            <EditText
+                android:id="@+id/report_contact_phone_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding"
+                android:background="@drawable/shape_outline"
+                android:gravity="center_vertical"
+                android:hint="Enter your phone..."
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:padding="@dimen/padding" />
+
+            <TextView
+                android:id="@+id/report_contact_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:linksClickable="true"
+                android:text="@string/report_url_disclaimer" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -197,4 +197,7 @@
     <string name="shortcut_short_report">Felt it!</string>
     <string name="title_activity_report">Report an earthquake</string>
 
+    <!-- Report activity -->
+    <string name="report_url_disclaimer"><a href="http://earthquake.usgs.gov/data/dyfi/disclaimer.php#DYFIFormDisclaimer">PRA - Privacy Statement</a></string>
+
 </resources>
