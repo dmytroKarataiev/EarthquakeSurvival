@@ -39,6 +39,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +73,13 @@ import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Observable;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static com.adkdevelopment.earthquakesurvival.R.drawable.marker;
 
 /**
  * Fragment with a map which monitors location changes and updates the view
@@ -95,7 +103,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
 
     @BindView(R.id.map)
     MapView mMapView;
-    @BindDrawable(R.drawable.marker)
+    @BindDrawable(marker)
     Drawable mOval;
     private Unbinder mUnbinder;
 
@@ -103,6 +111,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     private HashMap<String, Intent> mMarkersIntents = new HashMap<>();
     private List<Marker> mMarkers;
     private KmlLayer mFaults;
+    private Subscription mSubscription;
 
     public MapviewFragment() {
     }
@@ -149,7 +158,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        
+
         UiSettings uiSettings = mGoogleMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         addMyLocation();
@@ -158,7 +167,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
         if (mCameraPosition != null) {
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
         }
-        addMarkers();
+        addMarkersObservable();
         showFaultlines();
     }
 
@@ -218,6 +227,9 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
         mMapView.onDestroy();
         mUnbinder.unbind();
         PreferenceManager.getDefaultSharedPreferences(getContext())
@@ -252,26 +264,68 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursor = data;
-        addMarkers();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mCursor = null;
+        addMarkersObservable();
     }
 
     /**
-     * Adds markers to the map from the database
+     * Loads markers from the IO thread.
      */
-    private void addMarkers() {
-        if (mGoogleMap != null && mCursor != null) {
+    private void addMarkersObservable() {
+        if (mSubscription == null || mSubscription.isUnsubscribed()) {
+            mSubscription = Observable.fromCallable(this::getMarkers)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<Pair<List<MarkerOptions>, List<Intent>>>() {
+                        @Override
+                        public void onCompleted() {
+                            Log.d(TAG, "onCompleted: ");
+                        }
 
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(Pair<List<MarkerOptions>, List<Intent>> pair) {
+                            addMarkers(pair);
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Adds markers to the GoogleMap if it's available.
+     * @param pair a Pair of Lists with MarkerOptions and Intents fot InfoWindows.
+     */
+    public void addMarkers(Pair<List<MarkerOptions>, List<Intent>> pair) {
+        if (mGoogleMap != null) {
             //noinspection Convert2streamapi
             for (Marker each : mMarkers) {
                 each.remove();
             }
             mMarkers.clear();
 
+            List<MarkerOptions> first = pair.first;
+            for (int i = 0; i < first.size(); i++) {
+                MarkerOptions each = first.get(i);
+                Marker marker = mGoogleMap.addMarker(each);
+                mMarkers.add(marker);
+                mMarkersIntents.put(marker.getId(), pair.second.get(i));
+                mGoogleMap.setOnInfoWindowClickListener(l -> startActivity(mMarkersIntents.get(l.getId())));
+            }
+        }
+    }
+
+    /**
+     * Creates MarkerOptions and Intents for InfoWindows.
+     * @return a Pair of Lists with MarkerOptions and corresponding Intents.
+     */
+    @NonNull
+    private Pair<List<MarkerOptions>, List<Intent>> getMarkers() {
+        List<MarkerOptions> markers = new ArrayList<>();
+        List<Intent> intents = new ArrayList<>();
+        if (mCursor != null) {
             mCursor.moveToFirst();
 
             int lat = mCursor.getColumnIndex(EarthquakeColumns.LATITUDE);
@@ -315,13 +369,18 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
                 intent.putExtra(Feature.LATLNG, latLng);
                 intent.putExtra(Feature.DISTANCE, distance);
                 intent.putExtra(Feature.DEPTH, depthEarthquake);
-                Marker marker = mGoogleMap.addMarker(markerOptions);
-                mMarkers.add(marker);
-                mMarkersIntents.put(marker.getId(), intent);
+
+                markers.add(markerOptions);
+                intents.add(intent);
             }
 
-            mGoogleMap.setOnInfoWindowClickListener(l -> startActivity(mMarkersIntents.get(l.getId())));
         }
+        return new Pair<>(markers, intents);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursor = null;
     }
 
     /**
