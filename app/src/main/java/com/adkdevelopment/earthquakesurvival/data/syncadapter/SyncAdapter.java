@@ -138,7 +138,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     if (each.getProperties().getMag() != null &&
                             each.getProperties().getMag() > currentBiggest) {
                         currentBiggest = each.getProperties().getMag();
-                        notifyValues = earthquakeValues;
+                        notifyValues = new ContentValues(earthquakeValues);
                         notifyValues.put(EarthquakeColumns.PLACE,
                                 Utilities.formatEarthquakePlace(each.getProperties().getPlace()));
                     }
@@ -216,7 +216,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 date.setTime(date.getTime() - DateUtils.DAY_IN_MILLIS * 3);
 
                 int deleted = resolver.delete(NewsColumns.CONTENT_URI, NewsColumns.DATE + " <= ?", new String[]{String.valueOf(date.getTime())});
-                // Log.v(TAG, "Service Complete. " + inserted + " Inserted, " + deleted + " deleted");
             }
 
             @Override
@@ -253,7 +252,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     public void onResponse(Call<CountEarthquakes> call, Response<CountEarthquakes> response) {
                         ContentValues count = new ContentValues();
                         count.put(CountColumns.ALL_COLUMNS[round], response.body().getCount());
-                        Log.d(TAG, "response.body().getCount():" + response.body().getCount());
+
                         ContentResolver contentResolver = context.getContentResolver();
 
                         Cursor cursor = contentResolver.query(CountColumns.CONTENT_URI, null, null, null, null);
