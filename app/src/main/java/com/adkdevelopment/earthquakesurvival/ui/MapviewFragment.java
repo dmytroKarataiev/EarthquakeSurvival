@@ -79,8 +79,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.adkdevelopment.earthquakesurvival.R.drawable.marker;
-
 /**
  * Fragment with a map which monitors location changes and updates the view
  */
@@ -103,7 +101,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
 
     @BindView(R.id.map)
     MapView mMapView;
-    @BindDrawable(marker)
+    @BindDrawable(R.drawable.marker)
     Drawable mOval;
     private Unbinder mUnbinder;
 

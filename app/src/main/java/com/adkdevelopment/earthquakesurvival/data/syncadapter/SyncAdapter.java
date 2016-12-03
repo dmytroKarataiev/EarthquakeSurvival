@@ -77,7 +77,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * SyncAdapter, which performs all network-realted work,
+ * SyncAdapter, which performs all network-related work,
  * sends notifications each day.
  * Created by karataev on 4/1/16.
  */
@@ -139,6 +139,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             each.getProperties().getMag() > currentBiggest) {
                         currentBiggest = each.getProperties().getMag();
                         notifyValues = earthquakeValues;
+                        notifyValues.put(EarthquakeColumns.PLACE,
+                                Utilities.formatEarthquakePlace(each.getProperties().getPlace()));
                     }
                 }
 
@@ -233,7 +235,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = new Date(System.currentTimeMillis());
 
-            String startTime[] = new String[] {
+            String startTime[] = new String[]{
                     simpleDateFormat.format(date.getTime() - DateUtils.YEAR_IN_MILLIS),
                     simpleDateFormat.format(date.getTime() - DateUtils.DAY_IN_MILLIS * 30),
                     simpleDateFormat.format(date.getTime() - DateUtils.WEEK_IN_MILLIS),
@@ -261,7 +263,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                 long inserted = ContentUris.parseId(contentResolver.insert(CountColumns.CONTENT_URI, count));
                                 //Log.d(TAG, "inserted:" + inserted);
                             } else {
-                                int updated = contentResolver.update(CountColumns.CONTENT_URI, count, CountColumns._ID + " = ?", new String[] {"1"});
+                                int updated = contentResolver.update(CountColumns.CONTENT_URI, count, CountColumns._ID + " = ?", new String[]{"1"});
                                 //Log.d(TAG, "updated: " + updated);
                             }
                             cursor.close();
@@ -405,13 +407,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Raises a notification with a biggest earthquake with each sync
+     *
      * @param notifyValues data with the biggest recent earthquake
      */
     private void sendNotification(ContentValues notifyValues) {
 
         Context context = getContext();
         Log.d(TAG, "sendNotification: " + Utilities.getNotificationsPrefs(context)
-                + " foreground: " + Utilities.checkForeground(context) );
+                + " foreground: " + Utilities.checkForeground(context));
 
         if (Utilities.getNotificationsPrefs(context)
                 && !Utilities.checkForeground(context)) {
@@ -470,11 +473,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         // .setLargeIcon(largeIcon)
                         .setTicker(context.getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(magnitude
-                                        + "\n" + notifyValues.get(EarthquakeColumns.PLACE).toString()
-                                        + "\n" + date
+                                .bigText(notifyValues.get(EarthquakeColumns.PLACE).toString()
+                                        + "\n" + magnitude
+                                        + "\n" + context.getString(R.string.earthquake_depth, depth)
                                         + "\n" + distance
-                                        + "\n" + context.getString(R.string.earthquake_depth, depth)))
+                                        + "\n" + date))
                         .setGroup(EarthquakeObject.NOTIFICATION_GROUP)
                         .setGroupSummary(true);
 
