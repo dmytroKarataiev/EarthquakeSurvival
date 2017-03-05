@@ -25,7 +25,6 @@
 package com.adkdevelopment.earthquakesurvival.utils;
 
 import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -310,7 +309,6 @@ public class Utilities {
      * Animates RecyclerView card on click with revealing effect
      * @param viewHolder to make animation on
      */
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void animationCard(RecyclerView.ViewHolder viewHolder) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 

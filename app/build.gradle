@@ -50,6 +50,7 @@ android {
     }
     lintOptions {
         lintConfig rootProject.file('gradle/lint.xml')
+        disable 'MissingTranslation'
     }
 }
 
