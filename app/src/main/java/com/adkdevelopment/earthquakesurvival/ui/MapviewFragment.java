@@ -269,31 +269,30 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
      * Loads markers from the IO thread.
      */
     private void addMarkersObservable() {
-        if (mSubscription == null || mSubscription.isUnsubscribed()) {
-            mSubscription = Observable.fromCallable(this::getMarkers)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Subscriber<Pair<List<MarkerOptions>, List<Intent>>>() {
-                        @Override
-                        public void onCompleted() {
-                            Log.d(TAG, "onCompleted: ");
-                        }
+        mSubscription = Observable.fromCallable(this::getMarkers)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Pair<List<MarkerOptions>, List<Intent>>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted: ");
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                        @Override
-                        public void onNext(Pair<List<MarkerOptions>, List<Intent>> pair) {
-                            addMarkers(pair);
-                        }
-                    });
-        }
+                    @Override
+                    public void onNext(Pair<List<MarkerOptions>, List<Intent>> pair) {
+                        addMarkers(pair);
+                    }
+                });
     }
 
     /**
      * Adds markers to the GoogleMap if it's available.
+     *
      * @param pair a Pair of Lists with MarkerOptions and Intents fot InfoWindows.
      */
     public void addMarkers(Pair<List<MarkerOptions>, List<Intent>> pair) {
@@ -317,6 +316,7 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback,
 
     /**
      * Creates MarkerOptions and Intents for InfoWindows.
+     *
      * @return a Pair of Lists with MarkerOptions and corresponding Intents.
      */
     @NonNull

@@ -29,7 +29,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '24.0.3'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         multiDexEnabled true
         applicationId "com.adkdevelopment.earthquakesurvival"
@@ -54,8 +54,8 @@ android {
 }
 
 ext {
-    compatVersion = "25.0.1"
-    playVersion = "10.0.0"
+    compatVersion = "25.2.0"
+    playVersion = "10.2.0"
     retrofitVersion = "2.1.0"
     butterknifeVersion = "8.3.0"
 }
