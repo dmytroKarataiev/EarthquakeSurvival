@@ -448,11 +448,11 @@ public class PagerActivity extends AppCompatActivity
             int radius = Utilities.getDistancePrefs(getBaseContext());
             if (radius > 0) {
                 while (cursor.moveToNext() && i < 80) { // Geofence limit is around 80 per device
-                    String place = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.PLACE));
+                    String url = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
                     double lat = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
                     double lng = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
                     mGeofenceList.add(new Geofence.Builder()
-                            .setRequestId(place)
+                            .setRequestId(url)
                             .setCircularRegion(lat, lng, radius)
                             .setExpirationDuration(LocationUtils.EXP_MILLIS)
                             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)

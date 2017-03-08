@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.R;
@@ -83,23 +82,23 @@ public class LocationUtils {
      * @param context from which a call is being made
      * @param geofenceTransition type of transition
      * @param triggeringGeofences list of all triggering transitions
-     * @return concatenated String with the type of a transition and all triggering id's
+     * @return list of Strings with the type of a transition and all triggering id's
      */
-    public static String getTransitionDetails(Context context,
-                                        int geofenceTransition,
-                                        List<Geofence> triggeringGeofences) {
+    public static List<String> getTransitionDetails(Context context,
+                                                    int geofenceTransition,
+                                                    List<Geofence> triggeringGeofences) {
 
         String geofenceTransitionString = getTransitionString(context, geofenceTransition);
 
         // Get the Ids of each geofence that was triggered.
         List<String> triggeringGeofencesIdsList = new ArrayList<>();
+        triggeringGeofencesIdsList.add(geofenceTransitionString);
 
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
         }
-        String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
 
-        return triggeringGeofencesIdsString;
+        return triggeringGeofencesIdsList;
     }
 
     /**

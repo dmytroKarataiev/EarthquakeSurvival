@@ -420,11 +420,13 @@ public class Utilities {
     @NonNull
     public static String formatEarthquakePlace(String place) {
         String comma = ", ";
-        if (place.contains(comma)) {
+        if (place != null && place.contains(comma)) {
             int divider = place.indexOf(comma);
             place = place.substring(divider + comma.length())
                     + comma
                     + place.substring(0, divider);
+        } else {
+            place = "";
         }
         return place;
     }

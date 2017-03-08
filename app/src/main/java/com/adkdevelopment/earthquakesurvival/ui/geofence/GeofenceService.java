@@ -48,6 +48,7 @@ import com.google.android.gms.location.GeofencingEvent;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,10 +83,11 @@ public class GeofenceService extends IntentService {
             List<Geofence> geoEvents = geofencingEvent.getTriggeringGeofences();
 
             // Get the transition details as a String.
-            String geofenceDetails = LocationUtils
+            List<String> geofenceDetails = LocationUtils
                     .getTransitionDetails(this, transition, geoEvents);
 
-            if (Utilities.getNotificationsPrefs(getBaseContext())) {
+            if (Utilities.getNotificationsPrefs(getBaseContext())
+                    && geofenceDetails != null && geofenceDetails.size() > 0) {
                 sendNotification(geofenceDetails);
             }
 
@@ -98,13 +100,13 @@ public class GeofenceService extends IntentService {
      * Sends a notification to the phone
      * @param notificationDetails String with details to show in the notification
      */
-    private void sendNotification(String notificationDetails) {
+    private void sendNotification(List<String> notificationDetails) {
 
         Context context = getBaseContext();
 
         // Create an explicit content Intent that starts the main Activity.
         Intent notificationIntent = new Intent(context, DetailActivity.class);
-        notificationIntent.putExtra(Feature.GEOFENCE, notificationDetails);
+        notificationIntent.putStringArrayListExtra(Feature.GEOFENCE, (ArrayList<String>) notificationDetails);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -140,7 +142,7 @@ public class GeofenceService extends IntentService {
                 .setContentText(getString(R.string.geofence_notification_text))
                 .setContentIntent(notificationPendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(notificationDetails + "\n"
+                        .bigText(notificationDetails.get(0) + "\n"
                                 + getString(R.string.geofence_notification_text)))
                 .setGroup(EarthquakeObject.NOTIFICATION_GROUP);
 

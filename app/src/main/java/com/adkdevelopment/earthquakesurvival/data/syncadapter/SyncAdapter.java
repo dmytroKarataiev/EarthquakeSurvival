@@ -39,6 +39,8 @@ import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -50,8 +52,6 @@ import android.text.format.DateUtils;
 import android.util.Log;
 
 import com.adkdevelopment.earthquakesurvival.App;
-import com.adkdevelopment.earthquakesurvival.BuildConfig;
-import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.R;
 import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.EarthquakeObject;
 import com.adkdevelopment.earthquakesurvival.data.objects.earthquake.Feature;
@@ -62,6 +62,7 @@ import com.adkdevelopment.earthquakesurvival.data.objects.news.Rss;
 import com.adkdevelopment.earthquakesurvival.data.provider.count.CountColumns;
 import com.adkdevelopment.earthquakesurvival.data.provider.earthquake.EarthquakeColumns;
 import com.adkdevelopment.earthquakesurvival.data.provider.news.NewsColumns;
+import com.adkdevelopment.earthquakesurvival.ui.DetailActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
 import com.google.android.gms.maps.model.LatLng;
@@ -412,8 +413,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void sendNotification(ContentValues notifyValues) {
 
         Context context = getContext();
-        Log.d(TAG, "sendNotification: " + Utilities.getNotificationsPrefs(context)
-                + " foreground: " + Utilities.checkForeground(context));
 
         if (Utilities.getNotificationsPrefs(context)
                 && !Utilities.checkForeground(context)) {
@@ -422,13 +421,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             String lastNotificationKey = context.getString(R.string.sharedprefs_key_lastnotification);
             long lastSync = prefs.getLong(lastNotificationKey, 0);
-
-            // TODO: 8/28/16 delete later 
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, Utilities.getRelativeDate(lastSync));
-                Log.d(TAG, "" + (System.currentTimeMillis() - lastSync));
-                Log.d(TAG, "" + DateUtils.DAY_IN_MILLIS);
-            }
 
             if (System.currentTimeMillis() - lastSync >= DateUtils.DAY_IN_MILLIS) {
                 Intent intent = new Intent(context, DetailActivity.class);
@@ -461,6 +453,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
+                Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
+                        R.mipmap.ic_launcher);
+
                 builder
                         .setDefaults(Notification.DEFAULT_ALL)
                         .setAutoCancel(true)
@@ -468,8 +463,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         .setContentText(context.getString(R.string.earthquake_magnitude, notifyValues.get(EarthquakeColumns.MAG)))
                         .setContentIntent(pendingIntent)
                         .setSmallIcon(R.drawable.ic_info_black_24dp)
-                        // TODO: 4/21/16 add large icon 
-                        // .setLargeIcon(largeIcon)
+                        .setLargeIcon(largeIcon)
                         .setTicker(context.getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(notifyValues.get(EarthquakeColumns.PLACE).toString()
@@ -487,7 +481,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 boolean success = prefs.edit()
                         .putLong(lastNotificationKey, System.currentTimeMillis())
                         .commit();
-                Log.d(TAG, "Value added isSuccess: " + success);
             }
         }
     }

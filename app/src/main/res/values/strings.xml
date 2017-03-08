@@ -130,10 +130,10 @@
     <string name="geofence.error.unknown">Unknown error: the Geofence service is not available now</string>
     <string name="geofence.error.invalid_type">Geofence transition error: invalid transition type %1$d</string>
     <string name="geofence_notification">Geofence notification occurred</string>
-    <string name="geofence.transition.entered">Entered</string>
-    <string name="geofence.transition.exited">Exited</string>
+    <string name="geofence.transition.entered">Entered a dangerous place.</string>
+    <string name="geofence.transition.exited">Exited a dangerous place.</string>
     <string name="geofence.transition.unknown">Unknown Transition</string>
-    <string name="geofence.notification.text">Click notification to return to app</string>
+    <string name="geofence.notification.text">Click notification to return to app and see the details.</string>
     <string name="geofence.log.added">Geofences added</string>
 
     <!-- Google Api Client -->

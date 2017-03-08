@@ -57,6 +57,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,31 +112,37 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         if (getActivity().getIntent().hasExtra(Feature.GEOFENCE)) {
 
-            String place = getActivity().getIntent().getStringExtra(Feature.GEOFENCE);
-            Log.v(TAG, place);
+            ArrayList<String> place = getActivity().getIntent().getStringArrayListExtra(Feature.GEOFENCE);
 
-            Cursor cursor = getActivity().getContentResolver()
-                    .query(EarthquakeColumns.CONTENT_URI,
-                            null,
-                            EarthquakeColumns.PLACE + "= ?",
-                            new String[]{place},
-                            null);
-            Log.v(TAG, "(cursor != null):" + (cursor != null));
+            Cursor cursor = null;
+            if (place != null && place.size() > 1) {
+                cursor = getActivity().getContentResolver()
+                        .query(EarthquakeColumns.CONTENT_URI,
+                                null,
+                                EarthquakeColumns.URL + "= ?",
+                                new String[]{place.get(1)},
+                                null);
+            }
 
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
 
-                // TODO(Dmytro Karataiev): 10/29/16 create a method to extract earthquake details from a cursor
                 long dateMillis = cursor.getLong(cursor.getColumnIndex(EarthquakeColumns.TIME));
                 double latitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LATITUDE));
                 double longitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.LONGITUDE));
 
                 LatLng latLng = new LatLng(latitude, longitude);
 
+                mCameraPosition = CameraPosition.builder()
+                        .target(latLng)
+                        .zoom(LocationUtils.CAMERA_DEFAULT_ZOOM)
+                        .build();
+
                 mDistance = getString(R.string.earthquake_distance,
                         LocationUtils.getDistance(latLng, LocationUtils.getLocation(getContext())));
                 mDate = Utilities.getRelativeDate(dateMillis);
-                mDescription = Utilities.formatEarthquakePlace(place);
+                mDescription = Utilities.formatEarthquakePlace(cursor
+                        .getString(cursor.getColumnIndex(EarthquakeColumns.PLACE)));
                 mLink = cursor.getString(cursor.getColumnIndex(EarthquakeColumns.URL));
                 mMagnitude = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.MAG));
                 mDepth = cursor.getDouble(cursor.getColumnIndex(EarthquakeColumns.DEPTH)) / 1.6;
