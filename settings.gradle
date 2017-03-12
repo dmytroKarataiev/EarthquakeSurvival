@@ -22,4 +22,4 @@
  * SOFTWARE.
  */
 
-include ':app',':library'
+include ':app', ':library', ':license-release'

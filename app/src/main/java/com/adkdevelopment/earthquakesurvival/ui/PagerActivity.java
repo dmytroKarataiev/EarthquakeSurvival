@@ -69,6 +69,7 @@ import com.adkdevelopment.earthquakesurvival.ui.geofence.GeofenceService;
 import com.adkdevelopment.earthquakesurvival.ui.settings.SettingsActivity;
 import com.adkdevelopment.earthquakesurvival.utils.LocationUtils;
 import com.adkdevelopment.earthquakesurvival.utils.Utilities;
+import com.adkdevelopment.license.ui.LicenseActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -251,9 +252,10 @@ public class PagerActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_report:
+            // TODO(Dmytro Karataiev): 3/12/17 finish this activity 
+            /*case R.id.action_report:
                 startActivity(new Intent(this, ReportActivity.class));
-                return true;
+                return true;*/
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
@@ -262,6 +264,9 @@ public class PagerActivity extends AppCompatActivity
                 return true;
             case R.id.action_about:
                 startActivity(new Intent(this, AboutActivity.class));
+                return true;
+            case R.id.action_license:
+                startActivity(new Intent(this, LicenseActivity.class));
                 return true;
         }
 
